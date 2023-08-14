@@ -15,3 +15,6 @@ docker run --rm your-image-name ## removing container on exit
 
 docker ps ## once your container is running, list running containers
 docker stop container_id ## stop a container
+
+docker run -it your-image-name bash ## enter a docker image and start bash and run commands interactively
+docker run -it -v ${PWD}:/mydata tanghaibao/jcvi bash ##bind current directory to /mydata new directory
