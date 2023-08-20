@@ -1,3 +1,7 @@
+## resources
+https://rnabio.org/module-02-alignment/0002/06/01/Alignment_QC/#:~:text=You%20can%20use%20FastQC%20to,FastQC%20on%20your%20fastq%20files.
+
+
 ## fastqc on fastq.gz
 find /scratch/pawsey0399/yjia/skylar/WGS/ -name "*fq.gz"|grep trimmed| while read R;
 do
