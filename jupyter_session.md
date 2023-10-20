@@ -1,7 +1,7 @@
 ## guide to create a jupyter-lab session on nimbus
 
 ## open a port in nimbus dashboard
-login to https://nimbus.pawsey.org.au/auth/login/
+login to https://nimbus.pawsey.org.au/auth/login/ \
 ![nimbus_dashboard](nimbus_dashboard.jpg)
 
 Go to "network > security groups"
