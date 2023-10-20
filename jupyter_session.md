@@ -2,7 +2,7 @@
 
 ## open a port in nimbus dashboard (only for admin)
 login to https://nimbus.pawsey.org.au/auth/login/ \
-![nimbus_dashboard](nimbus_dashboard.jpg)
+![nimbus_dashboard](nimbus_dashboard.png)
 
 Go to "network > security groups"
 Choose security group that attached to your target instance
