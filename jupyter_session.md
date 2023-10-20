@@ -1,6 +1,6 @@
 ## guide to create a jupyter-lab session on nimbus
 
-## open a port in nimbus dashboard
+## open a port in nimbus dashboard (only for admin)
 login to https://nimbus.pawsey.org.au/auth/login/ \
 ![nimbus_dashboard](nimbus_dashboard.jpg)
 
