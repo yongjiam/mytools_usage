@@ -6,10 +6,9 @@ https://github.com/tickstep/aliyunpan/blob/main/docs/manual.md
 ## configration
 ```bash
 export ALIYUNPAN_CONFIG_DIR=/home/tickstep/tools/aliyunpan/config
-aliyunpan config set -savedir <savedir>
 ```
 ## get login token
-![get refreshtoken](get_token.png)
+![get refreshtoken](get_token.jpg)
 
 ## login
 ```bash
@@ -24,4 +23,9 @@ aliyunpan update
 aliyunpan loglist
 aliyunpan who
 aliyunpan help
+```
+## download
+```bash
+aliyunpan config set -savedir <savedir>
+download/d path_to_dir_or_file
 ```
