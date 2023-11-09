@@ -5,8 +5,7 @@
 conda install -c bioconda paml
 ```
 ## prepare input files
-### 1. codon-based cds alignment file
-### I do this using mega, there may be other tools
+### 1. codon-based cds alignment file (I use MEGA, there may be other tools)
 cds.fas
 ### 2. phylogenetic tree, topology only, without branch length
 tree.phy
