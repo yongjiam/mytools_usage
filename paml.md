@@ -73,8 +73,7 @@ codeml.ctl
         clock = 0   * 0:no clock, 1:global clock; 2:local clock; 3:TipDate
        aaDist = 0  * 0:equal, +:geometric; -:linear, 1-6:G1974,Miyata,c,p,v,a
          aaRatefile = /../wag.dat
-        model = 2
-                   * models for codons:
+        model = 2  * models for codons:
                        * 0:one, 1:b, 2:2 or more dN/dS ratios for branches
 
       NSsites = 2  * 0:one w;1:neutral;2:selection; 3:discrete;4:freqs;
@@ -114,9 +113,8 @@ codeml.ctl
         clock = 0   * 0:no clock, 1:global clock; 2:local clock; 3:TipDate
        aaDist = 0  * 0:equal, +:geometric; -:linear, 1-6:G1974,Miyata,c,p,v,a
          aaRatefile = /../wag.dat
-        model = 2
-                   * models for codons:
-                       * 0:one, 1:b, 2:2 or more dN/dS ratios for branches
+        model = 2  * models for codons: 
+                    * 0:one, 1:b, 2:2 or more dN/dS ratios for branches
 
       NSsites = 2  * 0:one w;1:neutral;2:selection; 3:discrete;4:freqs;
                    * 5:gamma;6:2gamma;7:beta;8:beta&w;9:beta&gamma;
