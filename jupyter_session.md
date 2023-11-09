@@ -21,7 +21,7 @@ screen -S new_session_name ## create a new screen session
 ## get public IP for nimbus server
 curl ifconfig.me ## such as 146.118.64.19
 ## start jupyter
-jupyter-lab --ip 0.0.0.0 --port PORT_NUM --no-browser ## replace PORT_NUM with port number created in nimbus dashboard above
+jupyter-lab --ip 0.0.0.0 --port PORT_NUM --no-browser --notebook-dir PATH/TO/WHERE/YOU/WANT ## replace PORT_NUM with port number created in nimbus dashboard above
 ## after the above command, notedown the address with token, such as:
 http://127.0.0.1:8888/lab?token=94f74a26d6fe35ba2aa80db0a26ccd9d1f81e638eb220278
 ## quit your screen session
