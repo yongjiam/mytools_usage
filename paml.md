@@ -46,7 +46,7 @@ codeml.ctl
         ncatG = 4   * # of categories in the dG or AdG models of rates
 
         getSE = 0   * 0: don't want them, 1: want S.E.s of estimates
- RateAncestor = 0   * (1/0): rates (alpha>0) or ancestral states (alpha=0)
+       RateAncestor = 0   * (1/0): rates (alpha>0) or ancestral states (alpha=0)
        method = 0   * 0: simultaneous; 1: one branch at a time
 
 
@@ -88,7 +88,7 @@ codeml.ctl
         ncatG = 10  * # of categories in dG of NSsites models
 
         getSE = 0  * 0: don't want them, 1: want S.E.s of estimates
- RateAncestor = 0  * (0,1,2): rates (alpha>0) or ancestral states (1 or 2)
+       RateAncestor = 0  * (0,1,2): rates (alpha>0) or ancestral states (1 or 2)
 
    Small_Diff = .5e-6
 *    cleandata = 1
@@ -129,7 +129,7 @@ codeml.ctl
         ncatG = 10  * # of categories in dG of NSsites models
 
         getSE = 0  * 0: don't want them, 1: want S.E.s of estimates
- RateAncestor = 0  * (0,1,2): rates (alpha>0) or ancestral states (1 or 2)
+       RateAncestor = 0  * (0,1,2): rates (alpha>0) or ancestral states (1 or 2)
 
    Small_Diff = .5e-6
 *    cleandata = 1
