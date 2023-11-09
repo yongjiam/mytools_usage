@@ -1,14 +1,14 @@
-## guide on running paml natural selection
+# guide on running paml natural selection
 
 ## install
 ```bash
 conda install -c bioconda paml
 ```
-# prepare input files
-## 1. codon-based cds alignment file
+## prepare input files
+### 1. codon-based cds alignment file
 ### I do this using mega, there may be other tools
 cds.fas
-## 2. phylogenetic tree, topology only, without branch length
+### 2. phylogenetic tree, topology only, without branch length
 tree.phy
 
 (((((((((((TraesCS2A02G338600.1,TuG1812G0200003696.01.T01),(TRIDC2AG047520.1,TRITD2Av1G199330.1)),SECCE2Rv1G0105930.1),(TraesCS2B02G343300.1,TRITD2Bv1G162510.1)),(AET2Gv20736300.1,TraesCS2D02G324400.1)),Horvu_13821_2H01G457500.1),((TraesCS1B02G058900.1,TRIDC1BG007330.1),(Horvu_13821_1H01G536500.1,(TuG1812G0100000012.01.T02,(TRITD1Av1G000090.1,TuG1812G0200000917.01.T02))))),(Brame.09UG119000.1,(Brame.09PG123000.1,(Brasy9G166700.1,((Bhyb26.D05G134200.1,Bradi5g12390.1),(Bhyb26.S09G092600.1,Brast09G106000.1)))))),(LOC_Os04g38680.1,((TVU14179.1,TVU14241.1),((Pahal.7G177800.1,Seita.7G124400.1),(Sobic.006G106700.1,Zm00001d003422_T001))))),Ola019279.1),Joasc.15G002900.1);
@@ -18,7 +18,7 @@ tree.phy
 
 (((((((((((TraesCS2A02G338600.1,TuG1812G0200003696.01.T01),(TRIDC2AG047520.1,TRITD2Av1G199330.1)),SECCE2Rv1G0105930.1),(TraesCS2B02G343300.1,TRITD2Bv1G162510.1)),(AET2Gv20736300.1,TraesCS2D02G324400.1)),Horvu_13821_2H01G457500.1) #2,((TraesCS1B02G058900.1,TRIDC1BG007330.1),(Horvu_13821_1H01G536500.1,(TuG1812G0100000012.01.T02,(TRITD1Av1G000090.1,TuG1812G0200000917.01.T02)))) #1),(Brame.09UG119000.1,(Brame.09PG123000.1,(Brasy9G166700.1,((Bhyb26.D05G134200.1,Bradi5g12390.1),(Bhyb26.S09G092600.1,Brast09G106000.1))))) #3),(LOC_Os04g38680.1,((TVU14179.1,TVU14241.1),((Pahal.7G177800.1,Seita.7G124400.1),(Sobic.006G106700.1,Zm00001d003422_T001))))),Ola019279.1),Joasc.15G002900.1);
 
-## 4. create codeml config file, specifying the input files and models
+### 4. create codeml config file, specifying the input files and models
 codeml.ctl
 
 ### branch specific model:
