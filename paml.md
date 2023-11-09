@@ -66,7 +66,7 @@ codeml.ctl
     CodonFreq = 2  * 0:1/61 each, 1:F1X4, 2:F3X4, 3:codon table
         clock = 0   * 0:no clock, 1:global clock; 2:local clock; 3:TipDate
        aaDist = 0  * 0:equal, +:geometric; -:linear, 1-6:G1974,Miyata,c,p,v,a
-   aaRatefile = /../wag.dat
+         aaRatefile = /../wag.dat
         model = 2
                    * models for codons:
                        * 0:one, 1:b, 2:2 or more dN/dS ratios for branches
