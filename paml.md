@@ -54,9 +54,9 @@ codeml.ctl
        method = 0   * 0: simultaneous; 1: one branch at a time
 
 
-* Specifications for duplicating results for the small data set in table 1
-* of Yang (1998 MBE 15:568-573).
-* see the tree file lysozyme.trees for specification of node (branch) labels
+      * Specifications for duplicating results for the small data set in table 1
+      * of Yang (1998 MBE 15:568-573).
+      * see the tree file lysozyme.trees for specification of node (branch) labels
 ### branch-site model
       seqfile = cds.fas
      treefile = tree.phy
@@ -94,9 +94,9 @@ codeml.ctl
         getSE = 0  * 0: don't want them, 1: want S.E.s of estimates
        RateAncestor = 0  * (0,1,2): rates (alpha>0) or ancestral states (1 or 2)
 
-   Small_Diff = .5e-6
-*    cleandata = 1
-*       method = 1   * 0: simultaneous; 1: one branch at a time
+         Small_Diff = .5e-6
+      *    cleandata = 1
+      *       method = 1   * 0: simultaneous; 1: one branch at a time
 
 ### branch-site model null
       seqfile = cds.fas
@@ -135,9 +135,9 @@ codeml.ctl
         getSE = 0  * 0: don't want them, 1: want S.E.s of estimates
        RateAncestor = 0  * (0,1,2): rates (alpha>0) or ancestral states (1 or 2)
 
-   Small_Diff = .5e-6
-*    cleandata = 1
-*       method = 1   * 0: simultaneous; 1: one branch at a time
+         Small_Diff = .5e-6
+      *    cleandata = 1
+      *       method = 1   * 0: simultaneous; 1: one branch at a time
 ### ancestral sequence construction
       seqfile = cds.fas * sequence data filename
      treefile = tree.phy      * tree structure file name
@@ -151,7 +151,7 @@ codeml.ctl
       seqtype = 2  * 1:codons; 2:AAs; 3:codons-->AAs
     CodonFreq = 2  * 0:1/61 each, 1:F1X4, 2:F3X4, 3:codon table
 
-*        ndata = 10
+      *        ndata = 10
         clock = 0  * 0:no clock, 1:clock; 2:local clock; 3:CombinedAnalysis
        aaDist = 0  * 0:equal, +:geometric; -:linear, 1-6:G1974,Miyata,c,p,v,a
    aaRatefile = c:/users/a1611149/paml4.7/dat/wag.dat  * only used for aa seqs with model=empirical(_F)
@@ -185,18 +185,18 @@ codeml.ctl
         ncatG = 8  * # of categories in dG of NSsites models
 
         getSE = 0  * 0: don't want them, 1: want S.E.s of estimates
- RateAncestor = 1  * (0,1,2): rates (alpha>0) or ancestral states (1 or 2)
+       RateAncestor = 1  * (0,1,2): rates (alpha>0) or ancestral states (1 or 2)
 
    Small_Diff = .5e-6
     cleandata = 0  * remove sites with ambiguity data (1:yes, 0:no)?
-*  fix_blength = -1  * 0: ignore, -1: random, 1: initial, 2: fixed
-       method = 0  * Optimization method 0: simultaneous; 1: one branch a time
-
-* Genetic codes: 0:universal, 1:mammalian mt., 2:yeast mt., 3:mold mt.,
-* 4: invertebrate mt., 5: ciliate nuclear, 6: echinoderm mt., 
-* 7: euplotid mt., 8: alternative yeast nu. 9: ascidian mt., 
-* 10: blepharisma nu.
-* These codes correspond to transl_table 1 to 11 of GENEBANK.
+      *  fix_blength = -1  * 0: ignore, -1: random, 1: initial, 2: fixed
+             method = 0  * Optimization method 0: simultaneous; 1: one branch a time
+      
+      * Genetic codes: 0:universal, 1:mammalian mt., 2:yeast mt., 3:mold mt.,
+      * 4: invertebrate mt., 5: ciliate nuclear, 6: echinoderm mt., 
+      * 7: euplotid mt., 8: alternative yeast nu. 9: ascidian mt., 
+      * 10: blepharisma nu.
+      * These codes correspond to transl_table 1 to 11 of GENEBANK.
 
 (((((((((((TraesCS2A02G338600.1,TuG1812G0200003696.01.T01),(TRIDC2AG047520.1,TRITD2Av1G199330.1)),SECCE2Rv1G0105930.1),(TraesCS2B02G343300.1,TRITD2Bv1G162510.1)),(AET2Gv20736300.1,TraesCS2D02G324400.1)),Horvu_13821_2H01G457500.1),((TraesCS1B02G058900.1,TRIDC1BG007330.1),(Horvu_13821_1H01G536500.1,(TuG1812G0100000012.01.T02,(TRITD1Av1G000090.1,TuG1812G0200000917.01.T02)))) #1),(Brame.09UG119000.1,(Brame.09PG123000.1,(Brasy9G166700.1,((Bhyb26.D05G134200.1,Bradi5g12390.1),(Bhyb26.S09G092600.1,Brast09G106000.1)))))),(LOC_Os04g38680.1,((TVU14179.1,TVU14241.1),((Pahal.7G177800.1,Seita.7G124400.1),(Sobic.006G106700.1,Zm00001d003422_T001))))),Ola019279.1),Joasc.15G002900.1);
 
