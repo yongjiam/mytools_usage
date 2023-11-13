@@ -33,22 +33,23 @@ git remote -v
 
 8. set remote origin curl as ssh \
 git remote set-url origin git@github.com:your_username/your_repository_name.git
+git remote add origin git@github.com:yongjiam/barley_phenology.git
 
-9. git clone remote repository \
+10. git clone remote repository \
 
-10. cp or make changes to local git directory \
+11. cp or make changes to local git directory \
 
-11. to stage the changes \
+12. to stage the changes \
 git add .
 
-12. registor changes
+13. registor changes
 git commit -m "updates"
 
-13. git push -u origin branch_name(main or master) ## -u flag in the push command (git push -u origin main) sets the upstream branch, but it's only necessary for the first push
+14. git push -u origin branch_name(main or master) ## -u flag in the push command (git push -u origin main) sets the upstream branch, but it's only necessary for the first push
 or just: git push master/main
 
-14. check local branch names:
+15. check local branch names:
 git branch
 
-15. create a new branch locally and switch to it:
+16. create a new branch locally and switch to it:
 git checkout -b main
