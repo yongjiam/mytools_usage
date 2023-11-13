@@ -19,26 +19,26 @@ https://docs.github.com/en/github-ae@latest/authentication/connecting-to-github-
 > cat ~/.ssh/id_rsa.pub \
 > Then select and copy the contents of the id_ed25519.pub file
 
-5. add local key to ssh agent
+5. add local key to ssh agent \
 ssh-add /path/to/your/private_key
 
-start ssh agent if got error with ssh-add
+start ssh agent if got error with ssh-add \
 eval "$(ssh-agent)"
 
-5. check remote url: http or ssh
+5. check remote url: http or ssh \
 git remote -v
 
-6. set remote origin curl as ssh
+6. set remote origin curl as ssh \
 git remote set-url origin git@github.com:your_username/your_repository_name.git
 
-7. git clone remote repository
+7. git clone remote repository \
 
-8. cp or make changes to local git directory
+8. cp or make changes to local git directory \
 
-9. initiate local git
+9. initiate local git \
 git init
 
-10. to stage the changes
+10. to stage the changes \
 git add .
 
 11. registor changes
