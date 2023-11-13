@@ -9,8 +9,17 @@ ls -al ~/.ssh
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"  ## path/to/ssh/keyname
 
 3. add public key to github account
-cat ~/.ssh/id_rsa.pub
-4. add local key to ssh agent
+https://docs.github.com/en/github-ae@latest/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+> click your profile photo, then click Settings
+> In the "Access" section of the sidebar, click  SSH and GPG keys
+> Click New SSH key or Add SSH key
+> In the "Title" field, add a descriptive label for the new key.
+> Select the type of key, either authentication or signing.
+> In the "Key" field, paste your public key.
+> cat ~/.ssh/id_rsa.pub
+> Then select and copy the contents of the id_ed25519.pub file
+
+5. add local key to ssh agent
 ssh-add /path/to/your/private_key
 
 start ssh agent if got error with ssh-add
