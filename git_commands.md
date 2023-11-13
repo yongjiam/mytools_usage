@@ -24,7 +24,8 @@ ssh-add /path/to/your/private_key
 
 start ssh agent if got error with ssh-add \
 eval "$(ssh-agent)"
-
+## setup or push a local github repo
+![setup_a_github_repo](github_setup.png)
 6. initiate local git \
 git init
 
