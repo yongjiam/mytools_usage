@@ -25,19 +25,18 @@ ssh-add /path/to/your/private_key
 start ssh agent if got error with ssh-add \
 eval "$(ssh-agent)"
 
-5. check remote url: http or ssh \
+6. initiate local git \
 git init
+
+7. check remote url: http or ssh \
 git remote -v
 
-7. set remote origin curl as ssh \
+8. set remote origin curl as ssh \
 git remote set-url origin git@github.com:your_username/your_repository_name.git
 
-8. git clone remote repository \
+9. git clone remote repository \
 
-9. cp or make changes to local git directory \
-
-10. initiate local git \
-git init
+10. cp or make changes to local git directory \
 
 11. to stage the changes \
 git add .
