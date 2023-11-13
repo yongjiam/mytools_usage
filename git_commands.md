@@ -54,3 +54,9 @@ git branch
 
 16. create a new branch locally and switch to it:
 git checkout -b main
+
+## git push if you deleted and adding new file, when you have files that you do not have locally:
+git fetch origin
+git pull --rebase origin branch_name
+git commit -m "Merge or rebase changes from remote"
+git push origin branch_name
