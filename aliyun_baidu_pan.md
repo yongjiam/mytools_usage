@@ -1,4 +1,4 @@
-## aliyunpan cli use intructions
+# aliyunpan cli use intructions
 ## installation
 https://github.com/aliyun/aliyun-cli
 
@@ -30,3 +30,15 @@ aliyunpan help
 aliyunpan config set -savedir <savedir>
 download/d path_to_dir_or_file
 ```
+# baidu bypy cli use intructions
+## install bypy
+pip install bypy
+## authentation
+bypy info ## copy the link into browser and log in to baidu to authentate (need both password and mobile verification)
+## move files to "我的数据应用/bypy/"
+## download all files in bypy to local pwd dir
+bypy downdir -v
+
+## other useage, go to references
+https://mdnice.com/writing/1e33dbfdbbab4fbeba0d4a4632d0208a
+https://blog.csdn.net/weixin_42232041/article/details/106816582
