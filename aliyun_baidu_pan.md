@@ -33,8 +33,8 @@ download/d path_to_dir_or_file
 # baidu bypy cli intructions
 ## install bypy
 pip install bypy
-## authentation
-bypy info ## copy the link into browser and log in to baidu to authentate (need both password and mobile verification)
+## authentication
+bypy info ## copy the link into browser and log in to baidu to authenticate (need both password and mobile verification)
 ## move files to "我的数据应用/bypy/"
 ## download all files in bypy to local pwd dir
 bypy downdir -v
