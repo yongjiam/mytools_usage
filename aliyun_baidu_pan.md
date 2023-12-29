@@ -1,4 +1,4 @@
-# aliyunpan cli use intructions
+# aliyunpan cli intructions
 ## installation
 https://github.com/aliyun/aliyun-cli
 
@@ -30,7 +30,7 @@ aliyunpan help
 aliyunpan config set -savedir <savedir>
 download/d path_to_dir_or_file
 ```
-# baidu bypy cli use intructions
+# baidu bypy cli intructions
 ## install bypy
 pip install bypy
 ## authentation
