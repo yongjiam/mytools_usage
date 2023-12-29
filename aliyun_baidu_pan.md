@@ -1,5 +1,11 @@
 # aliyunpan cli intructions
 ## installation
+'''bash
+wget https://github.com/tickstep/aliyunpan/releases/download/v0.2.8/aliyunpan-v0.2.8-linux-amd64.zip
+unzip aliyunpan-v0.2.8-linux-amd64.zip
+cd aliyunpan-v0.2.8-linux-amd64
+./aliyunpan
+'''
 https://github.com/aliyun/aliyun-cli
 
 https://github.com/tickstep/aliyunpan/blob/main/docs/manual.md
