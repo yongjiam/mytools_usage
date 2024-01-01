@@ -9,10 +9,14 @@ source activate AlphaPulldown
 
 python3 -m pip install alphapulldown==1.0.3
 pip install jax==0.4.23 jaxlib==0.4.23+cuda11.cudnn86 -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
-
+```
 ## download alphafold database files
-
+```bash
+git clone https://github.com/google-deepmind/alphafold
+conda install -c bioconda aria2
+scripts/download_all_data.sh <DOWNLOAD_DIR> > download.log 2> download_all.log &
+```
 ## trouble shooting
-
-### 
 pip install tensorflow-gpu==2.8.0
+### 
+
