@@ -24,3 +24,34 @@ docker build -t local/get_homologues .
 > after build docker image at /local, then pull docker image to create singularity sif
 singularity pull get_homologues.sif docker-daemon://local/get_homologues:latest
 > copy sif file to anywhere to use
+
+##
+## samplot
+https://github.com/ryanlayer/samplot
+### pull samplot or build singularity image
+```bash
+docker pull dceoy/samplot ## docker
+singularity build samplot.sif docker://dceoy/samplot ## singularity
+```
+### rum samplot 
+```bash
+##samplot.sh
+samplot plot \
+    -n HvBlp_mapping \
+    -b W1.bam 1-2.sort.bam \
+    -o updated3.png \
+    -c chr1H \
+    -s 518059036 \
+    -e 518560254 \
+    --coverage_only \
+    --hide_annotation_labels \
+    -t DEL \
+    --dpi 600 \
+    --long_read 1000 \
+    -A GFF.bed.gz \
+    --transcript_filename sorted_GFF.gff.gz
+
+singularity exec --bind "$(pwd)":"$(pwd)" samplot.sif bash samplot.sh
+```
+
+    
