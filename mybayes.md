@@ -5,7 +5,10 @@ https://github.com/fhcrc/seqmagick ## convert sequence file format
 https://biopython.org/wiki/Concatenate_nexus ## concatenate multiple genes alignment
 
 ## installation
+```bash
+git clone https://github.com/NBISweden/MrBayes
 
+```
 ## best substitution model selection using jmodeltest
 ```bash
 wget https://github.com/ddarriba/jmodeltest2/files/157117/jmodeltest-2.1.10.tar.gz
