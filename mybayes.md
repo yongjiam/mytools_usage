@@ -117,6 +117,7 @@ with open("combined.nex", "w") as f:
 ```
 #### Step 3. create mrbayes configuration file and run mrbayes
 ### text file: sample.mb
+```text
 # My MrBayes input file
 
 # Specify the data file
@@ -136,4 +137,4 @@ mcmc nchains=4 temp=0.2 0.2 0.2 0.2
 
 # Run the analysis
 mcmc
-
+```
