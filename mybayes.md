@@ -218,3 +218,8 @@ docker run -it --rm -v /data/igenome/single-copy-OG/mrbayes:/data yongmrbayes /b
 docker run -it --rm -v /data/igenome/single-copy-OG/mrbayes:/data yongmrbayes /bin/bash -c "cd /data && mpirun -np 3 mb test2.mb"
 ```
 ### build singularity container from docker image
+```bash
+docker images ## list images
+singularity build yongmrbayes.sif docker-daemon://yongmrbayes:latest ## need to specify "docker-daemon" and the tag "lastest"
+singularity run -B /data/igenome/single-copy-OG/mrbayes:/data yongmrbayes.sif /bin/bash -c "cd /data && mb test2.mb" ## test run using singularity
+```
