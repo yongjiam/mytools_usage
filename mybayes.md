@@ -141,3 +141,20 @@ mcmc nchains=4 temp=0.2 0.2 0.2 0.2
 # Run the analysis
 mcmc
 ```
+### test.mb
+```text
+begin mrbayes;
+  set autoclose=yes nowarn=yes;
+  execute snp_annoted2.nex;
+  lset nst=6 rates=invgamma;
+  mcmc ngen=10000 samplefreq=100 printfreq=100 nchains=4 nruns=2 temp=0.2;
+  mcmc;
+  sump nruns=2;
+  sumt nruns=2;
+end;
+```
+
+### Step 4. run mrbayes
+```bash
+mpirun -np 30 mb test.mb > log.txt
+```
