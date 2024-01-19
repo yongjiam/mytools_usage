@@ -171,3 +171,41 @@ end;
 ## batch mode
 mpirun -np 30 mb test.mb > log.txt
 ```
+
+# Build docker image for mrbayes and run on sever
+#### Dockerfile
+```text
+# Use the official Ubuntu 20.04 LTS image as the base image
+FROM ubuntu:20.04
+
+# Set the working directory to /app
+WORKDIR /app
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Australia/Perth
+
+# Update the package list and install any needed dependencies
+RUN apt-get update && apt-get install -y \
+    # Add your dependencies here, for example:
+    --no-install-recommends tzdata \
+    build-essential \
+    libreadline8 \
+    curl \
+    mpich
+
+    # other-dependency \
+
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Set environment variables if needed
+ENV PATH="/app/src:${PATH}"
+
+# Specify the default command to run when the container starts
+CMD ["/bin/bash"]
+```
+### notes:
+```bash
+lsb_release -a ## get linux system version
+ldd /data/tools/MrBayes/src/mb ## get requried packages for the mb command
+```
