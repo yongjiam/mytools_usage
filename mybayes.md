@@ -15,7 +15,7 @@ java -jar jModelTest.jar -d mydata/combined50.nex -g 4 -i -f -AIC -BIC -a > log.
 ```
 
 ## run
-#### 1. prepare sequence alignment file in nexus format
+#### Step 1. prepare sequence alignment file in nexus format
 ```python
 from Bio import SeqIO
 from Bio.Seq import Seq
@@ -87,4 +87,31 @@ if __name__ == "__main__":
     for input_cds_file in fasta_files:
         output_cds_alignment_file = input_cds_file[:-2]
         perform_cds_alignment(input_cds_file, output_cds_alignment_file)
+
+## convert fasta format to nexus format
+## install seqmagick
+!pip install seqmagick
+!ls *.fas |while read R;do seqmagick convert --output-format nexus --alphabet dna $R $R".nex";done
+```
+#### Step 2. concatenate multiple gene alignment into a single nexus and partition on genes
+```python
+# Specify the desired directory path
+new_directory = '/data/igenome/single-copy-OG/renamed_aligned_sequences50'
+
+# Change the working directory
+os.chdir(new_directory)
+
+# the combine function takes a list of tuples [(name, nexus instance)...],
+# if we provide the file names in a list we can use a list comprehension to
+# create these tuples
+from Bio.Nexus import Nexus
+!rm combined.nex
+nexi = []
+file_list = glob.glob("*.nex")
+file_list2 = file_list[0:50] ## random50 = random.sample(file_list, 50)
+nexi = [(fname, Nexus.Nexus(fname)) for fname in file_list]
+
+combined = Nexus.combine(nexi)
+with open("combined.nex", "w") as f:
+    combined.write_nexus_data(filename=f)
 ```
