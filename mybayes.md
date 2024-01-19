@@ -18,7 +18,7 @@ java -jar jModelTest.jar -d mydata/combined50.nex -g 4 -i -f -AIC -BIC -a > log.
 ```
 
 ## run
-#### Step 1. prepare sequence alignment file in nexus format
+## Step 1. prepare sequence alignment file in nexus format
 ```python
 from Bio import SeqIO
 from Bio.Seq import Seq
@@ -96,7 +96,7 @@ if __name__ == "__main__":
 !pip install seqmagick
 !ls *.fas |while read R;do seqmagick convert --output-format nexus --alphabet dna $R $R".nex";done
 ```
-#### Step 2. concatenate multiple gene alignment into a single nexus and partition on genes
+## Step 2. concatenate multiple gene alignment into a single nexus and partition on genes
 ```python
 # Specify the desired directory path
 new_directory = '/data/igenome/single-copy-OG/renamed_aligned_sequences50'
@@ -118,8 +118,8 @@ combined = Nexus.combine(nexi)
 with open("combined.nex", "w") as f:
     combined.write_nexus_data(filename=f)
 ```
-#### Step 3. create mrbayes configuration file and run mrbayes
-### text file: sample.mb
+## Step 3. create mrbayes configuration file and run mrbayes
+#### sample.mb
 ```text
 # My MrBayes input file
 
@@ -141,7 +141,7 @@ mcmc nchains=4 temp=0.2 0.2 0.2 0.2
 # Run the analysis
 mcmc
 ```
-### test.mb
+#### test.mb
 ```text
 begin mrbayes;
   set autoclose=yes nowarn=yes;
@@ -154,7 +154,7 @@ begin mrbayes;
 end;
 ```
 
-### Step 4. run mrbayes
+## Step 4. run mrbayes
 ```bash
 mpirun -np 30 mb test.mb > log.txt
 ```
