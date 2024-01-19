@@ -6,6 +6,14 @@ https://biopython.org/wiki/Concatenate_nexus ## concatenate multiple genes align
 
 ## installation
 
+## best substitution model selection using jmodeltest
+```bash
+wget https://github.com/ddarriba/jmodeltest2/files/157117/jmodeltest-2.1.10.tar.gz
+tar -xzvf jmodeltest-2.1.10.tar.gz
+cd jmodeltest-2.1.10/
+java -jar jModelTest.jar -d mydata/combined50.nex -g 4 -i -f -AIC -BIC -a > log.txt
+```
+
 ## run
 #### 1. prepare sequence alignment file in nexus format
 ```python
