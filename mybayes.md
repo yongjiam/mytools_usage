@@ -9,6 +9,17 @@ https://biopython.org/wiki/Concatenate_nexus ## concatenate multiple genes align
 ## run
 #### 1. prepare sequence alignment file in nexus format
 ```python
+from Bio import SeqIO
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
+from Bio.SeqUtils import nt_search
+from Bio.Align.Applications import MafftCommandline
+import os
+import glob
+import random
+
+## loop through multiple fasta and perform codon-based alignment
+
 def translate_cds_to_aa(cds_sequence):
     return cds_sequence.translate()
 
