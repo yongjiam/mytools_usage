@@ -209,3 +209,12 @@ CMD ["/bin/bash"]
 lsb_release -a ## get linux system version
 ldd /data/tools/MrBayes/src/mb ## get requried packages for the mb command
 ```
+### build, test, run docker image
+```bash
+docker build -t yongmrbayes .  ## build image
+docker images  ## list images
+docker run -it --rm yongmrbayes which mb ## check mb or mpirun available
+docker run -it --rm -v /data/igenome/single-copy-OG/mrbayes:/data yongmrbayes /bin/bash -c "cd /data && mb test2.mb" ## can't run mb if binding data to $pwd
+docker run -it --rm -v /data/igenome/single-copy-OG/mrbayes:/data yongmrbayes /bin/bash -c "cd /data && mpirun -np 3 mb test2.mb"
+```
+### build singularity container from docker image
