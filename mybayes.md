@@ -6,7 +6,14 @@ https://biopython.org/wiki/Concatenate_nexus ## concatenate multiple genes align
 
 ## installation
 ```bash
+## build mrbayes
 git clone https://github.com/NBISweden/MrBayes
+cd MrBayes
+./configure
+make && sudo make install
+
+## install mpi tools
+sudo apt-get install -y mpich
 
 ```
 ## best substitution model selection using jmodeltest
