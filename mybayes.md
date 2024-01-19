@@ -126,7 +126,8 @@ with open("combined.nex", "w") as f:
     combined.write_nexus_data(filename=f)
 ```
 ## Step 3. create mrbayes configuration file and run mrbayes
-#### sample.mb
+https://wiki.rc.usf.edu/index.php/MrBayes
+#### sample.mb (create a mb file containing all commands)
 ```text
 # My MrBayes input file
 
@@ -148,6 +149,7 @@ mcmc nchains=4 temp=0.2 0.2 0.2 0.2
 # Run the analysis
 mcmc
 ```
+
 #### test.mb
 ```text
 begin mrbayes;
@@ -161,7 +163,11 @@ begin mrbayes;
 end;
 ```
 
-## Step 4. run mrbayes
+## Step 4. batch mode: run mrbayes using mpirun
 ```bash
+## non-mpi mode:
+./mb your_file.mb
+
+## batch mode
 mpirun -np 30 mb test.mb > log.txt
 ```
