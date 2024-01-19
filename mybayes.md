@@ -115,3 +115,25 @@ combined = Nexus.combine(nexi)
 with open("combined.nex", "w") as f:
     combined.write_nexus_data(filename=f)
 ```
+#### Step 3. create mrbayes configuration file and run mrbayes
+### text file: sample.mb
+# My MrBayes input file
+
+# Specify the data file
+execute my_alignment.nex ## loads your Nexus format alignment file
+
+# Set the outgroup (if needed)
+outgroup taxon_name
+
+# Set the number of generations and sample frequency
+mcmc ngen=1000000 samplefreq=1000  
+
+# Specify the substitution model
+lset nst=6 rates=invgamma
+
+# Set the number of chains and heating parameters
+mcmc nchains=4 temp=0.2 0.2 0.2 0.2
+
+# Run the analysis
+mcmc
+
