@@ -127,30 +127,75 @@ with open("combined.nex", "w") as f:
 ```
 ## Step 3. create mrbayes configuration file and run mrbayes
 https://wiki.rc.usf.edu/index.php/MrBayes
-#### sample.mb (create a mb file containing all commands)
+#### single_copy_gene.mb (create a mb file containing all commands)
 ```text
-# My MrBayes input file
-
-# Specify the data file
-execute my_alignment.nex ## loads your Nexus format alignment file
-
-# Set the outgroup (if needed)
-outgroup taxon_name
-
-# Set the number of generations and sample frequency
-mcmc ngen=1000000 samplefreq=1000  
-
-# Specify the substitution model
-lset nst=6 rates=invgamma
-
-# Set the number of chains and heating parameters
-mcmc nchains=4 temp=0.2 0.2 0.2 0.2
-
-# Run the analysis
-mcmc
+begin mrbayes;
+  set autoclose=yes nowarn=yes;
+  execute Group2.nex;
+  lset applyto=(all) nst=6 rates=invgamma;
+  charset OG0015498 = 1-1044;
+  charset OG0015994 = 1045-2910;
+  charset OG0015012 = 2911-3921;
+  charset OG0015559 = 3922-6024;
+  charset OG0015340 = 6025-7671;
+  charset OG0015641 = 7672-9297;
+  charset OG0015336 = 9298-10617;
+  charset OG0014911 = 10618-13833;
+  charset OG0014703 = 13834-15648;
+  charset OG0014957 = 15649-16839;
+  charset OG0015189 = 16840-17994;
+  charset OG0015919 = 17995-21063;
+  charset OG0016312 = 21064-22914;
+  charset OG0016172 = 22915-24195;
+  charset OG0015468 = 24196-25893;
+  charset OG0015178 = 25894-29079;
+  charset OG0015300 = 29080-31719;
+  charset OG0015822 = 31720-32937;
+  charset OG0015838 = 32938-34311;
+  charset OG0015617 = 34312-35247;
+  charset OG0016226 = 35248-37494;
+  charset OG0015146 = 37495-38850;
+  charset OG0015277 = 38851-40617;
+  charset OG0014827 = 40618-42759;
+  charset OG0015981 = 42760-43569;
+  charset OG0016104 = 43570-45231;
+  charset OG0015954 = 45232-47193;
+  charset OG0015053 = 47194-49944;
+  charset OG0016024 = 49945-51771;
+  charset OG0016350 = 51772-52824;
+  charset OG0015711 = 52825-54078;
+  charset OG0016222 = 54079-57021;
+  charset OG0015633 = 57022-59232;
+  charset OG0015083 = 59233-60537;
+  charset OG0014713 = 60538-62349;
+  charset OG0016180 = 62350-64179;
+  charset OG0015792 = 64180-66696;
+  charset OG0015853 = 66697-67521;
+  charset OG0016255 = 67522-68463;
+  charset OG0016050 = 68464-70629;
+  charset OG0015934 = 70630-73248;
+  charset OG0016174 = 73249-74607;
+  charset OG0016184 = 74608-75333;
+  charset OG0015903 = 75334-77241;
+  charset OG0015602 = 77242-78255;
+  charset OG0015255 = 78256-79632;
+  charset OG0014690 = 79633-80415;
+  charset OG0016234 = 80416-81711;
+  charset OG0015852 = 81712-84153;
+  charset OG0015298 = 84154-86643;
+  charset OG0015486 = 86644-88230;
+  charset OG0015282 = 88231-91380;
+  charset OG0014815 = 91381-91941;
+  charset OG0014809 = 91942-93453;
+  partition Genes = 54:OG0015498,OG0015994,OG0015012,OG0015559,OG0015340,OG0015641,OG0015336,OG0014911,OG0014703,OG0014957,OG0015189,OG0015919,OG0016312,OG0016172,OG0015468,OG0015178,OG0015300,OG0015822,OG0015838,OG0015617,OG0016226,OG0015146,OG0015277,OG0014827,OG0015981,OG0016104,OG0015954,OG0015053,OG0016024,OG0016350,OG0015711,OG0016222,OG0015633,OG0015083,OG0014713,OG0016180,OG0015792,OG0015853,OG0016255,OG0016050,OG0015934,OG0016174,OG0016184,OG0015903,OG0015602,OG0015255,OG0014690,OG0016234,OG0015852,OG0015298,OG0015486,OG0015282,OG0014815,OG0014809;
+  set partition=Genes;
+  mcmc ngen=50000 samplefreq=100 printfreq=100 nchains=2 nruns=2 temp=0.2;
+  sump nruns=2;
+  sumt nruns=2;
+end;
 ```
 
-#### test.mb
+#### snp_annotated2.mb
 ```text
 begin mrbayes;
   set autoclose=yes nowarn=yes;
