@@ -25,7 +25,7 @@ java -jar jModelTest.jar -d mydata/combined50.nex -g 4 -i -f -AIC -BIC -a > log.
 ```
 
 ## run
-## Step 1. prepare sequence alignment file in nexus format
+## Step 1. prepare codon-based sequence alignment file in nexus format
 ```python
 from Bio import SeqIO
 from Bio.Seq import Seq
