@@ -12,8 +12,11 @@ conda install bioconda::sra-tools
 ## download SRA
 cat SRR_ids|while read R;do prefetch -O /data/igenome/emmer_exome $R;done > log.txt
 
-## extract fastq
+## download fastq
 cat SRR_ids|while read R;do fastq-dump --split-files $R && gzip $R"_1.fastq" && gzip $R"_2.fastq"
+
+## extract fastq from sra file
+cat SRR_ids|while read R;do echo "fastq-dump --gzip --skip-technical --readids --dumpbase --split-3 --clip  ."/$R/$R".sra";done > fastq-dump_commands
 ```
 ### Option2: use sra explorer 
 ```bash
