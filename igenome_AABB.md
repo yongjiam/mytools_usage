@@ -32,4 +32,29 @@ samtools addreplacerg -O BAM -@ 15 -o $OUT_BAM -r '@RG\tID:CRR289962\tSM:CRR2899
 ## index
 samtools index -c -@ 15 $BAM ## index bam, use -c for long chromosome
 ```
+## all in one
+```bash
+#!/bin/bash --login
 
+#SBATCH --job-name=gatk
+#SBATCH --partition=work
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=30
+#SBATCH --time=24:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --mem=120G
+#SBATCH --export=NONE
+
+module load gatk4/4.2.5.0--hdfd78af_0
+module load bwa/0.7.17--h7132678_9
+module load samtools/1.15--h3843a85_0
+BAM="igenomeRNA.bam"
+REF="Triticum_aestivum.IWGSC.dna_rm.toplevel.fa"
+srun --export=all -n 1 -c 30  gatk MarkDuplicates -I $BAM -O "dedup_"$BAM -M marked_dup_metrics.txt
+srun --export=all -n 1 -c 30 samtools addreplacerg -O BAM -@ 30 -o "RG_dedup_"$BAM -r '@RG\tID:HT621\tSM:HT621\tPL:ILLUMINA' "dedup_"$BAM
+srun --export=all -n 1 -c 30 samtools index -c -@ 30 "RG_dedup_"$BAM
+srun --export=all -n 1 -c 30 gatk SplitNCigarReads -R $REF -I "RG_dedup_"$BAM -O "split_RG_dedup_"$BAM ## note: the dictionary file should be Triticum_aestivum.IWGSC.dna_rm.toplevel.dict
+srun --export=all -n 1 -c 30 samtools index -c -@ 30 "split_RG_dedup_"$BAM
+srun --export=all -n 1 -c 30 gatk HaplotypeCaller -R $REF -I "split_RG_dedup_"$BAM -ERC GVCF -O "split_RG_dedup_"$BAM".g.vcf"
+```
