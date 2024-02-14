@@ -50,11 +50,62 @@ module load gatk4/4.2.5.0--hdfd78af_0
 module load bwa/0.7.17--h7132678_9
 module load samtools/1.15--h3843a85_0
 BAM="igenomeRNA.bam"
-REF="Triticum_aestivum.IWGSC.dna_rm.toplevel.fa"
+REF="wheatCS_AABB.fasta"
 srun --export=all -n 1 -c 30  gatk MarkDuplicates -I $BAM -O "dedup_"$BAM -M marked_dup_metrics.txt
 srun --export=all -n 1 -c 30 samtools addreplacerg -O BAM -@ 30 -o "RG_dedup_"$BAM -r '@RG\tID:HT621\tSM:HT621\tPL:ILLUMINA' "dedup_"$BAM
 srun --export=all -n 1 -c 30 samtools index -c -@ 30 "RG_dedup_"$BAM
 srun --export=all -n 1 -c 30 gatk SplitNCigarReads -R $REF -I "RG_dedup_"$BAM -O "split_RG_dedup_"$BAM ## note: the dictionary file should be Triticum_aestivum.IWGSC.dna_rm.toplevel.dict
 srun --export=all -n 1 -c 30 samtools index -c -@ 30 "split_RG_dedup_"$BAM
 srun --export=all -n 1 -c 30 gatk HaplotypeCaller -R $REF -I "split_RG_dedup_"$BAM -ERC GVCF -O "split_RG_dedup_"$BAM".g.vcf"
+```
+## merge gvcf and genotyping using glnexus
+```bash
+#!/bin/bash --login
+
+#SBATCH --job-name=gln
+#SBATCH --partition=highmem
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=128
+#SBATCH --time=24:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --mem=980G
+#SBATCH --export=NONE
+module load bcftools/1.15--haf5b3da_0 ## bgzip
+
+srun --export=all -n 1 -c 128 glnexus_cli --config gatk -m 980 --threads 128 glnexus/*.g.vcf.gz > igenome.bcf
+srun --export=all -n 1 -c 128 bcftools view --threads 128 igenome.bcf | bgzip -@ 24 -c > igenome.vcf.gz
+srun --export=all -n 1 -c 128 bcftools index --threads 128 -c igenome.vcf.gz
+```
+## filter snps for single copy gene regions
+```bash
+## sort and index
+bcftools sort igenome.vcf.gz -Oz -o sorted_igenome.vcf.gz -T .
+bcftools index -c --threads 20 sorted_igenome.vcf.gz
+
+## intersect single copy genes
+bedtools intersect -a sorted_igenome.vcf.gz -b updated_wheatCS_AB_single.bed > updated_wheatCS_AB_single.bed.vcf
+bgzip updated_wheatCS_AB_single.bed.vcf
+bcftools index -c updated_wheatCS_AB_single.bed.vcf.gz
+
+## filter snps
+bcftools view -v snps updated_wheatCS_AB_single.bed.vcf.gz > snp.vcf
+
+## add ref genotype to vcf
+awk '{print $0 "\t" "0/0"}' snp.vcf > snp_addRef.vcf
+
+## add header
+zcat sorted_igenome.vcf.gz | grep "^#" > header.vcf
+vi header.vcf ## add wheatCS_AABB
+cat header.vcf snp_addRef.vcf > tmp && mv tmp snp_addRef.vcf
+
+## vcf to fasta and phylogeny
+python /data/tools/vcf2phylip/vcf2phylip.py -i snp_addRef.vcf -f
+
+python /data/tools/vcf2phylip/vcf2phylip.py -i snp_addRef.vcf -f -r --output-prefix resolve-IUPAC-min30 -m 30
+iqtree -s resolve-IUPAC-min30.min30.fasta -B 1000 -T 30
+
+python /data/tools/vcf2phylip/vcf2phylip.py -i snp_addRef.vcf -f -r --output-prefix resolve-IUPAC-wheatCS -m 30 -o wheatCS_AABB ##iqtree may use first taxon as outgroup
+iqtree -s resolve-IUPAC-wheatCS.min30.fasta -B 1000 -T 30
+
 ```
