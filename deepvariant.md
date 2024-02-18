@@ -41,7 +41,8 @@ man ./minimap2.1
 ### run variant call
 ```bash
 ##deepvariant.sh
-singularity exec --bind ${PWD}:${PWD} deepvariant.sif /opt/deepvariant/bin/run_deepvariant \
+mkdir tmp
+singularity exec --bind ${PWD}:${PWD},tmp:/tmp deepvariant.sif /opt/deepvariant/bin/run_deepvariant \
 	    --model_type PACBIO \
 	    --ref Clipper.V1.fasta \
 	    --reads sorted.Clipper-Buloke.markdup.bam \
