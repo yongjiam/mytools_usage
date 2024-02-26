@@ -98,8 +98,9 @@ awk '{print $0 "\t" "0/0"}' snp.vcf > snp_addRef.vcf
 zcat sorted_igenome.vcf.gz | grep "^#" > header.vcf
 vi header.vcf ## add wheatCS_AABB
 cat header.vcf snp_addRef.vcf > tmp && mv tmp snp_addRef.vcf
-
+```
 ## vcf to fasta and phylogeny
+```bash
 python /data/tools/vcf2phylip/vcf2phylip.py -i snp_addRef.vcf -f
 
 python /data/tools/vcf2phylip/vcf2phylip.py -i snp_addRef.vcf -f -r --output-prefix resolve-IUPAC-min30 -m 30
