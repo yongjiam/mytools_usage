@@ -27,3 +27,28 @@ srun --export=all -n 1 -c 64 samtools index -@ 64 -c SAMPLE_sort.bam
 ```bash
 cat third_sample_ids|while read R;do (sed "s/SAMPLE/$R/g" bwa.conf > ./third_fastq/$R".conf");done
 ```
+## install glnexus
+https://github.com/dnanexus-rnd/GLnexus
+```bash
+# Clone repo
+git clone https://github.com/dnanexus-rnd/GLnexus.git
+cd GLnexus
+git checkout vX.Y.Z  # optional, check out desired revision
+```
+```bash
+## glnexus.conf
+#!/bin/bash --login
+
+#SBATCH --job-name=gln
+#SBATCH --partition=highmem
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=64
+#SBATCH --time=6:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --mem=980G
+#SBATCH --export=NONE
+module load bcftools/1.15--haf5b3da_0
+srun --export=all -n 1 -c 64 glnexus_cli --config gatk --bed TraesFLD2D01G513900_updown1Mb.bed -m 980 --threads 64 2Dvcf/*.g.vcf.gz > more_TraesFLD2D01G513900_updown1Mb.bcf
+srun --export=all -n 1 -c 64 bcftools view --threads 64 more_TraesFLD2D01G513900_updown1Mb.bcf | bgzip -@ 4 -c > more_TraesFLD2D01G513900_updown1Mb.vcf.gz
+```
