@@ -54,6 +54,7 @@ srun --export=all -n 1 -c 64 bcftools view --threads 64 more_TraesFLD2D01G513900
 ```
 ## snp annotation
 ### build snpeff database
+```bash
 cp cds.fa genes.gff protein.fa sequences.fa sequences.fa.fai /data/tools/snpEff/data/fielder
 echo "fielder.genome : fielder" >> snpEff.config
 java -jar snpEff.jar build -gff3 -v fielder
@@ -61,3 +62,4 @@ java -Xmx8g -jar snpEff.jar fielder /data/wheat/fielder/TraesFLD2D01G513900.vcf.
 bgzip TraesFLD2D01G513900.annotated.vcf
 tabix -C TraesFLD2D01G513900.annotated.vcf.gz
 bcftools annotate -x ^FORMAT/GT TraesFLD2D01G513900.annotated.vcf.gz > TraesFLD2D01G513900.annotated.simple.vcf
+```
