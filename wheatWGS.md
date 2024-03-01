@@ -52,3 +52,12 @@ module load bcftools/1.15--haf5b3da_0
 srun --export=all -n 1 -c 64 glnexus_cli --config gatk --bed TraesFLD2D01G513900_updown1Mb.bed -m 980 --threads 64 2Dvcf/*.g.vcf.gz > more_TraesFLD2D01G513900_updown1Mb.bcf
 srun --export=all -n 1 -c 64 bcftools view --threads 64 more_TraesFLD2D01G513900_updown1Mb.bcf | bgzip -@ 4 -c > more_TraesFLD2D01G513900_updown1Mb.vcf.gz
 ```
+## snp annotation
+### build snpeff database
+cp cds.fa genes.gff protein.fa sequences.fa sequences.fa.fai /data/tools/snpEff/data/fielder
+echo "fielder.genome : fielder" >> snpEff.config
+java -jar snpEff.jar build -gff3 -v fielder
+java -Xmx8g -jar snpEff.jar fielder /data/wheat/fielder/TraesFLD2D01G513900.vcf.gz >  /data/wheat/fielder/TraesFLD2D01G513900.annotated.vcf
+bgzip TraesFLD2D01G513900.annotated.vcf
+tabix -C TraesFLD2D01G513900.annotated.vcf.gz
+bcftools annotate -x ^FORMAT/GT TraesFLD2D01G513900.annotated.vcf.gz > TraesFLD2D01G513900.annotated.simple.vcf
