@@ -1,12 +1,12 @@
 ## ML phylogeny using iqtree
-### 1. download and install IQtree from http://www.iqtree.org/
-### 2. perform sequence alignment, save as *.fas file
-### 3. Run IQtree from a terminal with the following commands:
+#### 1. download and install IQtree from http://www.iqtree.org/
+#### 2. perform sequence alignment, save as *.fas file
+#### 3. Run IQtree from a terminal with the following commands:
 ```bash
 iqtree -s DNA.fas -st CODON -m TEST -bb 1000 -alrt 1000 ## -m TEST for model selection
 iqtree -s PEP.fas -st AA -m TEST -bb 1000 -alrt 1000
 ```
-### 4. view your tree using Figtree (need to download separately)
+#### 4. view your tree using Figtree (need to download separately)
 
 ## create phylogeny from snp vcf
 ```bash
