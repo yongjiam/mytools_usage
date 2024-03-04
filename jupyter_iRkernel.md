@@ -2,6 +2,7 @@
 ### make sure both jupyterlab and jupyter are installed
 ```bash
 conda create --name myjupyter python=3.9
+conda activate myjupyter
 conda install -c anaconda jupyter
 conda install -c conda-forge jupyterlab
 ```
