@@ -1,3 +1,31 @@
+## ML phylogeny using iqtree
+### 1. download and install IQtree from http://www.iqtree.org/
+### 2. perform sequence alignment, save as *.fas file
+### 3. Run IQtree from a terminal with the following commands:
+```bash
+iqtree -s DNA.fas -st CODON -m TEST -bb 1000 -alrt 1000 ## -m TEST for model selection
+iqtree -s PEP.fas -st AA -m TEST -bb 1000 -alrt 1000
+```
+### 4. view your tree using Figtree (need to download separately)
+
+## create phylogeny from snp vcf
+```bash
+### solution 1. iqtree
+## use plink to filter your genotype file, see above
+## convert plink binary to vcf
+plink2 --bfile LD_pruned --recode vcf id-paste=iid --out pruned --allow-extra-chr
+## convert vcf to fasta or phylip using vcf2phylip at https://github.com/edgardomortiz/vcf2phylip
+git clone https://github.com/edgardomortiz/vcf2phylip
+python vcf2phylip/vcf2phylip.py -i LD_pruned.vcf --fasta --min-samples-locus 60
+iqtree -s SNP_data.fasta -m GTR+ASC
+
+### solution 2. vcf2pop webpage tool
+https://github.com/sansubs/vcf2pop
+
+### snphylo
+https://github.com/thlee/SNPhylo/blob/master/docs/install_on_linux.rst
+```
+
 ## Bayesian phylogeny using Mrbayes
 #### resources and tutorials
 http://treethinkers.org/tutorials/mrbayes/
