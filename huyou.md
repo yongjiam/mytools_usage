@@ -28,6 +28,6 @@
    mcscan
    jcvi
 3. genome-based
-   mumber
+   mumber https://www.nature.com/articles/s41588-022-01015-0
    minimap2
    
