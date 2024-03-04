@@ -8,7 +8,7 @@ iqtree -s PEP.fas -st AA -m TEST -bb 1000 -alrt 1000
 ```
 #### 4. view your tree using Figtree (need to download separately)
 
-## create phylogeny from snp vcf
+## Create phylogeny from snp vcf
 ```bash
 ### solution 1. iqtree
 ## use plink to filter your genotype file
