@@ -27,7 +27,12 @@
 1. gene-based
    mcscan
    jcvi
-3. genome-based
-   mumber https://www.nature.com/articles/s41588-022-01015-0 \
+2. genome-based
+   mummer https://www.nature.com/articles/s41588-022-01015-0 \
+   ```bash
+   git clone https://github.com/mummer4/mummer
+   cd mummer && autoreconf -fi
+   ./configure --prefix=/data/tools/mybin
+   ```
    minimap2
    
