@@ -61,7 +61,7 @@ cd jmodeltest-2.1.10/
 java -jar jModelTest.jar -d mydata/combined50.nex -g 4 -i -f -AIC -BIC -a > log.txt
 ```
 
-## run
+# run MrBayes based on single copy genes
 ## Step 1. prepare codon-based sequence alignment file in nexus format
 ```python
 from Bio import SeqIO
