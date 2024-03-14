@@ -45,6 +45,11 @@
 
    ## plot the results in R
    ```R
+   # install packages
+   install.packages("pafr")
+   install.packages("patchwork")
+   install.packages("tidyverse")
+   
    # Load necessary libraries
    library(pafr)      # For handling PAF (Pairwise mApping Format) files
    library(patchwork) # For creating composite plots
