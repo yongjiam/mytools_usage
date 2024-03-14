@@ -35,4 +35,7 @@
    ./configure --prefix=/data/tools/mybin
    ```
    minimap2
+   ```bash
+   
+   ```
    
