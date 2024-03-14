@@ -36,6 +36,59 @@
    ```
    minimap2
    ```bash
+   ## installation
+   git clone https://github.com/lh3/minimap2
+   cd minimap2 && make
+
+   ## align two reference genome
+   minimap2 -cx asm5 hap1.genome.fa hap2.genome.fa > minimap_aln.paf  # intra-species asm-to-asm alignment
+
+   ## plot the results in R
+   ```R
+   # Load necessary libraries
+   library(pafr)      # For handling PAF (Pairwise mApping Format) files
+   library(patchwork) # For creating composite plots
+   library(tidyverse) # For data manipulation and visualization
+   # Read the PAF file into a data frame
+   df <- read_paf("minimap_aln.paf")
+   # Display the first few rows of the data frame
+   df %>% as.data.frame() %>% head()
+
+   ####### Create a dotplot visualization from the PAF data
+   dotplot(df, order_by='provided',
+           ordering= list(c("H2_ch1","H2_ch2","H2_ch3","H2_ch4","H2_ch5","H2_ch6","H2_ch7","H2_ch8","H2_ch9"),
+           c("H1_ch1","H1_ch2","H1_ch3","H1_ch4","H1_ch5","H1_ch6","H1_ch7","H1_ch8","H1_ch9")),
+           label_seqs = TRUE)
    
+   ####### plot each chromosome separately in subplots
+   install.packages("gridExtra")
+   library(gridExtra)
+   # Create an empty list to store the ggplot objects
+   plots_list <- list()
+   # Loop from 1 to 9
+   for (i in 1:9) {
+     # Create ggplot for each iteration
+       CHR <- paste0("ch", i)
+       CHR1 <- paste0("H1_ch", i)
+       CHR2 <- paste0("H2_ch", i)
+       plot <- dotplot(df, order_by='provided',
+               ordering= list(c(CHR2),
+               c(CHR1)),
+               label_seqs = FALSE) +
+       scale_x_continuous(breaks = c(0, 10000000, 20000000, 30000000, 40000000, 45000000), labels = c("0", "10", "20", "30", "40", "45"))+
+       scale_y_continuous(breaks = c(0, 10000000, 20000000, 30000000, 40000000, 45000000), labels = c("0", "10", "20", "30", "40", "45"))+
+       labs(x = CHR) +
+       labs(y = "")
+       
+     # Name the ggplot object
+     plot_name <- paste0("P", i)
+     
+     # Store the ggplot object in the list
+     plots_list[[plot_name]] <- plot
+   }
+   
+   # Arrange plots in a 3x3 grid
+   final_plot <- grid.arrange(grobs = plots_list, nrow = 3, ncol = 3)
+   ggsave("final_plot.pdf", final_plot, width = 6, height = 6)
    ```
    
