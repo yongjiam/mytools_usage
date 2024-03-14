@@ -90,5 +90,20 @@
    # Arrange plots in a 3x3 grid
    final_plot <- grid.arrange(grobs = plots_list, nrow = 3, ncol = 3)
    ggsave("final_plot.pdf", final_plot, width = 6, height = 6)
+
+   ######### Create a dotplot visualization for a single chromosome from the PAF data
+   dotplot(df, order_by='provided',
+           ordering= list(c("H2_ch2"),
+           c("H1_ch2")),
+           label_seqs = TRUE)
+   # Create a synteny plot for a specific chromosome pair
+   # (Adjust 'q_chrom' and 't_chrom' to match the desired chromosomes)
+   plot2 <- plot_synteny(df, q_chrom = "H2_ch2", t_chrom = "H1_ch2", centre = TRUE)
+   ggsave("synteny_chr2_plot.pdf", plot2, width = 18, height = 6)
+
+   #############Create a coverage plot, filling based on the query sequences
+   plot_coverage(df, fill = "qname")
+   
+   ############
    ```
    
