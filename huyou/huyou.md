@@ -22,6 +22,33 @@
    -rw-r--r-- 1 yjia pawsey0399  22K Mar  2 11:37 changshanhuyou-1.base.pdf\
    
 ## survey using genomescope
+## count chromosome and contig number for 21 genome data download from http://citrus.hzau.edu.cn/download.php
+```bash
+ls *.gff3|while read R;do echo $(echo $R|cut -d '.' -f1); echo $(awk '!/^#/{print $1}' $R|sort|uniq|wc -l);done |paste - - > chromosome_count
+
+## chromosome_count
+CMJ	10	Citrus_grandis_majiayou
+GJ	10	Fortunella_hindsii
+HWB	10	Citrus_grandis_wanbaiyou
+HZYT	10	Citrus_maxima_huazhouyou
+SWO	10	Citrus_sinensis
+ZK	10	Poncirus_trifoliata
+GCF	94	Citrus_clementina
+AEG	138	Aegle_marmelos
+MSYG	160	Citrus_mangshanensis
+CGI	170	Citropsis_gilletiana
+ZGYCC	205	Citrus_ichangensis
+HKC	221	Atalantia_buxfoliata
+JLX	253	Murraya_paniculata
+LW	270	luvunga_scandens
+AZM	331	Citrus_australasica
+HP	388	Clausena_lansium
+XGF	493	Citrus_maxima_majia
+HH	501	Citrus_hongheensis
+SYT	1001	Luvunga_scandens
+JZ	4141	Citrus_reticulata
+RL	4465	Citrus_medica
+```
 
 ## genome model prediction using gemoma (company annotation does not match genome.fa)
 reference genomes from phytozome (citrus database data throw errors in gemoma)
