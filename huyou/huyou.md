@@ -26,8 +26,21 @@
 ## synteny dotplot
 1. gene-based
    mcscan
+   
    jcvi
-2. genome-based
+   https://github.com/tanghaibao/jcvi
+   ```bash
+   ## install
+   pip install jcvi
+
+   ## gff2bed
+   ls *.gff*|while read R;do VAR=$(echo $R|cut -d '.' -f1);python -m jcvi.formats.gff bed --type=mRNA --key=Name --primary_only $R -o $VAR".bed";done
+   ## extract cds
+   ls *.gff*|while read R;do V=$(echo $R|cut -d '.' -f1);gffread -x $V".cds" -g $V*.genome.fa $R -F;done
+   ls *.cds|while read R;do python -m jcvi.formats.fasta format $R "formated_"$R;done
+   
+   ```
+3. genome-based
    mummer https://www.nature.com/articles/s41588-022-01015-0 \
    ```bash
    git clone https://github.com/mummer4/mummer
