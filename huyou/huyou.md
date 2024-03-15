@@ -23,6 +23,24 @@
    
 ## survey using genomescope
 
+## genome model prediction using gemoma
+reference genomes from phytozome
+```bash
+##install gemoma 1.9
+conda install -c bioconda gemoma
+
+## run gemoma.sh in setonix
+## genome level prediction
+GeMoMa GeMoMaPipeline threads=64 tblastn=False \
+	AnnotationFinalizer.r=SIMPLE AnnotationFinalizer.p=HY \
+	p=false \
+	o=true \
+	t=./huyou.hap1.genome.fa \
+	outdir=hap1/ \
+	s=own i=Ccl a=./phytozome/Cclementina_182_v1.0.gene.gff3.gz g=./phytozome/Cclementina_182_v1.fa.gz \
+	s=own i=Csi a=./phytozome/Csinensis_154_v1.1.gene.gff3.gz g=./phytozome/Csinensis_154_v1.fa.gz \
+	s=own i=Ptr a=./phytozome/Ptrifoliata_565_v1.3.1.gene.gff3.gz g=./phytozome/Ptrifoliata_565_v1.3.fa.gz
+```
 ## synteny dotplot
 1. gene-based
    mcscan
@@ -38,6 +56,12 @@
    ## extract cds
    ls *.gff*|while read R;do V=$(echo $R|cut -d '.' -f1);gffread -x $V".cds" -g $V*.genome.fa $R -F;done
    ls *.cds|while read R;do python -m jcvi.formats.fasta format $R "formated_"$R;done
+
+   ##pairwise synteny
+   python -m jcvi.compara.catalog ortholog SWO HWB --no_strip_names ##produce anchor file and dotplot by default
+   python -m jcvi.compara.catalog ortholog SWO HWB --cscore=.99 --no_strip_names ## 1:1 orthologous region only
+   #or
+   python -m jcvi.graphics.dotplot SWO.HWB.anchors
    
    ```
 3. genome-based
