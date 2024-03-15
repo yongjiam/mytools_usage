@@ -62,7 +62,42 @@ GeMoMa GeMoMaPipeline threads=64 tblastn=False \
    python -m jcvi.compara.catalog ortholog SWO HWB --cscore=.99 --no_strip_names ## 1:1 orthologous region only
    #or
    python -m jcvi.graphics.dotplot SWO.HWB.anchors
+
+   ##multiple species
+   python -m jcvi.compara.catalog ortholog huyou SWO --cscore=.99 --no_strip_names
+   python -m jcvi.compara.synteny screen --minspan=30 --simple huyou.SWO.anchors huyou.SWO.anchors.new
    
+   python -m jcvi.compara.catalog ortholog huyou HWB --cscore=.99 --no_strip_names
+   python -m jcvi.compara.synteny screen --minspan=30 --simple huyou.HWB.anchors huyou.HWB.anchors.new
+
+   ## create layout
+	   # y, xstart, xend, rotation, color, label, va,  bed
+	 .7,     .1,    .8,      15,      , SWO, top, SWO.bed
+	 .5,     .1,    .8,       0,      , huyou, top, huyou.bed
+	 .3,     .1,    .8,     -15,      , HWB, bottom, HWB.bed
+	# edges
+	e, 0, 1, huyou.SWO.anchors.simple
+	e, 1, 2, huyou.HWB.anchors.simple
+
+   ## modify huyou chr id
+	s/chr1/ch5/
+	s/chr2/ch3/
+	s/chr3/ch2/
+	s/chr4/ch8/
+	s/chr5/ch9/
+	s/chr6/ch7/
+	s/chr7/ch4/
+	s/chr8/ch1/
+	s/chr9/ch6/
+   sed -i -f sed_huyou_chr huyou.bed
+
+   ## create seqids
+   cut -f1 SWO.bed |sort|uniq|tr '\n' ',' |sed 's/,$/\n/' > seqids
+   cut -f1 huyou.bed |sort |uniq|grep chr|tr '\n' ','|sed 's/,$/\n/' >> seqids
+   cut -f1 HWB.bed|sort|uniq|tr '\n' ',' |sed 's/,$/\n/' >> seqids
+
+   ## create plot
+   python -m jcvi.graphics.karyotype seqids layout   
    ```
 3. genome-based
    mummer https://www.nature.com/articles/s41588-022-01015-0 \
