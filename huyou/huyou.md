@@ -1,4 +1,4 @@
-### data
+### 1. data
 1. illunina\
    -rw-r--r-- 1 yjia pawsey0399  21G Mar  2 11:37 1_R2.fq.gz\
    -rw-r--r-- 1 yjia pawsey0399  19G Mar  2 11:37 1_R1.fq.gz\
@@ -22,7 +22,7 @@
 4. RNAseq\
    -rwx------ 1 ubuntu ubuntu 2.2G Mar 17 05:00 R1.fq.gz\
    -rwx------ 1 ubuntu ubuntu 2.2G Mar 17 05:01 R2.fq.gz
-## genome assembly
+## 2. genome assembly
 #### convert PacBio bam hifi data into fastq
 https://github.com/PacificBiosciences/pbtk#bam2fastx
 https://github.com/PacificBiosciences/pbbioconda
@@ -60,7 +60,7 @@ srun --export=all -n 1 -c 64 singularity exec --bind ${PWD}:${PWD} hifiasm_lates
 gfatools gfa2fa HIFI_assembly.asm > HIFI_genome.fa
 
 ```
-## survey using genomescope
+## 3. genome stats
 #### count chromosome and contig number for 21 genome data download from http://citrus.hzau.edu.cn/download.php
 ```bash
 ls *.gff3|while read R;do echo $(echo $R|cut -d '.' -f1); echo $(awk '!/^#/{print $1}' $R|sort|uniq|wc -l);done |paste - - > chromosome_count
@@ -93,19 +93,9 @@ RL	4465	Citrus_medica
 awk '$0 !~ /^#/ {chromosome[$1]=$5} END {for (chr in chromosome) print "Chromosome", chr, ": Total length =", chromosome[chr]}' ./pangenomes/Citrus_changshan-huyou.gene.gff
 
 ```
-## orthofinder for 21 citrus species
-```bash
-## get primary sequence from fasta file
-for i in *.protein.fa
-do
-	VAR=$(echo $i|cut -d "." -f1-2)
-	bioawk -c fastx '{if ($name ~ /\.1$/) print ">"$name "\n" $seq}' $i > "primary_"$VAR".protein.fasta"
-done
 
-## run orthofinder /data/huyou/orthofinder/
-orthofinder -t 30 -f selected
-```
-## genome model prediction using gemoma (company annotation does not match genome.fa)
+## 4. genome model prediction 
+#### using gemoma (company annotation does not match genome.fa)
 reference genomes from phytozome (citrus database data throw errors in gemoma)
 ```bash
 ##install gemoma 1.9
@@ -123,7 +113,7 @@ GeMoMa GeMoMaPipeline threads=64 tblastn=False \
 	s=own i=Csi a=./phytozome/Csinensis_154_v1.1.gene.gff3.gz g=./phytozome/Csinensis_154_v1.fa.gz \
 	s=own i=Ptr a=./phytozome/Ptrifoliata_565_v1.3.1.gene.gff3.gz g=./phytozome/Ptrifoliata_565_v1.3.fa.gz
 ```
-## genome model prediction using liftoff (using company annotation)
+#### using liftoff (using company annotation)
 https://github.com/agshumate/Liftoff
 ```bash
 ##install liftoff
@@ -138,8 +128,19 @@ liftoff -g huyou.gff -o hap1.liftoff.gff3 \
 	-p 15 \ ##paralel processes
        	huyou.hap1.genome.fa huyou.genome.fa ## target and reference
 ```
+## 5. orthofinder for 21 citrus species
+```bash
+## get primary sequence from fasta file
+for i in *.protein.fa
+do
+	VAR=$(echo $i|cut -d "." -f1-2)
+	bioawk -c fastx '{if ($name ~ /\.1$/) print ">"$name "\n" $seq}' $i > "primary_"$VAR".protein.fasta"
+done
 
-## synteny dotplot
+## run orthofinder /data/huyou/orthofinder/
+orthofinder -t 30 -f selected
+```
+## 6. synteny dotplot
 1. gene-based
    mcscan
    
