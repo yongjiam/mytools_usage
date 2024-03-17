@@ -49,6 +49,11 @@ SYT	1001	Luvunga_scandens
 JZ	4141	Citrus_reticulata
 RL	4465	Citrus_medica
 ```
+## count chromosome length from gff3 file
+```bash
+awk '$0 !~ /^#/ {chromosome[$1]=$5} END {for (chr in chromosome) print "Chromosome", chr, ": Total length =", chromosome[chr]}' ./pangenomes/Citrus_changshan-huyou.gene.gff
+
+```
 
 ## genome model prediction using gemoma (company annotation does not match genome.fa)
 reference genomes from phytozome (citrus database data throw errors in gemoma)
