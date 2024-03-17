@@ -68,6 +68,25 @@ GeMoMa GeMoMaPipeline threads=64 tblastn=False \
 	s=own i=Csi a=./phytozome/Csinensis_154_v1.1.gene.gff3.gz g=./phytozome/Csinensis_154_v1.fa.gz \
 	s=own i=Ptr a=./phytozome/Ptrifoliata_565_v1.3.1.gene.gff3.gz g=./phytozome/Ptrifoliata_565_v1.3.fa.gz
 ```
+## genome model prediction using liftoff (using company annotation)
+reference genomes from phytozome (citrus database data throw errors in gemoma)
+```bash
+##install gemoma 1.9
+conda install -c bioconda gemoma
+
+## run gemoma.sh in setonix
+## genome level prediction
+GeMoMa GeMoMaPipeline threads=64 tblastn=False \
+	AnnotationFinalizer.r=SIMPLE AnnotationFinalizer.p=HY \
+	p=false \
+	o=true \
+	t=./huyou.hap1.genome.fa \
+	outdir=hap1/ \
+	s=own i=Ccl a=./phytozome/Cclementina_182_v1.0.gene.gff3.gz g=./phytozome/Cclementina_182_v1.fa.gz \
+	s=own i=Csi a=./phytozome/Csinensis_154_v1.1.gene.gff3.gz g=./phytozome/Csinensis_154_v1.fa.gz \
+	s=own i=Ptr a=./phytozome/Ptrifoliata_565_v1.3.1.gene.gff3.gz g=./phytozome/Ptrifoliata_565_v1.3.fa.gz
+```
+
 ## synteny dotplot
 1. gene-based
    mcscan
