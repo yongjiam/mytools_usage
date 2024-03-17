@@ -171,14 +171,16 @@ GeMoMa GeMoMaPipeline threads=64 tblastn=False \
    ## create plot
    python -m jcvi.graphics.karyotype seqids layout   
    ```
-3. genome-based
-   mummer https://www.nature.com/articles/s41588-022-01015-0 \
+2. genome-based
+   mummer
+   https://www.nature.com/articles/s41588-022-01015-0 \
    ```bash
    git clone https://github.com/mummer4/mummer
    cd mummer && autoreconf -fi
    ./configure --prefix=/data/tools/mybin
    ```
    minimap2
+   https://github.com/lh3/minimap2
    ```bash
    ## installation
    git clone https://github.com/lh3/minimap2
