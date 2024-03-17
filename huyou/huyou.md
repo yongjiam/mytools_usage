@@ -23,6 +23,17 @@
    -rwx------ 1 ubuntu ubuntu 2.2G Mar 17 05:00 R1.fq.gz\
    -rwx------ 1 ubuntu ubuntu 2.2G Mar 17 05:01 R2.fq.gz
 ## genome assembly
+#### convert PacBio bam hifi data into fastq
+https://github.com/PacificBiosciences/pbtk#bam2fastx
+https://github.com/PacificBiosciences/pbbioconda
+```bash
+## install pbtk
+conda install -c bioconda pbtk
+
+## bam to fastq
+bam2fastq -o  hifi_ccs.fastq m64257e_211030_130656.ccs.bam
+```
+#### haplotype assembling using hifiasm
 ```bash
 #### huyou.conf
 #!/bin/bash --login
