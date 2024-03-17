@@ -1,5 +1,5 @@
 ### data
-1. illunina
+1. illunina\
    -rw-r--r-- 1 yjia pawsey0399  21G Mar  2 11:37 1_R2.fq.gz\
    -rw-r--r-- 1 yjia pawsey0399  19G Mar  2 11:37 1_R1.fq.gz\
    -rw-r--r-- 1 yjia pawsey0399 9.6K Mar  2 11:37 1.quality.png\
@@ -7,12 +7,12 @@
    -rw-r--r-- 1 yjia pawsey0399  26K Mar  2 11:37 1.base.png\
    -rw-r--r-- 1 yjia pawsey0399  21K Mar  2 11:37 1.base.pdf\
    
-3. hifi
+3. hifi\
    -rw-r--r-- 1 yjia pawsey0399 1.5K Mar  2 11:37 m64257e_211030_130656.ccs.subreadset.xml\
    -rw-r--r-- 1 yjia pawsey0399  17M Mar  2 11:37 m64257e_211030_130656.ccs.bam.pbi\
    -rw-r--r-- 1 yjia pawsey0399   64 Mar  2 11:37 m64257e_211030_130656.ccs.bam.md5\
    -rw-r--r-- 1 yjia pawsey0399  21G Mar  2 11:37 m64257e_211030_130656.ccs.bam\
-3. HIC
+3. HIC\
    -rw-r--r-- 1 yjia pawsey0399 7.7G Mar  2 11:37 changshanhuyou-1_R2.fq.gz\
    -rw-r--r-- 1 yjia pawsey0399 7.3G Mar  2 11:37 changshanhuyou-1_R1.fq.gz\
    -rw-r--r-- 1 yjia pawsey0399  10K Mar  2 11:37 changshanhuyou-1.quality.png\
