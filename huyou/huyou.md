@@ -43,7 +43,7 @@ srun --export=all -n 1 -c 64 singularity exec --bind ${PWD}:${PWD} hifiasm_lates
 	hifi_ccs.fastq
 ```
 ## survey using genomescope
-## count chromosome and contig number for 21 genome data download from http://citrus.hzau.edu.cn/download.php
+### count chromosome and contig number for 21 genome data download from http://citrus.hzau.edu.cn/download.php
 ```bash
 ls *.gff3|while read R;do echo $(echo $R|cut -d '.' -f1); echo $(awk '!/^#/{print $1}' $R|sort|uniq|wc -l);done |paste - - > chromosome_count
 
@@ -70,12 +70,23 @@ SYT	1001	Luvunga_scandens
 JZ	4141	Citrus_reticulata
 RL	4465	Citrus_medica
 ```
-## count chromosome length from gff3 file
+### count chromosome length from gff3 file
 ```bash
 awk '$0 !~ /^#/ {chromosome[$1]=$5} END {for (chr in chromosome) print "Chromosome", chr, ": Total length =", chromosome[chr]}' ./pangenomes/Citrus_changshan-huyou.gene.gff
 
 ```
+## orthofinder for 21 citrus species
+```bash
+## get primary sequence from fasta file
+for i in *.protein.fa
+do
+	VAR=$(echo $i|cut -d "." -f1-2)
+	bioawk -c fastx '{if ($name ~ /\.1$/) print ">"$name "\n" $seq}' $i > "primary_"$VAR".protein.fasta"
+done
 
+## run orthofinder /data/huyou/orthofinder/
+orthofinder -f selected
+```
 ## genome model prediction using gemoma (company annotation does not match genome.fa)
 reference genomes from phytozome (citrus database data throw errors in gemoma)
 ```bash
