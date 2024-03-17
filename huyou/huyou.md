@@ -55,6 +55,10 @@ srun --export=all -n 1 -c 64 singularity exec --bind ${PWD}:${PWD} hifiasm_lates
 	--h1 ./HIC/changshanhuyou-1_R1.fq.gz \
 	--h2 ./HIC/changshanhuyou-1_R2.fq.gz \
 	hifi_ccs.fastq
+
+## convert to genome fasta
+gfatools gfa2fa HIFI_assembly.asm > HIFI_genome.fa
+
 ```
 ## survey using genomescope
 #### count chromosome and contig number for 21 genome data download from http://citrus.hzau.edu.cn/download.php
@@ -120,22 +124,19 @@ GeMoMa GeMoMaPipeline threads=64 tblastn=False \
 	s=own i=Ptr a=./phytozome/Ptrifoliata_565_v1.3.1.gene.gff3.gz g=./phytozome/Ptrifoliata_565_v1.3.fa.gz
 ```
 ## genome model prediction using liftoff (using company annotation)
-reference genomes from phytozome (citrus database data throw errors in gemoma)
+https://github.com/agshumate/Liftoff
 ```bash
-##install gemoma 1.9
-conda install -c bioconda gemoma
+##install liftoff
+conda create --name liftoff
+conda install -c bioconda liftoff
 
-## run gemoma.sh in setonix
-## genome level prediction
-GeMoMa GeMoMaPipeline threads=64 tblastn=False \
-	AnnotationFinalizer.r=SIMPLE AnnotationFinalizer.p=HY \
-	p=false \
-	o=true \
-	t=./huyou.hap1.genome.fa \
-	outdir=hap1/ \
-	s=own i=Ccl a=./phytozome/Cclementina_182_v1.0.gene.gff3.gz g=./phytozome/Cclementina_182_v1.fa.gz \
-	s=own i=Csi a=./phytozome/Csinensis_154_v1.1.gene.gff3.gz g=./phytozome/Csinensis_154_v1.fa.gz \
-	s=own i=Ptr a=./phytozome/Ptrifoliata_565_v1.3.1.gene.gff3.gz g=./phytozome/Ptrifoliata_565_v1.3.fa.gz
+## run liftoff.sh in nimbus
+liftoff -g huyou.gff -o hap1.liftoff.gff3 \
+	-u hap1.unmapped \
+	-copies \ ## look for extra copies
+	-sc 0.95 \ ## copy identify threshold
+	-p 15 \ ##paralel processes
+       	huyou.hap1.genome.fa huyou.genome.fa ## target and reference
 ```
 
 ## synteny dotplot
