@@ -53,7 +53,7 @@ module load singularity/3.11.4-slurm
 #srun --export=all -n 1 -c 128  samtools fastq -@ 128 ./ccs/m64257e_211030_130656.ccs.bam > hifi_ccs.fastq
 srun --export=all -n 1 -c 64 singularity exec --bind ${PWD}:${PWD} hifiasm_latest.sif hifiasm -o huyou.asm -t 64 \
 	--h1 ./HIC/changshanhuyou-1_R1.fq.gz \
-	--h2 ./HIC/changshanhuyou-1_R1.fq.gz \
+	--h2 ./HIC/changshanhuyou-1_R2.fq.gz \
 	hifi_ccs.fastq
 ```
 ## survey using genomescope
