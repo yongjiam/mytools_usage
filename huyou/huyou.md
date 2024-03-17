@@ -1,4 +1,3 @@
-## genome assembly
 ### data
 1. illunina
    -rw-r--r-- 1 yjia pawsey0399  21G Mar  2 11:37 1_R2.fq.gz\
@@ -20,7 +19,29 @@
    -rw-r--r-- 1 yjia pawsey0399 6.5K Mar  2 11:37 changshanhuyou-1.quality.pdf\
    -rw-r--r-- 1 yjia pawsey0399  36K Mar  2 11:37 changshanhuyou-1.base.png\
    -rw-r--r-- 1 yjia pawsey0399  22K Mar  2 11:37 changshanhuyou-1.base.pdf\
-   
+## genome assembly
+```bash
+#### huyou.conf
+#!/bin/bash --login
+
+#SBATCH --job-name=huyou
+#SBATCH --partition=highmem
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=64
+#SBATCH --time=24:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --mem=980G
+#SBATCH --export=NONE
+
+module load samtools/1.15--h3843a85_0
+module load singularity/3.11.4-slurm
+#srun --export=all -n 1 -c 128  samtools fastq -@ 128 ./ccs/m64257e_211030_130656.ccs.bam > hifi_ccs.fastq
+srun --export=all -n 1 -c 64 singularity exec --bind ${PWD}:${PWD} hifiasm_latest.sif hifiasm -o huyou.asm -t 64 \
+	--h1 ./HIC/changshanhuyou-1_R1.fq.gz \
+	--h2 ./HIC/changshanhuyou-1_R1.fq.gz \
+	hifi_ccs.fastq
+```
 ## survey using genomescope
 ## count chromosome and contig number for 21 genome data download from http://citrus.hzau.edu.cn/download.php
 ```bash
