@@ -88,7 +88,7 @@ do
 done
 
 ## run orthofinder /data/huyou/orthofinder/
-orthofinder -f selected
+orthofinder -t 30 -f selected
 ```
 ## genome model prediction using gemoma (company annotation does not match genome.fa)
 reference genomes from phytozome (citrus database data throw errors in gemoma)
