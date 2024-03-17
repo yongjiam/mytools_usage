@@ -19,7 +19,7 @@
    -rw-r--r-- 1 yjia pawsey0399 6.5K Mar  2 11:37 changshanhuyou-1.quality.pdf\
    -rw-r--r-- 1 yjia pawsey0399  36K Mar  2 11:37 changshanhuyou-1.base.png\
    -rw-r--r-- 1 yjia pawsey0399  22K Mar  2 11:37 changshanhuyou-1.base.pdf\
-4. RNAseq
+4. RNAseq\
    -rwx------ 1 ubuntu ubuntu 2.2G Mar 17 05:00 R1.fq.gz\
    -rwx------ 1 ubuntu ubuntu 2.2G Mar 17 05:01 R2.fq.gz
 ## genome assembly
