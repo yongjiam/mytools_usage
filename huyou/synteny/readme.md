@@ -25,4 +25,25 @@ s/h2tg000009l/H2_ch6/
 s/h2tg000031l/H2_ch7/
 s/h2tg000026l/H2_ch8/
 s/h2tg000027l/H2_ch9/
+
+## rename chromosome using other citrus species as references
+##### Citrus sinensis v3.0
+#####
+
+## use jcvi to match chromosome IDs
+## run liftoff
+liftoff -g huyou.gff -o hap1.liftoff.gff3 \
+	-u hap1.unmapped \
+	-copies \ ## look for extra copies
+	-sc 0.95 \ ## copy identify threshold
+	-p 15 \ ##paralel processes
+  huyou.hap1.genome.fa huyou.genome.fa ## target and reference
+
+python -m jcvi.formats.gff bed --type=mRNA --primary_only hap1.liftoff.gff3 -o hap1.bed
+gffread -x hap1.cds -g huyou.hap1.genome.fa hap1.liftoff.gff3 -F
+
+sed -i 's/Ccha/H1_Ccha/' hap1.bed
+sed -i 's/Ccha/H1_Ccha/' hap1.cds
+
+
 ```
