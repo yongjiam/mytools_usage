@@ -106,7 +106,9 @@ ln -s /data/huyou/raw_data/HIC/changshanhuyou-1/changshanhuyou-1_R1.fastq.gz hic
 ln -s /data/huyou/raw_data/HIC/changshanhuyou-1/changshanhuyou-1_R2.fastq.gz hic_R2.fastq.gz
 
 ## run juicer
-
+sudo mkdir /aidenlab && cd /aidenlab
+sudo ln -s /data/tools/juicer/CPU scripts
+bash /data/tools/juicer/scripts/juicer.sh -g huyou_hap1 -z references/hap1.fasta -y hap1_DpnII.txt -p hap1.chrom.sizes -s DpnII -t 30
 ```
 
 ## 3. Genome stats
