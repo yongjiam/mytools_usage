@@ -57,7 +57,16 @@ srun --export=all -n 1 -c 64 singularity exec --bind ${PWD}:${PWD} hifiasm_lates
 	hifi_ccs.fastq
 
 ## convert to genome fasta
-gfatools gfa2fa HIFI_assembly.asm > HIFI_genome.fa
+gfatools gfa2fa huyou.asm.hic.hap1.p_ctg.gfa > hap1.fa
+gfatools gfa2fa huyou.asm.hic.hap2.p_ctg.gfa > hap2.fa
+
+## sort by sequence length using seqkit
+conda install -c bioconda seqkit
+
+seqkit sort -lr hap1.fasta > tmp && mv tmp hap1.fasta
+seqkit sort -lr hap2.fasta > tmp && mv tmp hap2.fasta
+
+## seq length check
 
 ```
 ## 3. genome stats
