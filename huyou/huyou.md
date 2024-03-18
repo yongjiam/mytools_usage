@@ -70,6 +70,9 @@ seqkit sort -lr hap2.fasta > tmp && mv tmp hap2.fasta
 bioawk -c fastx '{print $name "\t" length($seq)}' genome.fa > chr_length
 ```
 #### run juicer on draft assembly
+https://github.com/aidenlab/juicer/wiki/Installation#dependencies
+https://bioinformaticsworkbook.org/dataAnalysis/GenomeAssembly/Hybrid/Juicer_Juicebox_3dDNA_pipeline.html#gsc.tab=0
+https://blog.csdn.net/m0_49960764/article/details/118887670
 ```bash
 ## install dependencies
 conda create --name juicer
@@ -94,6 +97,7 @@ ln -s /data/huyou/hifiasm_assembly_r2/hap2.fasta hap2.fasta
 
 bwa index hap1.fasta
 cd ../
+## check for restriction enzyme used at file:///Volumes/Elements5T/Dropbox/Huyou/genome_hic.html
 python /data/tools/juicer/misc/generate_site_positions.py DpnII hap1 ./references/hap1.fasta ## produce hap1_DpnII.txt
 awk 'BEGIN{OFS="\t"}{print $1, $NF}' hap1_DpnII.txt > hap1.chrom.sizes
 
