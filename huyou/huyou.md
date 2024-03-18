@@ -33,7 +33,7 @@ conda install -c bioconda pbtk
 ## bam to fastq
 bam2fastq -o  hifi_ccs.fastq m64257e_211030_130656.ccs.bam
 ```
-#### haplotype assembling using hifiasm
+#### draft haplotype assembling using hifiasm
 ```bash
 #### huyou.conf
 #!/bin/bash --login
@@ -67,8 +67,44 @@ seqkit sort -lr hap1.fasta > tmp && mv tmp hap1.fasta
 seqkit sort -lr hap2.fasta > tmp && mv tmp hap2.fasta
 
 ## seq length check
+bioawk -c fastx '{print $name "\t" length($seq)}' genome.fa > chr_length
+```
+#### run juicer on draft assembly
+```bash
+## install dependencies
+conda create --name juicer
+conda activate juicer
+conda install bioconda::lastz
+conda install bioconda::bwa
+
+## install juicer
+cd /data/tools/
+git clone https://github.com/theaidenlab/juicer.git
+mkdir 01_JuicerSetup && cd 01_JuicerSetup
+ln -s /data/tools/juicer/CPU scripts
+
+cd scripts/common
+wget https://hicfiles.tc4ga.com/public/juicer/juicer_tools.1.9.9_jcuda.0.8.jar
+ln -s juicer_tools.1.9.9_jcuda.0.8.jar  juicer_tools.jar
+
+## prepare inputs files
+mkdir references && cd references
+ln -s /data/huyou/hifiasm_assembly_r2/hap1.fasta hap1.fasta
+ln -s /data/huyou/hifiasm_assembly_r2/hap2.fasta hap2.fasta
+
+bwa index hap1.fasta
+cd ../
+python /data/tools/juicer/misc/generate_site_positions.py DpnII hap1 ./references/hap1.fasta ## produce hap1_DpnII.txt
+awk 'BEGIN{OFS="\t"}{print $1, $NF}' hap1_DpnII.txt > hap1.chrom.sizes
+
+mkdir fastq;cd fastq
+ln -s /data/huyou/raw_data/HIC/changshanhuyou-1/changshanhuyou-1_R1.fastq.gz hic_R1.fastq.gz ## rename *.fq.gz to *.fastq.gz
+ln -s /data/huyou/raw_data/HIC/changshanhuyou-1/changshanhuyou-1_R2.fastq.gz hic_R2.fastq.gz
+
+## run juicer
 
 ```
+
 ## 3. genome stats
 #### count chromosome and contig number for 21 genome data download from http://citrus.hzau.edu.cn/download.php
 ```bash
