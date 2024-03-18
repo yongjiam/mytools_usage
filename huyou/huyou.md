@@ -1,4 +1,4 @@
-### 1. data
+### 1. Data
 1. illunina\
    -rw-r--r-- 1 yjia pawsey0399  21G Mar  2 11:37 1_R2.fq.gz\
    -rw-r--r-- 1 yjia pawsey0399  19G Mar  2 11:37 1_R1.fq.gz\
@@ -22,7 +22,7 @@
 4. RNAseq\
    -rwx------ 1 ubuntu ubuntu 2.2G Mar 17 05:00 R1.fq.gz\
    -rwx------ 1 ubuntu ubuntu 2.2G Mar 17 05:01 R2.fq.gz
-## 2. genome assembly
+## 2. Genome assembly
 #### convert PacBio bam hifi data into fastq
 https://github.com/PacificBiosciences/pbtk#bam2fastx
 https://github.com/PacificBiosciences/pbbioconda
@@ -109,7 +109,7 @@ ln -s /data/huyou/raw_data/HIC/changshanhuyou-1/changshanhuyou-1_R2.fastq.gz hic
 
 ```
 
-## 3. genome stats
+## 3. Genome stats
 #### count chromosome and contig number for 21 genome data download from http://citrus.hzau.edu.cn/download.php
 ```bash
 ls *.gff3|while read R;do echo $(echo $R|cut -d '.' -f1); echo $(awk '!/^#/{print $1}' $R|sort|uniq|wc -l);done |paste - - > chromosome_count
@@ -143,7 +143,7 @@ awk '$0 !~ /^#/ {chromosome[$1]=$5} END {for (chr in chromosome) print "Chromoso
 
 ```
 
-## 4. genome model prediction 
+## 4. Gene model prediction 
 #### using gemoma (company annotation does not match genome.fa)
 reference genomes from phytozome (citrus database data throw errors in gemoma)
 ```bash
@@ -177,7 +177,7 @@ liftoff -g huyou.gff -o hap1.liftoff.gff3 \
 	-p 15 \ ##paralel processes
        	huyou.hap1.genome.fa huyou.genome.fa ## target and reference
 ```
-## 5. orthofinder for 21 citrus species
+## 5. Orthofinder for 21 citrus species
 ```bash
 ## get primary sequence from fasta file
 for i in *.protein.fa
