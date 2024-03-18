@@ -202,7 +202,7 @@ orthofinder -t 30 -f selected
    pip install jcvi
 
    ## gff2bed
-   ls *.gff*|while read R;do VAR=$(echo $R|cut -d '.' -f1);python -m jcvi.formats.gff bed --type=mRNA --key=Name --primary_only $R -o $VAR".bed";done
+   ls *.gff*|while read R;do VAR=$(echo $R|cut -d '.' -f1);python -m jcvi.formats.gff bed --type=mRNA --key=Name --primary_only $R -o $VAR".bed";done ## some gff3 does not have Name, use ID as default
    ## extract cds
    ls *.gff*|while read R;do V=$(echo $R|cut -d '.' -f1);gffread -x $V".cds" -g $V*.genome.fa $R -F;done
    ls *.cds|while read R;do python -m jcvi.formats.fasta format $R "formated_"$R;done
