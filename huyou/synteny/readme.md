@@ -58,7 +58,7 @@ python -m jcvi.graphics.dotplot SWO.hap1.anchors
 python -m jcvi.compara.synteny screen --minspan=30 --simple SWO.hap1.anchors SWO.hap1.anchors.new
 
 ## prepare seqids and layout file
-#### seqids
+#### seqids (change order to change plot)
 	chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chrUn
 	H1_ch1,H1_ch2,H1_ch3,H1_ch4,H1_ch5,H1_ch6,H1_ch7,H1_ch8,H1_ch9
 #### layout
