@@ -32,6 +32,7 @@ s/h2tg000027l/H2_ch9/
 
 ## use jcvi to match chromosome IDs
 ## run liftoff
+/data/huyou/liftoff
 liftoff -g huyou.gff -o hap1.liftoff.gff3 \
 	-u hap1.unmapped \
 	-copies \ ## look for extra copies
@@ -39,11 +40,35 @@ liftoff -g huyou.gff -o hap1.liftoff.gff3 \
 	-p 15 \ ##paralel processes
   huyou.hap1.genome.fa huyou.genome.fa ## target and reference
 
+## hap1.bed
 python -m jcvi.formats.gff bed --type=mRNA --primary_only hap1.liftoff.gff3 -o hap1.bed
-gffread -x hap1.cds -g huyou.hap1.genome.fa hap1.liftoff.gff3 -F
+sed -i -f sed_id_hap1 hap1.bed ## change chromosome id
+sed -i 's/Ccha/H1_Ccha/' hap1.bed ## change gene id
 
-sed -i 's/Ccha/H1_Ccha/' hap1.bed
+## hap1.cds
+gffread -x hap1.cds -g huyou.hap1.genome.fa hap1.liftoff.gff3 -F
 sed -i 's/Ccha/H1_Ccha/' hap1.cds
 
+## pairwise jcvi with SWO
+##### dotplot
+python -m jcvi.compara.catalog ortholog SWO hap1 --cscore=.99 --no_strip_names ## (gene id starts with Cs_ont_*.2+ not found in bed)
+python -m jcvi.graphics.dotplot SWO.hap1.anchors
 
+## produce synteny
+python -m jcvi.compara.synteny screen --minspan=30 --simple SWO.hap1.anchors SWO.hap1.anchors.new
+
+## prepare seqids and layout file
+#### seqids
+	chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chrUn
+	H1_ch1,H1_ch2,H1_ch3,H1_ch4,H1_ch5,H1_ch6,H1_ch7,H1_ch8,H1_ch9
+#### layout
+	# y, xstart, xend, rotation, color, label, va,  bed
+	 .7,     .1,    .8,      15,      , SWO, top, SWO.bed
+	 .5,     .1,    .8,       0,      , hap1, top, hap1.bed
+	# edges
+	e, 0, 1, SWO.hap1.anchors.simple
+## produce synteny plot
+python -m jcvi.compara.synteny screen --minspan=30 --simple SWO.hap1.anchors SWO.hap1.anchors.new
+python -m jcvi.graphics.karyotype seqids layout
+mv karyotype.pdf karyotype_SWO.hap1.pdf
 ```
