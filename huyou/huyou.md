@@ -68,6 +68,10 @@ seqkit sort -lr hap2.fasta > tmp && mv tmp hap2.fasta
 
 ## seq length check
 bioawk -c fastx '{print $name "\t" length($seq)}' genome.fa > chr_length
+bioawk -c fastx '{print $name "\t" length($seq)}' huyou.hap1.genome.fa > chr_length1
+bioawk -c fastx '{print $name "\t" length($seq)}' huyou.hap2.genome.fa > chr_length2
+sed -f sed_id_hap1 chr_length1 > seded_chr_length1
+sed -f sed_id_hap1 chr_length1 > seded_chr_length2
 ```
 #### run juicer on draft assembly
 https://github.com/aidenlab/juicer/wiki/Installation#dependencies
