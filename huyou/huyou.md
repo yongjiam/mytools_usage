@@ -152,7 +152,22 @@ docker run -v ${PWD}:/data -w /data aidenlab/juicer:yongjia juicer.sh -d /data -
 ### docker stop NAME to stop a docker run
 
 ####### run in singularity
+### in nimbus
 singularity run -B ${PWD}:/data --pwd /data juicer.sif juicer.sh -d /data -g huyou_hap1 -z references/hap1.fasta -y hap1_DpnII.txt -p hap1.chrom.sizes -s DpnII -t 30
+### in setonix
+#!/bin/bash --login
+
+#SBATCH --job-name=juicer
+#SBATCH --partition=highmem
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=64
+#SBATCH --time=24:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --export=NONE
+
+module load singularity/3.11.4-slurm
+srun --export=all -n 1 -c 64 singularity run -B ${PWD}:/data --pwd /data juicer.sif juicer.sh -d /data -g huyou_hap1 -z references/hap1.fasta -y hap1_DpnII.txt -p hap1.chrom.sizes -s DpnII -t 64
 ```
 
 ## 3. Genome stats
