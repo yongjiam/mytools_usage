@@ -143,7 +143,7 @@ docker ps -l ## get ID
 docker commit b16d1da08f93 aidenlab/juicer:yongjia
 singularity build juicer.sif docker-daemon://aidenlab/juicer:yongjia
 
-## run in docker
+############ run in docker
 ### the image was build setting ENTRYPOINT=bash https://www.cloudbees.com/blog/understanding-dockers-cmd-and-entrypoint-instructions
 ### use -w /data to change the working directory
 docker run -v ${PWD}:/data -w /data aidenlab/juicer:yongjia juicer.sh -d /data -g huyou_hap1 -z references/hap1.fasta -y hap1_DpnII.txt -p hap1.chrom.sizes -s DpnII -t 30
@@ -151,6 +151,8 @@ docker run -v ${PWD}:/data -w /data aidenlab/juicer:yongjia juicer.sh -d /data -
 ### docker stats ## to display running images
 ### docker stop NAME to stop a docker run
 
+####### run in singularity
+singularity run -B ${PWD}:/data --pwd /data juicer.sif juicer.sh -d /data -g huyou_hap1 -z references/hap1.fasta -y hap1_DpnII.txt -p hap1.chrom.sizes -s DpnII -t 30
 ```
 
 ## 3. Genome stats
