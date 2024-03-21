@@ -109,10 +109,41 @@ mkdir fastq;cd fastq
 ln -s /data/huyou/raw_data/HIC/changshanhuyou-1/changshanhuyou-1_R1.fastq.gz hic_R1.fastq.gz ## rename *.fq.gz to *.fastq.gz
 ln -s /data/huyou/raw_data/HIC/changshanhuyou-1/changshanhuyou-1_R2.fastq.gz hic_R2.fastq.gz
 
-## run juicer
+## run juicer, low memory in nimbus
 sudo mkdir /aidenlab && cd /aidenlab
 sudo ln -s /data/tools/juicer/CPU scripts
 bash /data/tools/juicer/scripts/juicer.sh -g huyou_hap1 -z references/hap1.fasta -y hap1_DpnII.txt -p hap1.chrom.sizes -s DpnII -t 30
+
+
+########## run juicer in docker
+https://github.com/yongjiam/Juicer-Docker
+## download test data
+   cd /path/to/testdir
+   wget https://s3.amazonaws.com/juicerawsmirror/opt/juicer/work/HIC003/fastq/HIC003_S2_L001_R1_001.fastq.gz
+   wget https://s3.amazonaws.com/juicerawsmirror/opt/juicer/work/HIC003/fastq/HIC003_S2_L001_R2_001.fastq.gz
+   mkdir fastq
+   mv HIC003*.fastq.gz fastq
+
+## pull juicer docker image
+docker run aidenlab/juicer:latest
+docker images
+
+docker run -it -v ${PWD}:/data --entrypoint=/bin/bash aidenlab/juicer:latest ## use entrypoint to stop automatic run
+cd /data ## ln softlink not recoganized in docker mount, have to copy files
+which juicer.sh ## check the juicer script
+mkdir /aidenlab && cd /aidenlab
+ln -s /data/tools/juicer/CPU scripts ## the program looks for /aidenlab/scripts/common/countligations.sh: No such file or directory
+# Exit the container when you're done
+exit
+
+# Get the ID of the container you ran
+docker ps -l ## get ID
+
+# Commit the changes to a new Docker image
+docker commit b16d1da08f93 aidenlab/juicer:yongjia
+singularity build juicer.sif docker-daemon://aidenlab/juicer:yongjia
+
+
 ```
 
 ## 3. Genome stats
