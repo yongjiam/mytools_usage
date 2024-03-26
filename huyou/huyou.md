@@ -329,6 +329,7 @@ orthofinder -t 30 -f selected
    ## plot the results in R
    ```R
    # install packages
+   install.packages("devtools")
    install.packages("pafr")
    install.packages("patchwork")
    install.packages("tidyverse")
