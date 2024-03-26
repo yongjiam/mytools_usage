@@ -1,4 +1,8 @@
-### 1. Data
+## Table of Contents
+- [1.Data](## 1. Data)
+- [2.Genome assembly](## 2. Genome assembly)
+- 
+## 1. Data
 1. illunina\
    -rw-r--r-- 1 yjia pawsey0399  21G Mar  2 11:37 1_R2.fq.gz\
    -rw-r--r-- 1 yjia pawsey0399  19G Mar  2 11:37 1_R1.fq.gz\
