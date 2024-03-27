@@ -170,7 +170,18 @@ module load singularity/3.11.4-slurm
 srun --export=all -n 1 -c 64 singularity run -B ${PWD}:/data --pwd /data juicer.sif juicer.sh -d /data -g huyou_hap1 -z references/hap1.fasta -y hap1_DpnII.txt -p hap1.chrom.sizes -s DpnII -t 64
 ```
 
-## 3. Genome stats
+## 3. Haplotype scaffolding and genome stats
+#### scaffolding using ragtag
+https://github.com/malonge/RagTag
+```bash
+## ragtag.sh
+QUERY1=/data/huyou/minimap2_haps/huyou.hap1.genome.fa
+QUERY2=/data/huyou/minimap2_haps/huyou_hap2.genome.fa
+REF=/data/huyou/company_assembly/03.hic/HiC.review.assembly.chr.fa
+
+ragtag.py scaffold $REF $QUERY1 -t 30 -o ./output_hap1 &> log1.txt
+ragtag.py scaffold $REF $QUERY2 -t 30 -o ./output_hap2 &> log2.txt
+```
 #### count chromosome and contig number for 21 genome data download from http://citrus.hzau.edu.cn/download.php
 ```bash
 ls *.gff3|while read R;do echo $(echo $R|cut -d '.' -f1); echo $(awk '!/^#/{print $1}' $R|sort|uniq|wc -l);done |paste - - > chromosome_count
