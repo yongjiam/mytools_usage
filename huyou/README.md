@@ -23,6 +23,19 @@
    -rwx------ 1 ubuntu ubuntu 2.2G Mar 17 05:00 R1.fq.gz\
    -rwx------ 1 ubuntu ubuntu 2.2G Mar 17 05:01 R2.fq.gz
 ## 2. Genome assembly
+#### run genomescope to assess genome size
+```bash
+https://github.com/schatzlab/genomescope
+https://github.com/gmarcais/Jellyfish
+
+##install jellyfish
+sudo apt update
+sudo apt install jellyfish ## or conda install kmer-jellyfish
+
+##run jellyfish
+$ jellyfish count -C -m 21 -s 1000000000 -t 10 *.fastq -o reads.jf
+
+```
 #### convert PacBio bam hifi data into fastq
 https://github.com/PacificBiosciences/pbtk#bam2fastx
 https://github.com/PacificBiosciences/pbbioconda
@@ -189,6 +202,10 @@ singularity run -B ${PWD}:/data --pwd /data juicer.sif juicer.sh -d /data -g huy
 
 module load singularity/3.11.4-slurm
 srun --export=all -n 1 -c 64 singularity run -B ${PWD}:/data --pwd /data juicer.sif juicer.sh -d /data -g huyou_hap1 -z references/hap1.fasta -y hap1_DpnII.txt -p hap1.chrom.sizes -s DpnII -t 64
+```
+#### run allhic on draft assembly, alternative to juicer
+```bash
+
 ```
 
 ## 3. Haplotype scaffolding and genome stats
