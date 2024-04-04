@@ -1,8 +1,8 @@
 ## notes on docker usage
-docker images
-docker ps
-docker ps -l
-docker rmi -f image_id
+docker images\
+docker ps\
+docker ps -l\
+docker rmi -f image_id\
 
 ### build docker image, mrbayes
 ```bash
