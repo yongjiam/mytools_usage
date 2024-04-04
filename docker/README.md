@@ -3,6 +3,13 @@ docker images\
 docker ps\
 docker ps -l\
 docker rmi -f image_id\
+docker build -t IMAGE_NAME .\
+docker run -it --rm -v /data/igenome/single-copy-OG/mrbayes:/data yongmrbayes /bin/bash -c "cd /data && mpirun -np 3 mb test2.mb"\
+docker stop container_id
+
+## other notes
+lsb_release -a ## get linux system version
+ldd /data/tools/MrBayes/src/mb ## get requried packages for the mb command
 
 ### build docker image, mrbayes
 ```bash
