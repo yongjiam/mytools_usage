@@ -1,4 +1,5 @@
 ## notes on docker usage
+```bash
 docker images\
 docker ps\
 docker ps -l\
@@ -10,7 +11,7 @@ docker stop container_id
 ## other notes
 lsb_release -a ## get linux system version\
 ldd /data/tools/MrBayes/src/mb ## get requried packages for the mb command
-
+```
 ### build docker image, mrbayes
 ```bash
 # Use the official Ubuntu 20.04 LTS image as the base image
