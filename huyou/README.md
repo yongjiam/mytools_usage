@@ -34,6 +34,10 @@ conda install -c bioconda pbtk
 bam2fastq -o  hifi_ccs.fastq m64257e_211030_130656.ccs.bam
 ```
 #### draft haplotype assembling using hifiasm
+https://github.com/chhylp123/hifiasm
+https://hifiasm.readthedocs.io/en/latest/interpreting-output.html#interpreting-output
+https://hifiasm.readthedocs.io/en/latest/faq.html
+https://github.com/chhylp123/hifiasm/issues/55
 ```bash
 #### huyou.conf
 #!/bin/bash --login
