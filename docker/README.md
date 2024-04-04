@@ -8,7 +8,7 @@ docker run -it --rm -v /data/igenome/single-copy-OG/mrbayes:/data yongmrbayes /b
 docker stop container_id
 
 ## other notes
-lsb_release -a ## get linux system version
+lsb_release -a ## get linux system version\
 ldd /data/tools/MrBayes/src/mb ## get requried packages for the mb command
 
 ### build docker image, mrbayes
