@@ -107,6 +107,33 @@ bioawk -c fastx '{print $name "\t" length($seq)}' huyou.hap2.genome.fa > chr_len
 sed -f sed_id_hap1 chr_length1 > seded_chr_length1
 sed -f sed_id_hap2 chr_length1 > seded_chr_length2
 ```
+#### run purge_dups after hifiasm
+```bash
+https://github.com/dfguan/purge_dups
+## install
+conda install bioconda::purge_dups
+## or install by even in setonix
+git clone https://github.com/dfguan/purge_dups.git
+cd purge_dups/src && make
+
+## run purge_dups on draft asm
+hap_asm=huyou_k19.asm.hic.hap2.p_ctg.fasta
+HIFI=hifi_ccs.fastq
+
+##step1
+srun --export=all -n 1 -c 128   minimap2 -xasm20 -t 128 $hap_asm $HIFI | gzip -c - > $HIFI.paf.gz
+srun --export=all -n 1 -c 128 pbcstat $HIFI.paf.gz
+srun --export=all -n 1 -c 128 calcuts PB.stat > cutoffs 2>calcults.log
+srun --export=all -n 1 -c 128 split_fa $hap_asm > $hap_asm.split
+srun --export=all -n 1 -c 128 minimap2 -xasm5 -DP $hap_asm.split $hap_asm.split | gzip -c - > $hap_asm.split.self.paf.gz
+##step2
+srun --export=all -n 1 -c 128 purge_dups -2 -T cutoffs -c PB.base.cov $hap_asm.split.self.paf.gz > dups.bed 2> purge_dups.log
+##step3
+srun --export=all -n 1 -c 128 get_seqs -e dups.bed $hap_asm
+##step4 Merge hap.fa and $hap_asm and redo the above steps to get a decent haplotig set
+
+```
+
 #### run juicer on draft assembly
 https://github.com/aidenlab/juicer/wiki/Installation#dependencies
 https://bioinformaticsworkbook.org/dataAnalysis/GenomeAssembly/Hybrid/Juicer_Juicebox_3dDNA_pipeline.html#gsc.tab=0
