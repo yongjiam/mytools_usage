@@ -59,6 +59,23 @@ srun --export=all -n 1 -c 64 singularity exec --bind ${PWD}:${PWD} hifiasm_lates
 ## convert to genome fasta
 gfatools gfa2fa huyou.asm.hic.hap1.p_ctg.gfa > hap1.fa
 gfatools gfa2fa huyou.asm.hic.hap2.p_ctg.gfa > hap2.fa
+awk 'BEGIN {FS="\t"} $1=="S" {print ">"$2"\n"$3}' huyou_hifionly_k19.asm.bp.p_ctg.gfa > huyou_hifionly_k19.asm.bp.p_ctg.fasta
+
+## assembly-stats
+conda install bioconda::assembly-stats
+conda install bioconda::quast
+assembly-stats huyou_hifionly_k19.asm.bp.p_ctg.fasta > huyou_hifionly_k19.asm.bp.p_ctg.stats
+##stats for huyou_hifionly_k19.asm.bp.p_ctg.fasta
+sum = 381775413, n = 1256, ave = 303961.32, largest = 50382943
+N50 = 29086141, n = 6
+N60 = 21124568, n = 8
+N70 = 15536317, n = 10
+N80 = 1534341, n = 14
+N90 = 77377, n = 172
+N100 = 10838, n = 1256
+N_count = 0
+Gaps = 0
+
 
 ## sort by sequence length using seqkit
 conda install -c bioconda seqkit
