@@ -145,7 +145,7 @@ srun --export=all -n 1 -c 128 get_seqs -e dups.bed $hap_asm
 ```
 ##### run hist_plot.py to determine the cutoffs manually, which can affect the purged.fa size significantly
 <img src="./plots/PB.cov.png" alt="PacBio read coverage on hap1" width="600">
-```
+```bash
 cutoffs: 5	-10	24	25	111	204
 stats for purged.fa
 sum = 329967642, n = 324, ave = 1018418.65, largest = 46448702
@@ -171,7 +171,7 @@ N_count = 0
 Gaps = 0
 ```
 <img src="./plots/PB2.cov.png" alt="PacBio read coverage on hap2" width="600">
-```
+```bash
 cutoffs: 5	51	85	102	170	306
 stats for purged.fa
 sum = 297893244, n = 71, ave = 4195679.49, largest = 34263903
