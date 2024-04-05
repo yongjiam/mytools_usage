@@ -31,11 +31,19 @@ https://github.com/gmarcais/Jellyfish
 ##install jellyfish
 sudo apt update
 sudo apt install jellyfish ## or conda install kmer-jellyfish
+##clone genomescope
+git clone https://github.com/schatzlab/genomescope
 
-##run jellyfish
-$ jellyfish count -C -m 21 -s 1000000000 -t 10 *.fastq -o reads.jf
-
+##run jellyfish and genomescope
+GR=/scratch/pawsey0399/yjia/tools/genomescope/genomescope.R
+srun --export=all -n 1 -c 64   jellyfish count -C -m 21 -s 3G -t 64 *.fastq -o reads.jf
+srun --export=all -n 1 -c 64 jellyfish histo -t 64 reads.jf > reads.histo
+srun --export=all -n 1 -c 30 Rscript $GR reads.histo 21 150 output_dir 1000
+srun --export=all -n 1 -c 30 Rscript $GR reads.histo 21 150 output_dir10k 10000
+srun --export=all -n 1 -c 30 Rscript $GR reads.histo 21 150 output_dir50k 50000
 ```
+![genomescope plot](./plots/genomescope_plot.png)
+
 #### convert PacBio bam hifi data into fastq
 https://github.com/PacificBiosciences/pbtk#bam2fastx
 https://github.com/PacificBiosciences/pbbioconda
