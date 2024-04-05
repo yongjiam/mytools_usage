@@ -14,8 +14,8 @@ https://github.com/tickstep/aliyunpan/blob/main/docs/manual.md
 ```bash
 export ALIYUNPAN_CONFIG_DIR=/home/tickstep/tools/aliyunpan/config
 ```
-## get login token
-![get refreshtoken](get_token.jpg)
+## get login token, [get refreshtoken](get_token.jpg)
+<img src="get_token.jpg" alt="get refreshtoken" width="800">
 
 ## login
 ```bash
