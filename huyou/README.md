@@ -42,7 +42,7 @@ srun --export=all -n 1 -c 30 Rscript $GR reads.histo 21 150 output_dir 1000
 srun --export=all -n 1 -c 30 Rscript $GR reads.histo 21 150 output_dir10k 10000
 srun --export=all -n 1 -c 30 Rscript $GR reads.histo 21 150 output_dir50k 50000
 ```
-<img src="./plots/genomescope_plot.png" alt="genomescope plot" width="800">
+<img src="./plots/genomescope_plot.png" alt="genomescope plot" width="600">
 
 #### convert PacBio bam hifi data into fastq
 https://github.com/PacificBiosciences/pbtk#bam2fastx
