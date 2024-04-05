@@ -231,7 +231,41 @@ module load singularity/3.11.4-slurm
 srun --export=all -n 1 -c 64 singularity run -B ${PWD}:/data --pwd /data juicer.sif juicer.sh -d /data -g huyou_hap1 -z references/hap1.fasta -y hap1_DpnII.txt -p hap1.chrom.sizes -s DpnII -t 64
 ```
 #### run allhic on draft assembly, alternative to juicer
+https://github.com/tangerzhang/ALLHiC/wiki
 ```bash
+##installation
+$ git clone https://github.com/tangerzhang/ALLHiC
+$ cd ALLHiC
+$ chmod +x bin/*
+$ chmod +x scripts/*  
+$ export PATH=/your/path/to/ALLHiC/scripts/:/your/path/to/ALLHiC/bin/:$PATH
+
+##dependency
+samtools v1.9+
+bedtools
+matplotlib v2.0+
+
+## run_all: index, mapping, 
+bwa index -a bwtsw genome.fasta
+samtools faidx genome.fasta
+
+bwa aln -t 30 genome.fasta changshanhuyou-1_R1.fastq.gz > sample_R1.sai
+bwa aln -t 30 genome.fasta changshanhuyou-1_R2.fastq.gz > sample_R2.sai
+bwa sampe genome.fasta sample_R1.sai sample_R2.sai changshanhuyou-1_R1.fastq.gz changshanhuyou-1_R2.fastq.gz > sample.bwa_aln.sam
+PreprocessSAMs.pl sample.bwa_aln.sam genome.fasta MBOI
+filterBAM_forHiC.pl sample.bwa_aln.REduced.paired_only.bam sample.clean.sam
+samtools view -bt genome.fasta.fai sample.clean.sam > sample.clean.bam
+
+##Tips: Details on how to identify allelic contigs can be found in the following link: 
+https://github.com/tangerzhang/ALLHiC/wiki/ALLHiC:-identify-allelic-contigs
+liftoff -g SWO.v3.0.gene.model.gff3 -o genome.liftoff.gff3 -u genome.unmapped -copies -p 30\
+       	genome.fasta SWO.v3.0.genome.fa ## need annotate genome.fasta to generate Allele.ctg.table
+ALLHiC_prune -i Allele.ctg.table -b sample.clean.bam -r genome.fasta
+
+ALLHiC_partition -b prunning.bam -r genome.fasta -e AAGCTT -k 9
+
+ALLHiC_rescue -b sample.clean.bam -r draft.asm.fasta -c clusters.txt -i counts_RE.txt
+
 
 ```
 
