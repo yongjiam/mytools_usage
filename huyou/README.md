@@ -323,8 +323,11 @@ samtools view -bt genome.fasta.fai sample.clean.sam > sample.clean.bam
 
 ##Tips: Details on how to identify allelic contigs can be found in the following link: 
 https://github.com/tangerzhang/ALLHiC/wiki/ALLHiC:-identify-allelic-contigs
-liftoff -g SWO.v3.0.gene.model.gff3 -o genome.liftoff.gff3 -u genome.unmapped -copies -p 30\
-       	genome.fasta SWO.v3.0.genome.fa ## need annotate genome.fasta to generate Allele.ctg.table
+
+liftoff -g SWO.v3.0.gene.model.gff3 -o genome.liftoff.gff3 -u genome.unmapped -copies -p 30 genome.fasta SWO.v3.0.genome.fa
+mv genome.liftoff.gff3 gmap.gff3
+perl gmap2AlleleTable.pl SWO.v3.0.gene.model.gff3 ## modified perl script
+
 ALLHiC_prune -i Allele.ctg.table -b sample.clean.bam -r genome.fasta
 
 ALLHiC_partition -b prunning.bam -r genome.fasta -e AAGCTT -k 9
