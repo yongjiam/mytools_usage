@@ -22,7 +22,7 @@ https://github.com/mariodosreis/divtime
        seqtype = 0    * 0: nucleotides; 1:codons; 2:AAs
        usedata = 1    * 0: no data; 1:seq like; 2:normal approximation; 3:out.BV (in.BV)
          clock = 2    * 1: global clock; 2: independent rates; 3: correlated rates
-       RootAge = '<1.0'  * safe constraint on root age, used if no fossil for root.
+       RootAge = '<30.25'  * safe constraint on root age, used if no fossil for root.
 
          model = 0    * 0:JC69, 1:K80, 2:F81, 3:F84, 4:HKY85
          alpha = 0    * alpha for gamma rates at sites
