@@ -8,6 +8,8 @@ https://github.com/mariodosreis/divtime
 (Lperrieri,(Oglaberrima,((Osindica,Onivara)'>0.28<1.2139',(Osjaponica,(DX50,Orufipogon)))'>0.68<1.741')'>0.507<2.89');
 ```
 ### sequence alignment file
+> codon-based-cds.fas
+> protein.fas
 ### mcmctree control file
 ```
           seed = -1
