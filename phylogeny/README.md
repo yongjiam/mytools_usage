@@ -7,7 +7,8 @@ https://github.com/mariodosreis/divtime
 > (Lperrieri,(Oglaberrima,((Osindica,Onivara)'>0.28<1.2139',(Osjaponica,(DX50,Orufipogon)))'>0.68<1.741')'>0.507<2.89');
 ### sequence alignment file
 ### mcmctree control file
->          seed = -1
+```
+          seed = -1
        seqfile = mtCDNApri123.txt
       treefile = mtCDNApri.trees
       mcmcfile = mcmc.txt
@@ -38,6 +39,6 @@ https://github.com/mariodosreis/divtime
         burnin = 2000
       sampfreq = 10
        nsample = 20000
-
-*** Note: Make your window wider (100 columns) before running the program.
+ *** Note: Make your window wider (100 columns) before running the program.
+```
 
