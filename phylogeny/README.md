@@ -30,11 +30,11 @@ https://github.com/mariodosreis/divtime
 
      cleandata = 0    * remove sites with ambiguity data (1:yes, 0:no)?
 
-       BDparas = 1 1 0.1  * birth, death, sampling
+       BDparas = .01 .01 0.1  * birth, death, sampling ## changed due to scale from 100Myr to 1Myr
    kappa_gamma = 6 2      * gamma prior for kappa
    alpha_gamma = 1 1      * gamma prior for alpha
 
-   rgene_gamma = 2 20 1   * gammaDir prior for rate for genes
+   rgene_gamma = 2 2000 1   * gammaDir prior for rate for genes ## changed due to scale
   sigma2_gamma = 1 10 1   * gammaDir prior for sigma^2     (for clock=2 or 3)
 
       finetune = 1: .1 .1 .1 .1 .1 .1 * auto (0 or 1): times, musigma2, rates, mixing, paras, FossilErr
