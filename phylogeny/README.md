@@ -4,7 +4,9 @@ https://cba.anu.edu.au/news-events/events/bayesian-molecular-clock-dating-using-
 https://github.com/mariodosreis/divtime
 ## I - data preparation
 ### species tree file with callibriation annotation
-> (Lperrieri,(Oglaberrima,((Osindica,Onivara)'>0.28<1.2139',(Osjaponica,(DX50,Orufipogon)))'>0.68<1.741')'>0.507<2.89');
+```
+(Lperrieri,(Oglaberrima,((Osindica,Onivara)'>0.28<1.2139',(Osjaponica,(DX50,Orufipogon)))'>0.68<1.741')'>0.507<2.89');
+```
 ### sequence alignment file
 ### mcmctree control file
 ```
