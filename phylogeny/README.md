@@ -105,7 +105,8 @@ with open("combined.nexus", "w") as f:
     combined.write_nexus_data(filename=f)
 ```
 
-### ** mordify mcmctree control file to change scale from 100Mya to 1Mya
+## II - run mcmctree
+#### mordify mcmctree control file to change scale from 100Mya to 1Mya
 ###### mcmctree.ctl with clock = 2
 ```
           seed = -1
