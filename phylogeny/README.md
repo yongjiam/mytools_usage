@@ -4,6 +4,7 @@ https://cba.anu.edu.au/news-events/events/bayesian-molecular-clock-dating-using-
 https://github.com/mariodosreis/divtime
 ## Step 1 - data preparation
 ### species tree file with callibriation annotation
+(./prunetree.jpg)
 ```
 (Lperrieri,(Oglaberrima,((Osindica,Onivara)'>0.28<1.2139',(Osjaponica,(DX50,Orufipogon)))'>0.68<1.741')'>0.507<2.89');
 ```
