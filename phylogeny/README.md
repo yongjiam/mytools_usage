@@ -109,8 +109,8 @@ with open("combined.nexus", "w") as f:
 ###### mcmctree.ctl with clock = 2
 ```
           seed = -1
-       **seqfile = mtCDNApri123.txt**
-      **treefile = mtCDNApri.trees**
+       **seqfile = combined_all.nexus**
+      **treefile = species_tree_time.trees**
       mcmcfile = mcmc.txt
        outfile = out.txt
 
@@ -173,8 +173,8 @@ codeml tmp0001.ctl
 ### ** mordify mcmctree.ctl usedata=2, normal approximation
 ```
           seed = -1
-       seqfile = mtCDNApri123.txt
-      treefile = mtCDNApri.trees
+       seqfile = combined_all.nexus
+      treefile = species_tree_time.trees
       mcmcfile = mcmc.txt
        outfile = out.txt
 
