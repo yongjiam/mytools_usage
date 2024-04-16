@@ -8,11 +8,13 @@ https://github.com/mariodosreis/divtime
 (Lperrieri,(Oglaberrima,((Osindica,Onivara)'>0.28<1.2139',(Osjaponica,(DX50,Orufipogon)))'>0.68<1.741')'>0.507<2.89');
 ```
 ### prepare sequence alignment file for single copy gene
+[Replace_seqid.ipynb](https://github.com/yongjiam/mytools_usage/blob/main/phylogeny/replace_seqid.ipynb)
+###### Protein sequences
 ```
-#########Protein sequences
 ## grap OG sequences for single copy gene from Orthofinder output
 Single_Copy_Orthologue_Sequences/
 ## for each OG, rename the sequence ID with species ID
+
 from Bio import SeqIO
 os.chdir("/data/ricky/mcmctree/Single_Copy_Orthologue_Sequences")
 species=["DX50",
@@ -63,7 +65,44 @@ combined = Nexus.combine(nexi)
 
 with open("combined.nexus", "w") as f:
     combined.write_nexus_data(filename=f)
- 
+```
+##### CDS sequences
+```
+### single copy gene ID matrix: updated_single-copy-OG-ID.txt
+### extract the sequence ID for each OG
+cat updated_single-copy-OG-ID.txt |while read -r -a fields; do key="${fields[0]}"; values=("${fields[@]:1}"); output_file="${key}.txt"; printf "%s\n" "${values[@]}" > "$output_file"; done
+
+### extract the sequences for each OG
+ls OG*.txt|while read R;do blastdbcmd -db merged_cds -entry_batch $R -out $R".fasta";done
+
+### rename sequence ID with species ID
+[Replace_seqid.ipynb]
+
+### codon-based alignment
+usage: seqmagick backtrans-align [-h] [-o destination_file] [-t {standard,standard-ambiguous,vertebrate-mito}] [-a {fail,warn,none}] protein_align nucl_align
+
+Given a protein alignment and unaligned nucleotides, align the nucleotides using the protein alignment.
+Protein and nucleotide sequence files must contain the same number of sequences, in the same order, with the same IDs.
+
+seqmagick backtrans-align protein_align.fas nucl_align.fasta -o nucl_align.fas
+
+## convert aligned cds fasta to nexus format
+ls aligned_renamed_OG00*|while read R;do seqmagick convert --output-format nexus --alphabet protein $R $R".nex";done
+
+## concatenate multiple sequences into a single nexus file
+# the combine function takes a list of tuples [(name, nexus instance)...],
+# if we provide the file names in a list we can use a list comprehension to
+# create these tuples
+
+nexi = []
+file_list = glob.glob("*.nex")
+
+nexi = [(fname, Nexus.Nexus(fname)) for fname in file_list]
+
+combined = Nexus.combine(nexi)
+
+with open("combined.nexus", "w") as f:
+    combined.write_nexus_data(filename=f)
 ```
 > codon-based-cds.fas
 > protein.fas
