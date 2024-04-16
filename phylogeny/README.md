@@ -206,6 +206,8 @@ codeml tmp0001.ctl
        nsample = 20000
  *** Note: Make your window wider (100 columns) before running the program.
 ```
-#### run mcmctree
+###### second run mcmctree
+```
 mcmctree mcmctree.ctl
+```
 
