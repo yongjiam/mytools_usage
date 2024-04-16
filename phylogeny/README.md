@@ -105,18 +105,82 @@ with open("combined.nexus", "w") as f:
     combined.write_nexus_data(filename=f)
 ```
 
-### mordify mcmctree control file to change scale from 100Mya to 1Mya
-###### with clock = 2
+### ** mordify mcmctree control file to change scale from 100Mya to 1Mya
+###### mcmctree.ctl with clock = 2
+```
+          seed = -1
+       **seqfile = mtCDNApri123.txt**
+      **treefile = mtCDNApri.trees**
+      mcmcfile = mcmc.txt
+       outfile = out.txt
 
+         ndata = 1
+       **seqtype = 2**    * 0: nucleotides; 1:codons; 2:AAs
+       **usedata = 3**    * 0: no data; 1:seq like; 2:normal approximation; 3:out.BV (in.BV)
+         clock = 2    * 1: global clock; 2: independent rates; 3: correlated rates
+       RootAge = '<30.25'  * safe constraint on root age, used if no fossil for root.
+
+         model = 0    * 0:JC69, 1:K80, 2:F81, 3:F84, 4:HKY85
+         alpha = 0    * alpha for gamma rates at sites
+         ncatG = 5    * No. categories in discrete gamma
+
+     cleandata = 0    * remove sites with ambiguity data (1:yes, 0:no)?
+
+       **BDparas = .01 .01 0.1**  * birth, death, sampling ## changed due to scale from 100Myr to 1Myr
+   kappa_gamma = 6 2      * gamma prior for kappa
+   alpha_gamma = 1 1      * gamma prior for alpha
+
+   **rgene_gamma = 2 2000 1**   * gammaDir prior for rate for genes ## changed due to scale
+  sigma2_gamma = 1 10 1   * gammaDir prior for sigma^2     (for clock=2 or 3)
+
+      finetune = 1: .1 .1 .1 .1 .1 .1 * auto (0 or 1): times, musigma2, rates, mixing, paras, FossilErr
+
+         print = 1   * 0: no mcmc sample; 1: everything except branch rates 2: everything
+        burnin = 2000
+      sampfreq = 10
+       nsample = 20000
+ *** Note: Make your window wider (100 columns) before running the program.
+```
+###### first run
+```
+## some sequence does not have two spaces between sequence name and sequence
+sed -i -E 's/Oglaberrima[[:space:]]+/Oglaberrima  /' combined_all.nexus
+
+## run mcmctree
+mcmctree mcmctree.ctl
+
+## remove files
+rm out.BV rst
+
+## modify tmp0001.ctl
+seqfile = tmp0001.txt
+treefile = tmp0001.trees
+outfile = tmp0001.out
+noisy = 3
+seqtype = 2
+**model = 2**
+**aaRatefile = wag.dat**
+**fix_alpha = 0
+alpha = .5
+ncatG = 4**
+Small_Diff = 0.1e-6
+getSE = 2
+method = 1
+
+## run codeml
+codeml tmp0001.ctl
+```
+### ** mordify mcmctree.ctl usedata=2, normal approximation
+```
           seed = -1
        seqfile = mtCDNApri123.txt
       treefile = mtCDNApri.trees
       mcmcfile = mcmc.txt
        outfile = out.txt
 
-         ndata = 3
-       seqtype = 0    * 0: nucleotides; 1:codons; 2:AAs
-       usedata = 1    * 0: no data; 1:seq like; 2:normal approximation; 3:out.BV (in.BV)
+         ndata = 1
+       seqtype = 2    * 0: nucleotides; 1:codons; 2:AAs
+       **usedata = 2**    * 0: no data; 1:seq like; 2:normal approximation; 3:out.BV (in.BV)
          clock = 2    * 1: global clock; 2: independent rates; 3: correlated rates
        RootAge = '<30.25'  * safe constraint on root age, used if no fossil for root.
 
@@ -140,5 +204,5 @@ with open("combined.nexus", "w") as f:
       sampfreq = 10
        nsample = 20000
  *** Note: Make your window wider (100 columns) before running the program.
-
+```
 
