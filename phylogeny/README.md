@@ -2,7 +2,7 @@
 ## MCMCtree in PAML
 https://cba.anu.edu.au/news-events/events/bayesian-molecular-clock-dating-using-genome-scale-datasets%C2%A0
 https://github.com/mariodosreis/divtime
-## I - data preparation
+## Step 1 - data preparation
 ### species tree file with callibriation annotation
 ```
 (Lperrieri,(Oglaberrima,((Osindica,Onivara)'>0.28<1.2139',(Osjaponica,(DX50,Orufipogon)))'>0.68<1.741')'>0.507<2.89');
@@ -105,7 +105,7 @@ with open("combined.nexus", "w") as f:
     combined.write_nexus_data(filename=f)
 ```
 
-## II - run mcmctree
+## Step 2 - run mcmctree
 #### mordify mcmctree control file to change scale from 100Mya to 1Mya
 ###### mcmctree.ctl with clock = 2
 ```
