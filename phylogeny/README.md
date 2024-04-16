@@ -104,10 +104,10 @@ combined = Nexus.combine(nexi)
 with open("combined.nexus", "w") as f:
     combined.write_nexus_data(filename=f)
 ```
-> codon-based-cds.fas
-> protein.fas
-### mcmctree control file
-```
+
+### mordify mcmctree control file to change scale from 100Mya to 1Mya
+###### with clock = 2
+
           seed = -1
        seqfile = mtCDNApri123.txt
       treefile = mtCDNApri.trees
@@ -126,7 +126,7 @@ with open("combined.nexus", "w") as f:
 
      cleandata = 0    * remove sites with ambiguity data (1:yes, 0:no)?
 
-       BDparas = .01 .01 0.1  * birth, death, sampling ## changed due to scale from 100Myr to 1Myr
+       **BDparas = .01 .01 0.1**  * birth, death, sampling ## changed due to scale from 100Myr to 1Myr
    kappa_gamma = 6 2      * gamma prior for kappa
    alpha_gamma = 1 1      * gamma prior for alpha
 
@@ -140,5 +140,5 @@ with open("combined.nexus", "w") as f:
       sampfreq = 10
        nsample = 20000
  *** Note: Make your window wider (100 columns) before running the program.
-```
+
 
