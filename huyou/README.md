@@ -350,9 +350,9 @@ ragtag.py scaffold $REF $QUERY1 -t 30 -o ./output_hap1 &> log1.txt
 ragtag.py scaffold $REF $QUERY2 -t 30 -o ./output_hap2 &> log2.txt
 ```
 #### genome assessment using busco
-download dataset
-https://busco-data.ezlab.org/v5/data/lineages/
-https://busco.ezlab.org/datasets/eukaryota_odb10.2024-01-08.tar.gz
+download dataset \
+https://busco-data.ezlab.org/v5/data/lineages/ \
+https://busco.ezlab.org/datasets/eukaryota_odb10.2024-01-08.tar.gz \
 https://busco-data.ezlab.org/v5/data/lineages/embryophyta_odb10.2024-01-08.tar.gz
 
 ```bash
