@@ -349,6 +349,34 @@ REF=/data/huyou/company_assembly/03.hic/HiC.review.assembly.chr.fa
 ragtag.py scaffold $REF $QUERY1 -t 30 -o ./output_hap1 &> log1.txt
 ragtag.py scaffold $REF $QUERY2 -t 30 -o ./output_hap2 &> log2.txt
 ```
+#### genome assessment using busco
+download dataset
+https://busco-data.ezlab.org/v5/data/lineages/
+
+```bash
+#!/bin/bash --login
+
+#SBATCH --job-name=busco
+#SBATCH --partition=work
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=64
+#SBATCH --time=12:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --export=NONE
+
+module load singularity/3.11.4-slurm
+BUSCO=/scratch/pawsey0399/yjia/huyou/containers/BUSCO.sif
+
+srun --export=all -n 1 -c 64 singularity exec $BUSCO busco \
+	-i /scratch/pawsey0399/yjia/huyou/purge_dups_hifihic_hap1/purged.fa \
+	-o hap1_busco \
+	-m genome \
+	-l /scratch/pawsey0399/yjia/huyou/busco/eukaryota_odb10 \
+	--cpu 64 \
+	--offline
+```
+
 #### count chromosome and contig number for 21 genome data download from http://citrus.hzau.edu.cn/download.php
 ```bash
 ls *.gff3|while read R;do echo $(echo $R|cut -d '.' -f1); echo $(awk '!/^#/{print $1}' $R|sort|uniq|wc -l);done |paste - - > chromosome_count
