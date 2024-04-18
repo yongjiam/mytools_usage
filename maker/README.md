@@ -45,5 +45,10 @@ docker build -t yongmaker .
 ### build singularity image
 ```
 docker images ## list images
+export SINGULARITY_CACHEDIR=/path/to/tmp/ ##default to ~/.singularity/
 singularity build yongmaker.sif docker-daemon://yongmaker:latest ## need to specify "docker-daemon" and the tag "lastest"
 ```
+#### notes:
+> docker images in linux are located at /var/lib/docker
+> sudo apt clean ## remove some old packages
+> 
