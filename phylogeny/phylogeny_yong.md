@@ -301,6 +301,7 @@ docker run -it --rm -v /data/igenome/single-copy-OG/mrbayes:/data yongmrbayes /b
 ### build singularity container from docker image
 ```bash
 docker images ## list images
+export SINGULARITY_CACHEDIR=/path/to/tmp/ ##default to ~/.singularity/
 singularity build yongmrbayes.sif docker-daemon://yongmrbayes:latest ## need to specify "docker-daemon" and the tag "lastest"
 singularity run -B /data/igenome/single-copy-OG/mrbayes:/data yongmrbayes.sif /bin/bash -c "cd /data && mb test2.mb" ## test run using singularity
 ```
