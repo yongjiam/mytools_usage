@@ -415,6 +415,9 @@ awk '$0 !~ /^#/ {chromosome[$1]=$5} END {for (chr in chromosome) print "Chromoso
 ```
 
 ## 4. Gene model prediction 
+#### gene and repeat elements annotaiton using maker
+
+
 #### using gemoma (company annotation does not match genome.fa)
 reference genomes from phytozome (citrus database data throw errors in gemoma)
 ```bash
