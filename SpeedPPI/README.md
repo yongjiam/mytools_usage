@@ -39,6 +39,7 @@ rm src/domain_mapping/5356760.tar.gz
 rm data/params/alphafold_params_2021-07-14.tar
 rm params_*.npz
 ```
+<img src="./folder_structure.png" alt="folder_structure" width="600">
 ## run
 ```
 bash create_ppi_some_vs_some.sh  chunshen_query1.fasta chunshen_query2.fasta  ./hh-suite/bin/hhblits  0.5 ./chunshen_output2/
