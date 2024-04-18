@@ -116,6 +116,7 @@ sed -f sed_id_hap2 chr_length1 > seded_chr_length2
 ```
 #### compare hifiasm with/without hic
 <img src="./plots/hifiasm.jpg" alt="with/without hic" width="600">
+
 #### run purge_dups after hifiasm
 ```bash
 https://github.com/dfguan/purge_dups
