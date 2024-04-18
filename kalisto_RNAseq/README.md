@@ -64,8 +64,8 @@ for i in $(ls --color=never -d */);do SRR=$(basename $i); SAM=$(grep -m1 $SRR ..
 $NF}');echo $SAM $SRR $(grep -m1 HORVU.MOREX.r3.4HG0409010.1 $i"abundance.tsv");done > tong_PRJNA889532_tpm.tsv
 ```
 ### notes on multi-mapped reads
-https://www.sciencedirect.com/science/article/pii/S2001037020303032
-https://www.nature.com/articles/nbt.3519
+https://www.sciencedirect.com/science/article/pii/S2001037020303032 \
+https://www.nature.com/articles/nbt.3519 \
 User
 i am using kalisto tool to process RNA sequencing data. How does this tool handle reads that mapped to multiple loci or transcripts? And how does this compare to other RNA sequencing tools such star and hisat and tophat2
 ChatGPT
