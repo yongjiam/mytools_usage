@@ -48,4 +48,4 @@ bash create_ppi_some_vs_some.sh  chunshen_query1.fasta chunshen_query2.fasta  ./
 ### Notes:
 > nvidia-smi  ## check GPU memory \
 > free -h ## check CPU memory \
-> 2vs3 proteins use more memory than 1vs3
+> break long sequence into half-half if out of memory
