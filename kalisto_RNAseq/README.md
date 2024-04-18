@@ -4,7 +4,19 @@
 ```
 ls *.gz | paste - - > sample_pair
 ```
-
+## prepare transcript.fa
+```
+#!/bin/bash
+## change sequence ID in fasta
+while read line; do
+    if [[ $line == ">"* ]]; then
+	    ID=">"$(echo "$line" | grep -o 'NLLv2_murdoch[^;]*')
+	    echo $ID
+    else
+        echo "$line"
+    fi
+done < transcripts.fa
+```
 ## trim fastq with fastp
 ```
 while read R1 R2;
