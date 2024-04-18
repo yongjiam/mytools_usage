@@ -1,4 +1,4 @@
-## pipeline of RNAseq analysis using kalisto
+# pipeline of RNAseq analysis using kalisto
 
 ## prepare sample_pair file
 ```
