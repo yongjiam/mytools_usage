@@ -57,6 +57,18 @@ docker login
 docker info|grep Username
 docker tag yongmaker yongjia111/yongmaker:latest ### use docker hub account name yongjia111
 docker push yongjia111/yongmaker:latest
+
+SINGULARITY_CACHEDIR
+singularity build yongmaker.sif docker://yongjia111/yongmaker:latest
+
+## run docker image interactively
+docker run -it -v ${PWD}:/data yongmaker:latest bash
+source activate /path/to/conda/maker/env
+exit
+docker ps -l
+docker commit b16d1da08f93 yongmaker:latest
+docker commit b16d1da08f93 yongjia111/yongmaker:latest
+
 ```
 #### notes:
 > docker images in linux are located at /var/lib/docker
