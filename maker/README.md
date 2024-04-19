@@ -47,6 +47,16 @@ docker build -t yongmaker .
 docker images ## list images
 export SINGULARITY_CACHEDIR=/path/to/tmp/ ##default to ~/.singularity/
 singularity build yongmaker.sif docker-daemon://yongmaker:latest ## need to specify "docker-daemon" and the tag "lastest"
+
+## if /home drive out of space, build in another computer
+docker save -o yongmaker_docker.tar yongmaker:latest
+singularity build yongmaker.sif docker-archive://yongmaker_docker.tar
+
+## push local docker image to docker hub
+docker login
+docker info|grep Username
+docker tag yongmaker yongjia111/yongmaker:latest ### use docker hub account name yongjia111
+docker push yongjia111/yongmaker:latest
 ```
 #### notes:
 > docker images in linux are located at /var/lib/docker
