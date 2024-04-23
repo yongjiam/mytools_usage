@@ -297,6 +297,13 @@ singularity run -B ${PWD}:/data --pwd /data juicer.sif juicer.sh -d /data -g huy
 module load singularity/3.11.4-slurm
 srun --export=all -n 1 -c 64 singularity run -B ${PWD}:/data --pwd /data juicer.sif juicer.sh -d /data -g huyou_hap1 -z references/hap1.fasta -y hap1_DpnII.txt -p hap1.chrom.sizes -s DpnII -t 64
 ```
+#### run juicer/hic-pipeline on draft assembly
+https://github.com/ENCODE-DCC/hic-pipeline
+```bash
+git clone https://github.com/ENCODE-DCC/hic-pipeline
+pip install caper
+
+```
 #### run allhic on draft assembly, alternative to juicer
 https://github.com/tangerzhang/ALLHiC/wiki
 ```bash
