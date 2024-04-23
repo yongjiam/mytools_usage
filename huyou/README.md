@@ -297,11 +297,23 @@ singularity run -B ${PWD}:/data --pwd /data juicer.sif juicer.sh -d /data -g huy
 module load singularity/3.11.4-slurm
 srun --export=all -n 1 -c 64 singularity run -B ${PWD}:/data --pwd /data juicer.sif juicer.sh -d /data -g huyou_hap1 -z references/hap1.fasta -y hap1_DpnII.txt -p hap1.chrom.sizes -s DpnII -t 64
 ```
-#### run juicer/hic-pipeline on draft assembly
+#### run hic-pipeline/juicer on draft assembly
 https://github.com/ENCODE-DCC/hic-pipeline
 ```bash
+## install hic-pipeline
 git clone https://github.com/ENCODE-DCC/hic-pipeline
 pip install caper
+
+## prepare input files
+1. hic read files
+2. draft genome fasta and index
+bwa index hap1.fasta
+3. restriction enzyme
+python /data/tools/juicer/misc/generate_site_positions.py DpnII hap1 ./references/hap1.fasta ## produce hap1_DpnII.txt
+4. chromosome size file
+awk 'BEGIN{OFS="\t"}{print $1, $NF}' hap1_DpnII.txt > hap1.chrom.sizes
+
+## prepare inputs
 
 ```
 #### run allhic on draft assembly, alternative to juicer
@@ -423,7 +435,9 @@ awk '$0 !~ /^#/ {chromosome[$1]=$5} END {for (chr in chromosome) print "Chromoso
 
 ## 4. Gene model prediction 
 #### gene and repeat elements annotaiton using maker
-
+```bash
+conda install
+```
 
 #### using gemoma (company annotation does not match genome.fa)
 reference genomes from phytozome (citrus database data throw errors in gemoma)
