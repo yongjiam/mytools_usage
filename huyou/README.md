@@ -313,9 +313,30 @@ python /data/tools/juicer/misc/generate_site_positions.py DpnII hap1 ./reference
 4. chromosome size file
 awk 'BEGIN{OFS="\t"}{print $1, $NF}' hap1_DpnII.txt > hap1.chrom.sizes
 
-## prepare inputs
-
+## input.json
+{
+  "hic.assembly_name": "hap1",
+  "hic.chrsz": "/data/huyou/juicer/hap1.chrom.sizes.txt",
+  "hic.fastq": [
+    [
+      {
+        "read_1": "/data/huyou/raw_data/HIC/changshanhuyou-1/changshanhuyou-1_R1.fastq.gz",
+        "read_2": "/data/huyou/raw_data/HIC/changshanhuyou-1/changshanhuyou-1_R1.fastq.gz"
+      }
+    ]
+  ],
+  "hic.no_call_loops": true,
+  "hic.no_call_tads": true,
+  "hic.no_delta": true,
+  "hic.no_slice": true,
+  "hic.reference_index": "/data/huyou/hifiasm_purged_hap1hap2merge/purged_hap1.tar.gz",
+  "hic.restriction_enzymes": [
+    "DpnII"
+  ],
+  "hic.restriction_sites": "/data/huyou/juicer/hap1_DpnII.txt"
+}
 ```
+
 ### run allhic on draft assembly, alternative to juicer
 https://github.com/tangerzhang/ALLHiC/wiki
 ```bash
