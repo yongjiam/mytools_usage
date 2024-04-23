@@ -201,7 +201,7 @@ N100 = 10838, n = 235
 N_count = 0
 Gaps = 0
 ```
-#### run juicer on draft assembly
+### run juicer on draft assembly
 https://github.com/aidenlab/juicer/wiki/Installation#dependencies
 https://bioinformaticsworkbook.org/dataAnalysis/GenomeAssembly/Hybrid/Juicer_Juicebox_3dDNA_pipeline.html#gsc.tab=0
 https://blog.csdn.net/m0_49960764/article/details/118887670
@@ -243,7 +243,7 @@ sudo ln -s /data/tools/juicer/CPU scripts
 bash /data/tools/juicer/scripts/juicer.sh -g huyou_hap1 -z references/hap1.fasta -y hap1_DpnII.txt -p hap1.chrom.sizes -s DpnII -t 30
 
 
-########## run juicer in docker
+######## run juicer in docker
 https://github.com/yongjiam/Juicer-Docker
 ## download test data
    cd /path/to/testdir
@@ -297,7 +297,7 @@ singularity run -B ${PWD}:/data --pwd /data juicer.sif juicer.sh -d /data -g huy
 module load singularity/3.11.4-slurm
 srun --export=all -n 1 -c 64 singularity run -B ${PWD}:/data --pwd /data juicer.sif juicer.sh -d /data -g huyou_hap1 -z references/hap1.fasta -y hap1_DpnII.txt -p hap1.chrom.sizes -s DpnII -t 64
 ```
-#### run hic-pipeline/juicer on draft assembly
+### run hic-pipeline/juicer on draft assembly
 https://github.com/ENCODE-DCC/hic-pipeline
 ```bash
 ## install hic-pipeline
@@ -316,7 +316,7 @@ awk 'BEGIN{OFS="\t"}{print $1, $NF}' hap1_DpnII.txt > hap1.chrom.sizes
 ## prepare inputs
 
 ```
-#### run allhic on draft assembly, alternative to juicer
+### run allhic on draft assembly, alternative to juicer
 https://github.com/tangerzhang/ALLHiC/wiki
 ```bash
 ##installation
@@ -436,7 +436,14 @@ awk '$0 !~ /^#/ {chromosome[$1]=$5} END {for (chr in chromosome) print "Chromoso
 ## 4. Gene model prediction 
 #### gene and repeat elements annotaiton using maker
 ```bash
-conda install
+## installation
+conda create --name maker bioconda::maker bioconda::repeatmodler
+conda activate maker
+conda env export > environment.yml
+
+## run
+BuildDatabase -name hap1 -engine ncbi hap1.fasta
+RepeatModeler -pa 20 -engine ncbi -database hap1 2>&1 | tee hap1_repeatmodeler.log
 ```
 
 #### using gemoma (company annotation does not match genome.fa)
