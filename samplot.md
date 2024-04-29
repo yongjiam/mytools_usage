@@ -1,4 +1,4 @@
-##docker
+## docker
 docker pull csicunam/get_homologues ##pull image form docker hub
 
 docker run -v /tmp:/container/directory imagename ##add/mount shared folder to image
@@ -6,7 +6,7 @@ docker run -v /tmp:/container/directory imagename ##add/mount shared folder to i
 docker run -v /Volumes/Elements5T/Programs/docker_shared/you:/home/you csicunam/get_homologues
 docker run --rm -it csicunam/get_homologues:latest /bin/bash ##run docker image
 
-docker run -dit -P --name GET_HOMO -v ~/container-data:/data csicunam/get_homologues
+docker run -it -P --name GET_HOMO -v ~/container-data:/data csicunam/get_homologues
   
 #list all images created
 docker ps -a
@@ -15,7 +15,7 @@ docker attach ID(first four digit of container ID)
 ## quit docker
 Exit
 
-####build docker image from docker file, then create singularity image sif from docker files
+#### build docker image from docker file, then create singularity image sif from docker files
 >download docker file Dockerfiler, then run:
 docker build -t local/get_homologues .
 >this will create docker image in docker /local
