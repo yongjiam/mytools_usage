@@ -87,6 +87,10 @@ docker commit b16d1da08f93 yongmaker:latest
 docker commit b16d1da08f93 yongjia111/yongmaker:latest
 
 ```
+### delete a docker image
+docker rmi IMAGE-ID ## if conflict then:
+docker rmi IMAGE-NAME:TAG
+
 #### notes:
 > docker images in linux are located at /var/lib/docker
 > sudo apt clean ## remove some old packages
