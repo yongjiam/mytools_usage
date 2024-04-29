@@ -63,6 +63,24 @@ for i in $(ls --color=never -d */);do SRR=$(echo $i | cut -d "_" -f1); SAM=$(gre
 for i in $(ls --color=never -d */);do SRR=$(basename $i); SAM=$(grep -m1 $SRR ../filereport_read_run_PRJNA889532_tsv.txt | awk '{print
 $NF}');echo $SAM $SRR $(grep -m1 HORVU.MOREX.r3.4HG0409010.1 $i"abundance.tsv");done > tong_PRJNA889532_tpm.tsv
 ```
+## merge multiple samples
+```bash
+for i in $(ls --color=never -d */);do SRR=$(basename $i); (sed "s/est_counts/$SRR/" $i"abundance.tsv" > $i"abundance.count");done
+for i in $(ls --color=never -d */);do SRR=$(basename $i); (sed "s/tpm/$SRR/" $i"abundance.tsv" > $i"abundance.tpm");done
+
+ls --color=never -d */|while read R;do (awk '{print $4}' $R"abundance.count" > $(basename $R)".count");done
+ls --color=never -d */|while read R;do (awk '{print $5}' $R"abundance.tpm" > $(basename $R)".tpm");done
+
+ls --color=never -d */|while read R;do (awk '{print $1}' $R"abundance.tsv" > "0gene.count");done
+ls --color=never -d */|while read R;do (awk '{print $1}' $R"abundance.tpm" > "0gene.tpm");done
+
+paste -d '\t' *.count > all_samples_count.tsv
+paste -d '\t' *.tpm > all_samples_tpm.tsv
+
+rm *.count
+rm *.tpm
+```
+
 ### notes on multi-mapped reads
 https://www.sciencedirect.com/science/article/pii/S2001037020303032 \
 https://www.nature.com/articles/nbt.3519 \
