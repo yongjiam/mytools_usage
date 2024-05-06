@@ -336,6 +336,77 @@ awk 'BEGIN{OFS="\t"}{print $1, $NF}' hap1_DpnII.txt > hap1.chrom.sizes
   "hic.restriction_sites": "/data/huyou/juicer/hap1_DpnII.txt"
 }
 ```
+### another hic-pipeline that works
+https://github.com/WarrenLab/hic-scaffolding-nf
+```bash
+## install
+conda install nextflow
+## conda.yml
+name: hic-scaffolding-nf
+channels:
+  - defaults
+  - bioconda
+  - conda-forge
+dependencies:
+  - chromap
+  - yahs
+  - assembly-stats
+  - samtools
+  - openjdk
+
+## nextflow_hap1.sh
+nextflow run WarrenLab/hic-scaffolding-nf \
+    --contigs /data/huyou/hifiasm_purged_hap1hap2merge/purged_hap1.fa \
+    --r1Reads /data/huyou/raw_data/HIC/changshanhuyou-1/changshanhuyou-1_R1.fastq.gz \
+    --r2Reads /data/huyou/raw_data/HIC/changshanhuyou-1/changshanhuyou-1_R2.fastq.gz \
+    --juicer-tools-jar /data/huyou/juicer2/juicer_tools_1.22.01.jar \
+    --extra-yahs-args "-e GATC"
+
+## nextflow.config
+process {
+    memory = '100 GB'
+    time = '1d'
+
+    withName: 'CHROMAP_ALIGN' {
+        cpus = 30
+        publishDir = [ path: 'out_hifionly_hap2/chromap', mode: 'copy' ]
+    }
+    withName: 'YAHS_SCAFFOLD' { publishDir = [ path: 'out_hifionly_hap2/scaffolds', mode: 'copy' ] }
+    withName: 'JUICER_PRE' { publishDir = [ path: 'out_hifionly_hap2/juicebox_input', mode: 'copy' ] }
+    withName: 'PRINT_VERSIONS' { publishDir = [ path: 'out_hifionly_hap2/', mode: 'copy' ] }
+    withName: 'ASSEMBLY_STATS' { publishDir = [ path: 'out_hifionly_hap2/scaffolds', mode: 'copy' ] }
+}
+
+profiles {
+    lewis {
+        process {
+            executor = 'slurm'
+            queue = 'BioCompute'
+            clusterOptions = '--account=warrenlab'
+            conda = '/storage/hpc/group/warrenlab/users/esrbhb/mambaforge/envs/chromap-yahs'
+        }
+
+        conda.enabled = true
+
+        params {
+            juicerToolsJar = '/storage/htc/warrenlab/users/esrbhb/software/juicer_tools_1.11.09_jcuda.0.8.jar'
+        }
+    }
+
+    conda {
+        process.conda = "$baseDir/conda.yml"
+        conda.enabled = true
+    }
+}
+
+manifest {
+    defaultBranch = 'main'
+    homePage = 'https://github.com/WarrenLab/hic-scaffolding-nf'
+    author = 'Edward S. Rice'
+    version = '0.0.1'
+}
+```
+<img src="./plots/scaffold_align_to_SWO.png" alt="scaffolds to SWO" width="600">
 
 ### run allhic on draft assembly, alternative to juicer
 https://github.com/tangerzhang/ALLHiC/wiki
@@ -371,12 +442,8 @@ mv genome.liftoff.gff3 gmap.gff3
 perl gmap2AlleleTable.pl SWO.v3.0.gene.model.gff3 ## modified perl script
 
 ALLHiC_prune -i Allele.ctg.table -b sample.clean.bam -r genome.fasta
-
 ALLHiC_partition -b prunning.bam -r genome.fasta -e AAGCTT -k 9
-
 ALLHiC_rescue -b sample.clean.bam -r draft.asm.fasta -c clusters.txt -i counts_RE.txt
-
-
 ```
 
 ## 3. Haplotype scaffolding and genome stats
