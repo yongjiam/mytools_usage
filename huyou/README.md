@@ -409,6 +409,8 @@ manifest {
 ```
 <img src="./plots/scaffold_align_to_SWO.png" alt="scaffolds to SWO" width="600">
 
+### hic-pro
+https://github.com/nservant/HiC-Pro
 ### run allhic on draft assembly, alternative to juicer
 https://github.com/tangerzhang/ALLHiC/wiki
 ```bash
