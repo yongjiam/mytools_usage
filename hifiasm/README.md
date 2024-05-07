@@ -8,11 +8,11 @@ srun --export=all -n 1 -c 64 singularity exec --bind ${PWD}:${PWD} hifiasm_lates
 	--h2 ./HIC/changshanhuyou-1_R2.fq.gz \
 	hifi_ccs.fastq
 ```
-If parental data is available, \*dip.hap\*.p_ctg.gfa produced in trio-binning mode should be always preferred. \
+>If parental data is available, \*dip.hap\*.p_ctg.gfa produced in trio-binning mode should be always preferred. \
 
-Otherwise if Hi-C data is available, \*hic.hap\*.p_ctg.gfa produced in Hi-C mode is the best choice. Both trio-binning mode and Hi-C mode generate fully-phased assemblies. \
+>Otherwise if Hi-C data is available, \*hic.hap\*.p_ctg.gfa produced in Hi-C mode is the best choice. Both trio-binning mode and Hi-C mode generate fully-phased assemblies. \
 
-If you only have HiFi reads, hifiasm in default outputs \*bp.hap\*.p_ctg.gfa. The primary/alternate assemblies can be also produced by using --primary. All these HiFi-only assemblies are not fully-phased. See blog here for more details.
+>If you only have HiFi reads, hifiasm in default outputs \*bp.hap\*.p_ctg.gfa. The primary/alternate assemblies can be also produced by using --primary. All these HiFi-only assemblies are not fully-phased. See blog here for more details.
 
 ### purging duplication level with -l and -s
 ```bash
@@ -37,15 +37,15 @@ srun --export=all -n 1 -c 16 singularity exec --bind ${PWD}:${PWD} ./containers/
 ```
 ### hifiasm log file interpretation
 https://hifiasm.readthedocs.io/en/latest/interpreting-output.html#loginter
-```
+
 Hifiasm prints several information for quick debugging, including:
 
-k-mer plot: showing how many k-mers appear a certain number of times. For homozygous samples, there should be one peak around read coverage. For heterozygous samples, there should two peaks, where the smaller peak is around the heterozygous read coverage and the larger peak is around the homozygous read coverage. For example, issue10 indicates the heterozygous read coverage and the homozygous read coverage are 28 and 57, respectively. Issue49 is another good example. Weird k-mer plot like issue93 is often caused by insufficient coverage or presence of contaminants.
+>k-mer plot: showing how many k-mers appear a certain number of times. For homozygous samples, there should be one peak around read coverage. For heterozygous samples, there should two peaks, where the smaller peak is around the heterozygous read coverage and the larger peak is around the homozygous read coverage. For example, issue10 indicates the heterozygous read coverage and the homozygous read coverage are 28 and 57, respectively. Issue49 is another good example. Weird k-mer plot like issue93 is often caused by insufficient coverage or presence of contaminants.
 
-homozygous coverage: coverage threshold for homozygous reads. Hifiasm prints it as: [M::purge_dups] homozygous read coverage threshold: X. If it is not around homozygous coverage, the final assembly might be either too large or too small. To fix this issue, please set --hom-cov to homozygous coverage.
+>homozygous coverage: coverage threshold for homozygous reads. Hifiasm prints it as: [M::purge_dups] homozygous read coverage threshold: X. If it is not around homozygous coverage, the final assembly might be either too large or too small. To fix this issue, please set --hom-cov to homozygous coverage.
 
-number of het/hom bases: how many bases in unitig graph are heterozygous and homozygous during Hi-C phased assembly. Hifiasm prints it as: [M::stat] # heterozygous bases: X; # homozygous bases: Y. Given a heterozygous sample, if there are much more homozygous bases than heterozygous bases, hifiasm fails to identify correct coverage threshold for homozygous reads. In this case, please set --hom-cov to homozygous coverage.
-```
+>number of het/hom bases: how many bases in unitig graph are heterozygous and homozygous during Hi-C phased assembly. Hifiasm prints it as: [M::stat] # heterozygous bases: X; # homozygous bases: Y. Given a heterozygous sample, if there are much more homozygous bases than heterozygous bases, hifiasm fails to identify correct coverage threshold for homozygous reads. In this case, please set --hom-cov to homozygous coverage.
+
 ### hifiasm -h
 ```
 Usage: hifiasm [options] <in_1.fq> <in_2.fq> <...>
