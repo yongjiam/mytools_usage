@@ -20,3 +20,14 @@ conda activate base
 srun --export=all -n 1 -c 10 bam2fastq --split-barcodes -o out \
 WBT_m64268e_230112_082652.hifi_reads.bam WBT_m64292e_230115_234637.hifi_reads.bam WBT_m64292e_230117_084848.hifi_reads.bam WBT_m64292e_230118_175426.hifi_reads.bam
 ```
+### 3.hifiasm assembling
+```
+module load samtools/1.15--h3843a85_0
+module load singularity/3.11.4-slurm
+#srun --export=all -n 1 -c 128  samtools fastq -@ 128 ./ccs/m64257e_211030_130656.ccs.bam > hifi_ccs.fastq
+srun --export=all -n 1 -c 64 singularity exec /scratch/pawsey0399/yjia/huyou/containers/hifiasm_latest.sif hifiasm -o wbt.asm -t 64 -l0 \
+	--primary \
+	--h1 /scratch/pawsey0399/yjia/WBT/Sample_8_WBT_S8_R1_001.trimmed.fq.gz \
+	--h2 /scratch/pawsey0399/yjia/WBT/Sample_8_WBT_S8_R2_001.trimmed.fq.gz \
+	/scratch/pawsey0399/yjia/WBT/hifi_reads/out.fastq.gz
+```
