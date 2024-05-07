@@ -25,7 +25,7 @@ hifiasm -o CHM13.asm -t32 -l0 CHM13-HiFi.fa.gz 2> CHM13.asm.log
 # Assemble heterozygous genomes with built-in duplication purging (-s 0.55)
 hifiasm -o HG002.asm -t32 HG002-file1.fq.gz HG002-file2.fq.gz
 ```
-### hifiasm misidentifies coverage threshold for homozygous reads
+### hifiasm misidentifies coverage threshold for homozygous reads, use -k or --hom-cov to fix this
 ```bash
 ## check hifiasm log file, hifiasm use -k 51 by default
 ## use -k to specify the k-mer length which will correct homozygous read coverage, heterozygous coverage 2x homozygous coverage
