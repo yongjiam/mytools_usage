@@ -35,6 +35,17 @@ srun --export=all -n 1 -c 16 singularity exec --bind ${PWD}:${PWD} ./containers/
 	-k 19 \
 	hifi_ccs.fastq
 ```
+### hifiasm log file interpretation
+https://hifiasm.readthedocs.io/en/latest/interpreting-output.html#loginter
+```
+Hifiasm prints several information for quick debugging, including:
+
+k-mer plot: showing how many k-mers appear a certain number of times. For homozygous samples, there should be one peak around read coverage. For heterozygous samples, there should two peaks, where the smaller peak is around the heterozygous read coverage and the larger peak is around the homozygous read coverage. For example, issue10 indicates the heterozygous read coverage and the homozygous read coverage are 28 and 57, respectively. Issue49 is another good example. Weird k-mer plot like issue93 is often caused by insufficient coverage or presence of contaminants.
+
+homozygous coverage: coverage threshold for homozygous reads. Hifiasm prints it as: [M::purge_dups] homozygous read coverage threshold: X. If it is not around homozygous coverage, the final assembly might be either too large or too small. To fix this issue, please set --hom-cov to homozygous coverage.
+
+number of het/hom bases: how many bases in unitig graph are heterozygous and homozygous during Hi-C phased assembly. Hifiasm prints it as: [M::stat] # heterozygous bases: X; # homozygous bases: Y. Given a heterozygous sample, if there are much more homozygous bases than heterozygous bases, hifiasm fails to identify correct coverage threshold for homozygous reads. In this case, please set --hom-cov to homozygous coverage.
+```
 ### hifiasm -h
 ```
 Usage: hifiasm [options] <in_1.fq> <in_2.fq> <...>
