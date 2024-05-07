@@ -454,6 +454,8 @@ ALLHiC_rescue -b sample.clean.bam -r draft.asm.fasta -c clusters.txt -i counts_R
 #### scaffolding using ragtag
 https://github.com/malonge/RagTag
 ```bash
+# install with conda
+conda install -c bioconda ragtag
 ## ragtag.sh
 QUERY1=/data/huyou/minimap2_haps/huyou.hap1.genome.fa
 QUERY2=/data/huyou/minimap2_haps/huyou_hap2.genome.fa
