@@ -12,3 +12,4 @@ unlink python
 ln -s python3.5 python
 # you should now have python -> python3.5 
 ```
+<img src="setonix_conda_bin.png" alt="miniconda3 python" width="600">
