@@ -27,8 +27,8 @@ hifiasm -o HG002.asm -t32 HG002-file1.fq.gz HG002-file2.fq.gz
 ```
 ### hifiasm misidentifies coverage threshold for homozygous reads
 ```bash
-## check hifiasm log file
-## use -k to manually set homozygous read coverage, heterozygous coverage 2x homozygous coverage
+## check hifiasm log file, hifiasm use -k 51 by default
+## use -k to specify the k-mer length which will correct homozygous read coverage, heterozygous coverage 2x homozygous coverage
 srun --export=all -n 1 -c 16 singularity exec --bind ${PWD}:${PWD} ./containers/hifiasm_latest.sif hifiasm -o huyou_k19.asm -t 16 \
 	--h1 ./HIC/changshanhuyou-1_R1.fq.gz \
 	--h2 ./HIC/changshanhuyou-1_R2.fq.gz \
