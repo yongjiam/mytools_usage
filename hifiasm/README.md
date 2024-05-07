@@ -8,9 +8,9 @@ srun --export=all -n 1 -c 64 singularity exec --bind ${PWD}:${PWD} hifiasm_lates
 	--h2 ./HIC/changshanhuyou-1_R2.fq.gz \
 	hifi_ccs.fastq
 ```
->If parental data is available, \*dip.hap\*.p_ctg.gfa produced in trio-binning mode should be always preferred. \
+>If parental data is available, \*dip.hap\*.p_ctg.gfa produced in trio-binning mode should be always preferred.
 
->Otherwise if Hi-C data is available, \*hic.hap\*.p_ctg.gfa produced in Hi-C mode is the best choice. Both trio-binning mode and Hi-C mode generate fully-phased assemblies. \
+>Otherwise if Hi-C data is available, \*hic.hap\*.p_ctg.gfa produced in Hi-C mode is the best choice. Both trio-binning mode and Hi-C mode generate fully-phased assemblies.
 
 >If you only have HiFi reads, hifiasm in default outputs \*bp.hap\*.p_ctg.gfa. The primary/alternate assemblies can be also produced by using --primary. All these HiFi-only assemblies are not fully-phased. See blog here for more details.
 
