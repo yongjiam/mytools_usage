@@ -31,3 +31,5 @@ srun --export=all -n 1 -c 64 singularity exec /scratch/pawsey0399/yjia/huyou/con
 	--h2 /scratch/pawsey0399/yjia/WBT/Sample_8_WBT_S8_R2_001.trimmed.fq.gz \
 	/scratch/pawsey0399/yjia/WBT/hifi_reads/out.fastq.gz
 ```
+### 4.purge duplication
+### 5.hic scaffolding 
