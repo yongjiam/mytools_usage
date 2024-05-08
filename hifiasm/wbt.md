@@ -121,6 +121,7 @@ manifest {
 ```
 #### run hic pipeline
 ```
+##hicpipe.conf
 module load singularity/3.11.4-slurm
 IMAGE=/scratch/pawsey0399/yjia/WBT/yjhicpipe.sif
 srun --export=all -n 1 -c 64 singularity exec $IMAGE bash nextflow.sh
