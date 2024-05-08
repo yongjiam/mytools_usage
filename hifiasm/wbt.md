@@ -126,3 +126,45 @@ module load singularity/3.11.4-slurm
 IMAGE=/scratch/pawsey0399/yjia/WBT/yjhicpipe.sif
 srun --export=all -n 1 -c 64 singularity exec $IMAGE bash nextflow.sh
 ```
+## 6.genome statistics
+### hifi contigs
+```
+stats for wbt_hifionly.asm.p_ctg.fasta
+sum = 4271963213, n = 1838, ave = 2324245.49, largest = 76886278
+N50 = 12937035, n = 91
+N60 = 9705932, n = 130
+N70 = 7090203, n = 182
+N80 = 5120947, n = 253
+N90 = 2896153, n = 360
+N100 = 672, n = 1838
+N_count = 0
+Gaps = 0
+```
+### busco contigs
+busco.conf
+```
+#!/bin/bash --login
+
+#SBATCH --job-name=busco
+#SBATCH --partition=work
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=64
+#SBATCH --time=6:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --export=NONE
+
+module load singularity/3.11.4-slurm
+BUSCO=/scratch/pawsey0399/yjia/huyou/containers/BUSCO.sif
+
+srun --export=all -n 1 -c 64 singularity exec $BUSCO busco \
+	-i /scratch/pawsey0399/yjia/WBT/hifionly/wbt_hifionly.asm.p_ctg.fasta \
+	-o wbt_hifionly_busco \
+	-m genome \
+	-l /scratch/pawsey0399/yjia/huyou/busco/eukaryota_odb10 \
+	--cpu 64 \
+	--offline
+```
+results
+```
+```
