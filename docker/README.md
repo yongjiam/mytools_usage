@@ -29,7 +29,41 @@ docker stop container_id
 lsb_release -a ## get linux system version\
 ldd /data/tools/MrBayes/src/mb ## get requried packages for the mb command
 ```
-### build docker image, mrbayes
+## modify a docker image
+```
+## pull juicer docker image
+docker run aidenlab/juicer:latest
+docker images
+
+## run docker image interactively
+docker run -it -v ${PWD}:/data --entrypoint=/bin/bash aidenlab/juicer:latest ## use entrypoint to stop automatic run
+
+## make your changes
+cd /data ## ln softlink not recoganized in docker mount, have to copy files
+mkdir /aidenlab && cd /aidenlab
+ln -s /data/tools/juicer/CPU scripts ## the program looks for /aidenlab/scripts/common/countligations.sh: No such file or directory
+
+# Exit the container when you're done
+exit
+
+# Get the ID of the container you ran
+docker ps -l ## get ID
+
+# Commit the changes to a new Docker image
+docker commit b16d1da08f93 aidenlab/juicer:yongjia
+
+## build singularity image from docker
+singularity build juicer.sif docker-daemon://aidenlab/juicer:yongjia
+```
+## push a local docker image to dockerhub
+```
+## push local docker image to docker hub
+docker login
+docker info|grep Username
+docker tag yongmaker yongjia111/yongmaker:latest ### use docker hub account name yongjia111
+docker push yongjia111/yongmaker:latest
+```
+### Dockerfile, mrbayes
 ```bash
 # Use the official Ubuntu 20.04 LTS image as the base image
 FROM ubuntu:20.04
@@ -60,7 +94,32 @@ ENV PATH="/app/src:${PATH}"
 # Specify the default command to run when the container starts
 CMD ["/bin/bash"]
 ```
-### build docker image, miniconda
+### Dockerfile hic-pipeline
+```
+# Use a base image with Conda installed
+FROM continuumio/miniconda3:latest
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the Conda environment YAML file into the container
+COPY hic_pipeline.yml .
+
+# Create the Conda environment based on the YAML file
+RUN conda env create -f hic_pipeline.yml
+
+# Activate the Conda environment
+SHELL ["conda", "run", "-n", "hic-scaffolding-nf", "/bin/bash", "-c"]
+
+# Any additional commands you need can go here
+# For example, you might want to set up some environment variables or copy your application code
+# Install additional packages into the Conda environment
+RUN conda install -n hic-scaffolding-nf -c conda-forge nextflow
+
+# Set the command to run your application
+CMD ["/bin/bash"]
+```
+### Dockerfile old, miniconda
 ```bash
 ##Dockerfile
 # Use a base image
@@ -98,37 +157,23 @@ COPY . .
 # Set the default command to execute when the container starts
 CMD ["/bin/bash"]
 ```
-## modify a docker image
+### Dockerfile, rMVP
 ```
-## pull juicer docker image
-docker run aidenlab/juicer:latest
-docker images
+# Use an official R base image from Docker Hub
+FROM r-base:latest
 
-## run docker image interactively
-docker run -it -v ${PWD}:/data --entrypoint=/bin/bash aidenlab/juicer:latest ## use entrypoint to stop automatic run
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev
 
-## make your changes
-cd /data ## ln softlink not recoganized in docker mount, have to copy files
-mkdir /aidenlab && cd /aidenlab
-ln -s /data/tools/juicer/CPU scripts ## the program looks for /aidenlab/scripts/common/countligations.sh: No such file or directory
+# Install rMVP package
+RUN R -e "install.packages('rMVP', repos='http://cran.rstudio.com/')"
 
-# Exit the container when you're done
-exit
+# Set the working directory
+WORKDIR /app
 
-# Get the ID of the container you ran
-docker ps -l ## get ID
-
-# Commit the changes to a new Docker image
-docker commit b16d1da08f93 aidenlab/juicer:yongjia
-
-## build singularity image from docker
-singularity build juicer.sif docker-daemon://aidenlab/juicer:yongjia
-```
-## push a local docker image to dockerhub
-```
-## push local docker image to docker hub
-docker login
-docker info|grep Username
-docker tag yongmaker yongjia111/yongmaker:latest ### use docker hub account name yongjia111
-docker push yongjia111/yongmaker:latest
+# Start R
+CMD ["R"]
 ```
