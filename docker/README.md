@@ -124,3 +124,11 @@ docker commit b16d1da08f93 aidenlab/juicer:yongjia
 ## build singularity image from docker
 singularity build juicer.sif docker-daemon://aidenlab/juicer:yongjia
 ```
+## push a local docker image to dockerhub
+```
+## push local docker image to docker hub
+docker login
+docker info|grep Username
+docker tag yongmaker yongjia111/yongmaker:latest ### use docker hub account name yongjia111
+docker push yongjia111/yongmaker:latest
+```
