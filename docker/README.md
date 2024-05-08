@@ -98,3 +98,29 @@ COPY . .
 # Set the default command to execute when the container starts
 CMD ["/bin/bash"]
 ```
+## modify a docker image
+```
+## pull juicer docker image
+docker run aidenlab/juicer:latest
+docker images
+
+## run docker image interactively
+docker run -it -v ${PWD}:/data --entrypoint=/bin/bash aidenlab/juicer:latest ## use entrypoint to stop automatic run
+
+## make your changes
+cd /data ## ln softlink not recoganized in docker mount, have to copy files
+mkdir /aidenlab && cd /aidenlab
+ln -s /data/tools/juicer/CPU scripts ## the program looks for /aidenlab/scripts/common/countligations.sh: No such file or directory
+
+# Exit the container when you're done
+exit
+
+# Get the ID of the container you ran
+docker ps -l ## get ID
+
+# Commit the changes to a new Docker image
+docker commit b16d1da08f93 aidenlab/juicer:yongjia
+
+## build singularity image from docker
+singularity build juicer.sif docker-daemon://aidenlab/juicer:yongjia
+```
