@@ -62,6 +62,7 @@ docker login
 docker info|grep Username
 docker tag yongmaker yongjia111/yongmaker:latest ### use docker hub account name yongjia111
 docker push yongjia111/yongmaker:latest
+singularity build yongmaker.sif docker://yongjia111/yongmaker:latest
 ```
 ### Dockerfile, mrbayes
 ```bash
