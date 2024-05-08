@@ -57,3 +57,69 @@ srun --export=all -n 1 -c 128 get_seqs -e dups.bed $hap_asm
 ##step4 Merge hap.fa and $hap_asm and redo the above steps to get a decent haplotig set
 ```
 ### 5.hic scaffolding 
+```
+## build singularity image
+singularity build yjhicpipe.sif docker://yongjia111/yjhicpipe:latest
+
+## nextflow.sh
+. /opt/conda/etc/profile.d/conda.sh
+conda activate hic-scaffolding-nf
+export NXF_HOME=/scratch/pawsey0399/yjia/WBT/hifionly/
+nextflow run WarrenLab/hic-scaffolding-nf \
+    -c /scratch/pawsey0399/yjia/WBT/hifionly/nextflow.config \
+    --contigs /scratch/pawsey0399/yjia/WBT/hifionly/wbt_hifionly.asm.p_ctg.fasta \
+    --r1Reads /scratch/pawsey0399/yjia/WBT/Sample_8_WBT_S8_R1_001.trimmed.fq.gz \
+    --r2Reads /scratch/pawsey0399/yjia/WBT/Sample_8_WBT_S8_R2_001.trimmed.fq.gz \
+    --juicer-tools-jar /scratch/pawsey0399/yjia/WBT/juicer_tools_1.22.01.jar \
+    --extra-yahs-args "-e GATC"
+## nextflow.config
+process {
+    memory = '490 GB'
+    time = '1d'
+
+    withName: 'CHROMAP_ALIGN' {
+        cpus = 64
+        publishDir = [ path: 'out_hifionly/chromap', mode: 'copy' ]
+    }
+    withName: 'YAHS_SCAFFOLD' { publishDir = [ path: 'out_hifionly/scaffolds', mode: 'copy' ] }
+    withName: 'JUICER_PRE' { publishDir = [ path: 'out_hifionly/juicebox_input', mode: 'copy' ] }
+    withName: 'PRINT_VERSIONS' { publishDir = [ path: 'out_hifionly/', mode: 'copy' ] }
+    withName: 'ASSEMBLY_STATS' { publishDir = [ path: 'out_hifionly/scaffolds', mode: 'copy' ] }
+}
+
+profiles {
+    lewis {
+        process {
+            executor = 'slurm'
+            queue = 'BioCompute'
+            clusterOptions = '--account=warrenlab'
+            conda = '/storage/hpc/group/warrenlab/users/esrbhb/mambaforge/envs/chromap-yahs'
+        }
+
+        conda.enabled = true
+
+        params {
+            juicerToolsJar = '/storage/htc/warrenlab/users/esrbhb/software/juicer_tools_1.11.09_jcuda.0.8.jar'
+        }
+    }
+
+    conda {
+        process.conda = "$baseDir/conda.yml"
+        conda.enabled = true
+    }
+}
+
+manifest {
+    defaultBranch = 'main'
+    homePage = 'https://github.com/WarrenLab/hic-scaffolding-nf'
+    author = 'Edward S. Rice'
+    version = '0.0.1'
+}
+
+## run hic pipeline
+module load singularity/3.11.4-slurm
+IMAGE=/scratch/pawsey0399/yjia/WBT/yjhicpipe.sif
+srun --export=all -n 1 -c 64 singularity exec $IMAGE bash nextflow.sh
+
+
+```
