@@ -1,3 +1,20 @@
+## change docker image storage location in ubuntu
+https://www.guguweb.com/2019/02/07/how-to-move-docker-data-directory-to-another-location-on-ubuntu/
+```
+sudo service docker stop
+
+mkdir /data/tools/docker
+sudo nano /etc/docker/daemon.json
+## /etc/docker/daemon.json
+{
+  "data-root": "/data/tools/docker"
+}
+##
+sudo rsync -aP /var/lib/docker/ /path/to/your/docker
+sudo mv /var/lib/docker /var/lib/docker.old
+sudo service docker start
+sudo rm -rf /var/lib/docker.old
+```
 ## notes on docker usage
 ```bash
 docker images\
