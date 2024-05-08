@@ -57,11 +57,10 @@ srun --export=all -n 1 -c 128 get_seqs -e dups.bed $hap_asm
 ##step4 Merge hap.fa and $hap_asm and redo the above steps to get a decent haplotig set
 ```
 ### 5.hic scaffolding 
-```
-## build singularity image
+#### build singularity image
 singularity build yjhicpipe.sif docker://yongjia111/yjhicpipe:latest
 
-## nextflow.sh
+#### nextflow.sh
 . /opt/conda/etc/profile.d/conda.sh
 conda activate hic-scaffolding-nf
 export NXF_HOME=/scratch/pawsey0399/yjia/WBT/hifionly/
@@ -72,7 +71,7 @@ nextflow run WarrenLab/hic-scaffolding-nf \
     --r2Reads /scratch/pawsey0399/yjia/WBT/Sample_8_WBT_S8_R2_001.trimmed.fq.gz \
     --juicer-tools-jar /scratch/pawsey0399/yjia/WBT/juicer_tools_1.22.01.jar \
     --extra-yahs-args "-e GATC"
-## nextflow.config
+#### nextflow.config
 process {
     memory = '490 GB'
     time = '1d'
@@ -116,10 +115,8 @@ manifest {
     version = '0.0.1'
 }
 
-## run hic pipeline
+#### run hic pipeline
 module load singularity/3.11.4-slurm
 IMAGE=/scratch/pawsey0399/yjia/WBT/yjhicpipe.sif
 srun --export=all -n 1 -c 64 singularity exec $IMAGE bash nextflow.sh
 
-
-```
