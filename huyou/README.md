@@ -530,6 +530,17 @@ awk '$0 !~ /^#/ {chromosome[$1]=$5} END {for (chr in chromosome) print "Chromoso
 ## 4. Gene model prediction 
 #### download related species data
 ```
+## ancestor species
+SWO	10	Citrus_sinensis
+JZ	4141	Citrus_reticulata
+RL	4465	Citrus_medica
+HWB	10	Citrus_grandis_wanbaiyou
+AZM	331	Citrus_australasica
+GCF	94	Citrus_clementina
+ZGYCC	205	Citrus_ichangensis
+ZK	10	Poncirus_trifoliata
+MSYG	160	Citrus_mangshanensis
+
 ##genome
 http://citrus.hzau.edu.cn/data/Genome_info/HWB.v1.0/HWB.v1.0.genome.fa
 http://citrus.hzau.edu.cn/data/Genome_info/SWO.v3.0/SWO.v3.0.genome.fa
@@ -580,11 +591,9 @@ http://citrus.hzau.edu.cn/data/Genome_info/HZYT.v1.0/HZYT.v1.0.gene.model.gff3
 ####EDTA+REPEATMASKER annotate TE
 ###EDTA2.2.0 INSTALL
 singularity pull docker://quay.io/biocontainers/edta:2.2.0--hdfd78af_1
-###download congeneric species' cds 
-wget https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-58/fasta/pisum_sativum/cds/Pisum_sativum.Pisum_sativum_v1a.cds.all.fa.gz
-wget https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-58/fasta/medicago_truncatula/cds/Medicago_truncatula.MedtrA17_4.0.cds.all.fa.gz
-wget https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-58/fasta/trifolium_pratense/cds/Trifolium_pratense.Trpr.cds.all.fa.gz
-wget https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-58/fasta/glycine_max/cds/Glycine_max.Glycine_max_v2.1.cds.all.fa.gz
+
+###download congeneric species' all cds 
+selected species: HKC, SWO, 
 gunzip *.gz
 cat *.fa >homo.cds
 srun --export=all -n 1 -c 128 cd-hit -i homo.cds -o homo.cdhit.cds -c 0.8 -n 4 -T 128 -M 0
