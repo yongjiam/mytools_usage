@@ -127,7 +127,7 @@ IMAGE=/scratch/pawsey0399/yjia/WBT/yjhicpipe.sif
 srun --export=all -n 1 -c 64 singularity exec $IMAGE bash nextflow.sh
 ```
 WBT Hic_heatmap
-<img src="./WBT.HiCImage.svg" alt="WBT hic heatmap" width="600">
+<img src="./WBT.HiCImage.svg" alt="WBT hic heatmap" width="1000">
 ## 6.genome statistics
 ### hifi contigs
 ```
