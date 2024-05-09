@@ -126,6 +126,8 @@ module load singularity/3.11.4-slurm
 IMAGE=/scratch/pawsey0399/yjia/WBT/yjhicpipe.sif
 srun --export=all -n 1 -c 64 singularity exec $IMAGE bash nextflow.sh
 ```
+WBT Hic_heatmap
+<img src="./WBT.HiCImage.svg" alt="WBT hic heatmap" width="600">
 ## 6.genome statistics
 ### hifi contigs
 ```
@@ -167,4 +169,19 @@ srun --export=all -n 1 -c 64 singularity exec $BUSCO busco \
 ```
 results
 ```
+	C:98.4%[S:83.9%,D:14.5%],F:1.2%,M:0.4%,n:255
+	251	Complete BUSCOs (C)
+	214	Complete and single-copy BUSCOs (S)
+	37	Complete and duplicated BUSCOs (D)
+	3	Fragmented BUSCOs (F)
+	1	Missing BUSCOs (M)
+	255	Total BUSCO groups searched
+
+Assembly Statistics:
+	1838	Number of scaffolds
+	1838	Number of contigs
+	4271963213	Total length
+	0.000%	Percent gaps
+	12 MB	Scaffold N50
+	12 MB	Contigs N50
 ```
