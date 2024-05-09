@@ -590,7 +590,7 @@ http://citrus.hzau.edu.cn/data/Genome_info/HZYT.v1.0/HZYT.v1.0.gene.model.gff3
 ```
 ####EDTA+REPEATMASKER annotate TE
 ###EDTA2.2.0 INSTALL
-singularity pull docker://quay.io/biocontainers/edta:2.2.0--hdfd78af_1
+singularity pull EDTA.sif docker://oushujun/edta:2.0.0
 
 ###download congeneric species' all cds 
 selected species: HKC, SWO, 
