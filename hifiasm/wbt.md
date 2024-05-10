@@ -245,27 +245,26 @@ cat wild_genome_gff_id_match |while read R1 R2;do echo $(grep $R2 all_gff_id) $(
 /scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1/wild_gff_genome_file_id
 cat ../wild_gff_genome_file_id|while read R1 R2;do echo "s=own i=$R1 a=$PWD/$R1 g=$PWD/$R2 \\";done > ../gemoma_lines
 
-## gemoma.conf
+## gemoma2.conf
 #!/bin/bash --login
 
 #SBATCH --job-name=gemoma
-#SBATCH --partition=long
+#SBATCH --partition=highmem
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=128
-#SBATCH --time=96:00:00
+#SBATCH --time=24:00:00
 #SBATCH --account=pawsey0399
 #SBATCH --export=NONE
 
-GEMOMAP=/scratch/pawsey0399/yjia/tools/gemoma-1.9-0/GeMoMa-1.9.jar
+#GEMOMAP=/scratch/pawsey0399/yjia/tools/gemoma-1.9-0/GeMoMa-1.9.jar
+GEMOMAP="/scratch/pawsey0399/yjia/tools/gemoma18/GeMoMa-1.8.jar"
 srun --export=all -n 1 -c 128   java -jar $GEMOMAP CLI GeMoMaPipeline threads=128 tblastn=False \
 	AnnotationFinalizer.r=SIMPLE AnnotationFinalizer.p=WBT01G \
 	p=false \
 	o=true \
 	t=out_JBAT.FINAL.fa \
-	outdir=output_gemoma \
-	s=own i=WBDC199.gff.gz a=/scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1/wild_genome_gff/WBDC199.gff.gz g=/scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1/wild_genome_gff/211008_WBDC_199_pseudomolecules_and_unplaced_contigs_CPclean.fasta.gz \
-.
-.
-.
+	outdir=output_gemoma2 \
+	s=own i=morex a=/scratch/pawsey0399/yjia/shunlin/morexV3/all.gff3.gz g=/scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta.gz \
+	s=own i=B1K-04-12.gff.gz a=/scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1/wild_genome_gff/B1K-04-12.gff.gz g=/scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1/wild_genome_gff/220812_FT11_pseudomolecules_and_unplaced_contigs_CPclean.fasta.gz
 ```
