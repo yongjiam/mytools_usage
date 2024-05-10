@@ -153,7 +153,7 @@ srun --export=all -n 1 -c 64 singularity exec $IMAGE bash juicer_post_review.sh
 ###output
 out_JBAT_review.FINAL.fa
 
-## ragtag to assign and orient scaffolds to chromosomes
+## ragtag to assign and orient scaffolds to chromosomes (did not work on setonix, use minimap2 directly)
 ####ragtag.sh
 . /opt/conda/etc/profile.d/conda.sh
 conda activate ragtag
@@ -165,6 +165,20 @@ module load singularity/3.11.4-slurm
 srun --export=all -n 1 -c 128 singularity exec docker://yongjia111/yjhicpipe:latest bash ragtag.sh
 ####output
 ragtag.scaffold.fasta, ragtag.scaffold.stats, ragtag.scaffold.asm.paf
+
+## minimap2 (use -c 64 to reduce memory)
+#!/bin/bash --login
+
+#SBATCH --job-name=minimap
+#SBATCH --partition=highmem
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=64
+#SBATCH --time=12:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --mem=980G
+#SBATCH --export=NONE
+srun --export=all -n 1 -c 64 minimap2 -x asm5 -t 64 /scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta out_JBAT.FINAL.fa > morexV3_postview_minimap2.asm.paf
 ```
 ## 7.genome statistics
 ### hifi contigs
@@ -222,4 +236,36 @@ Assembly Statistics:
 	0.000%	Percent gaps
 	12 MB	Scaffold N50
 	12 MB	Contigs N50
+```
+## 8.gene model projection using gemoma with 10 random wild barley from 76
+```
+##create gemome references lines
+/scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1
+cat wild_genome_gff_id_match |while read R1 R2;do echo $(grep $R2 all_gff_id) $(grep $R1 all_genome_id);done > wild_gff_genome_file_id
+/scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1/wild_gff_genome_file_id
+cat ../wild_gff_genome_file_id|while read R1 R2;do echo "s=own i=$R1 a=$PWD/$R1 g=$PWD/$R2 \\";done > ../gemoma_lines
+
+## gemoma.conf
+#!/bin/bash --login
+
+#SBATCH --job-name=gemoma
+#SBATCH --partition=long
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=128
+#SBATCH --time=96:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --export=NONE
+
+GEMOMAP=/scratch/pawsey0399/yjia/tools/gemoma-1.9-0/GeMoMa-1.9.jar
+srun --export=all -n 1 -c 128   java -jar $GEMOMAP CLI GeMoMaPipeline threads=128 tblastn=False \
+	AnnotationFinalizer.r=SIMPLE AnnotationFinalizer.p=WBT01G \
+	p=false \
+	o=true \
+	t=out_JBAT.FINAL.fa \
+	outdir=output_gemoma \
+	s=own i=WBDC199.gff.gz a=/scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1/wild_genome_gff/WBDC199.gff.gz g=/scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1/wild_genome_gff/211008_WBDC_199_pseudomolecules_and_unplaced_contigs_CPclean.fasta.gz \
+.
+.
+.
 ```
