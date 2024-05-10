@@ -128,7 +128,45 @@ srun --export=all -n 1 -c 64 singularity exec $IMAGE bash nextflow.sh
 ```
 WBT Hic_heatmap
 <img src="./WBT.HiCImage.svg" alt="WBT hic heatmap" width="1000">
-## 6.genome statistics
+## 6.juicerbox manual curation
+```
+## input
+out_JBAT.hic, out_JBAT.assembly
+## output
+out_JBAT.review.assembly
+## changes:
+add chr boundary
+
+## juicer post review
+###juicer_post_review.sh
+. /opt/conda/etc/profile.d/conda.sh
+conda activate hic-scaffolding-nf
+export NXF_HOME=/scratch/pawsey0399/yjia/WBT/hifionly_run2/
+juicer post -o out_JBAT /scratch/pawsey0399/yjia/WBT/hifionly_run2/out_JBAT.review.assembly \
+	/scratch/pawsey0399/yjia/WBT/hifionly_run2/work/b0/1f0f7db915bf0a2855204a025e2667/out_JBAT.liftover.agp \
+       /scratch/pawsey0399/yjia/WBT/hifionly/wbt_hifionly.asm.p_ctg.fasta
+
+###juicer_post_review.conf
+module load singularity/3.11.4-slurm
+IMAGE=/scratch/pawsey0399/yjia/WBT/yjhicpipe.sif
+srun --export=all -n 1 -c 64 singularity exec $IMAGE bash juicer_post_review.sh
+###output
+out_JBAT_review.FINAL.fa
+
+## ragtag to assign and orient scaffolds to chromosomes
+####ragtag.sh
+. /opt/conda/etc/profile.d/conda.sh
+conda activate ragtag
+QUERY1=/scratch/pawsey0399/yjia/WBT/hifionly_run2/out_hifionly/scaffolds/yahs.out_scaffolds_final.fa
+REF=/scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta.gz
+ragtag.py scaffold $REF $QUERY1 -t 128 -o ./ragtag_output &> ragtag_log.txt
+####ragtag.conf
+module load singularity/3.11.4-slurm
+srun --export=all -n 1 -c 128 singularity exec docker://yongjia111/yjhicpipe:latest bash ragtag.sh
+####output
+ragtag.scaffold.fasta, ragtag.scaffold.stats, ragtag.scaffold.asm.paf
+```
+## 7.genome statistics
 ### hifi contigs
 ```
 stats for wbt_hifionly.asm.p_ctg.fasta
