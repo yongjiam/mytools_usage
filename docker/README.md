@@ -178,3 +178,28 @@ WORKDIR /app
 # Start R
 CMD ["R"]
 ```
+### Dockerfile, ragtag
+conda activate ragtag
+conda env export > ragtag.yml
+```
+# Use the official Miniconda3 image as a base
+FROM continuumio/miniconda3:latest
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the environment file to the container
+COPY ragtag.yml .
+
+# Create a conda environment with the specified dependencies
+RUN conda env create -f ragtag.yml
+
+# Activate the conda environment
+SHELL ["conda", "run", "-n", "ragtag", "/bin/bash", "-c"]
+
+# Install Ragtag package in the base environment
+#RUN conda install -c conda-forge -c bioconda ragtag
+
+# Set the default command to run when the container starts
+CMD ["bash"]
+```
