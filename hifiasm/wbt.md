@@ -276,4 +276,12 @@ srun --export=all -n 1 -c 128   java -jar $GEMOMAP CLI GeMoMaPipeline threads=12
 	s=own i=morex a=/scratch/pawsey0399/yjia/shunlin/morexV3/all.gff3.gz g=/scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta.gz \
 	s=own i=FT11 a=/scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1/wild_genome_gff/B1K-04-12.gff.gz g=/scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1/wild_genome_gff/220812_FT11_pseudomolecules_and_unplaced_contigs_CPclean.fasta.gz
 ```
-##
+## Notes
+minimap2: -k to tune speed at cost of sensitivity, larger k, the faster, default k=15
+minimap2: -I split index for every 8G genome, set larger than genome size to avoid split
+minimap2: -x create index for genome
+
+wfbash: -m approximate mapping, without -m will perform base-pair alignment
+wfbash: -s segment default=5k, -l block size default 5*s
+wfbash: -p mapping identity, default 0.90
+
