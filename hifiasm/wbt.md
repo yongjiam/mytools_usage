@@ -166,7 +166,7 @@ srun --export=all -n 1 -c 128 singularity exec docker://yongjia111/yjhicpipe:lat
 ####output
 ragtag.scaffold.fasta, ragtag.scaffold.stats, ragtag.scaffold.asm.paf
 
-## minimap2 (use -c 64 to reduce memory)
+## minimap2 (use -c 64 to reduce memory) slow on setonix
 #!/bin/bash --login
 
 #SBATCH --job-name=minimap
@@ -179,6 +179,14 @@ ragtag.scaffold.fasta, ragtag.scaffold.stats, ragtag.scaffold.asm.paf
 #SBATCH --mem=980G
 #SBATCH --export=NONE
 srun --export=all -n 1 -c 64 minimap2 -x asm5 -t 64 /scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta out_JBAT.FINAL.fa > morexV3_postview_minimap2.asm.paf
+
+### wfmash (very quick)
+module load singularity/3.11.4-slurm
+IMAGE=/scratch/pawsey0399/yjia/huyou/containers/ubuntu_wfmash.sif
+srun --export=all -n 1 -c 128 singularity exec $IMAGE /usr/software/wfmash/build/bin/wfmash \
+       --threads 128 -n 2 -s 10000 -p 95 -X -k 47 \
+       -m /scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta \
+       /scratch/pawsey0399/yjia/WBT/hifionly_run2/out_JBAT2_seded_sorted.FINAL.fa  > morexV3_align_out_JBAT2_seded_sorted.paf
 ```
 ## 7.genome statistics
 ### hifi contigs
@@ -268,3 +276,4 @@ srun --export=all -n 1 -c 128   java -jar $GEMOMAP CLI GeMoMaPipeline threads=12
 	s=own i=morex a=/scratch/pawsey0399/yjia/shunlin/morexV3/all.gff3.gz g=/scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta.gz \
 	s=own i=FT11 a=/scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1/wild_genome_gff/B1K-04-12.gff.gz g=/scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1/wild_genome_gff/220812_FT11_pseudomolecules_and_unplaced_contigs_CPclean.fasta.gz
 ```
+##
