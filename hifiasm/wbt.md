@@ -275,6 +275,18 @@ srun --export=all -n 1 -c 128   java -jar $GEMOMAP CLI GeMoMaPipeline threads=12
 	outdir=output_gemoma2 \
 	s=own i=morex a=/scratch/pawsey0399/yjia/shunlin/morexV3/all.gff3.gz g=/scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta.gz \
 	s=own i=FT11 a=/scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1/wild_genome_gff/B1K-04-12.gff.gz g=/scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1/wild_genome_gff/220812_FT11_pseudomolecules_and_unplaced_contigs_CPclean.fasta.gz
+
+## gffread
+gffread -w transcripts.fa -x cds.fa -y protein.fa -g /path/to/genome.fa final_annotation.gff -F
+## process protein.fa
+cut -d ';' -f1 protein.fasta | awk '{if ($1 ~ /^>/) $1=">"$2;print $1}' | sed 's/Name=//' > protein_updated.fasta
+
+## interproscan
+wget https://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/5.66-98.0/interproscan-5.66-98.0-64-bit.tar.gz
+
+## set "$JAVA" -XX:ParallelGCThreads=128 -Xms2028M -Xmx980G
+INTERPRO=/scratch/pawsey0399/yjia/tools/interproscan-5.66-98.0/interproscan.sh
+srun --export=all -n 1 -c 128 bash $INTERPRO -i protein_updated.fasta -goterms -iprlookup -pa -cpu 128
 ```
 ## Notes
 ```
