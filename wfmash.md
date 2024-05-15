@@ -22,8 +22,6 @@ Singularity> /usr/software/wfmash/build/bin/wfmash
 
     wfmash: a pangenome-scale aligner, v0.11.0-13-g67ab187
 
-  OPTIONS
-
       [ MANDATORY OPTIONS ]
         target                            alignment target/reference sequence file
       [ Files IO Options ]
