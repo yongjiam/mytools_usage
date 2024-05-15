@@ -17,11 +17,6 @@ srun --export=all -n 1 -c 128 singularity exec $IMAGE /usr/software/wfmash/build
        /scratch/pawsey0399/yjia/WBT/hifionly_run2/out_JBAT2_seded_sorted.FINAL.fa  > morexV3_align_out_JBAT2_seded_sorted.sam
 ```
 ### usage
-Singularity> /usr/software/wfmash/build/bin/wfmash
-  /usr/software/wfmash/build/bin/wfmash [target] [queries...]
-
-    wfmash: a pangenome-scale aligner, v0.11.0-13-g67ab187
-
       [ MANDATORY OPTIONS ]
         target                            alignment target/reference sequence file
       [ Files IO Options ]
