@@ -282,6 +282,7 @@ gffread -w transcripts.fa -x cds.fa -y protein.fa -g /path/to/genome.fa final_an
 cut -d ';' -f1 protein.fasta | awk '{if ($1 ~ /^>/) $1=">"$2;print $1}' | sed 's/Name=//' > protein_updated.fasta
 
 ## interproscan
+https://interproscan-docs.readthedocs.io/en/latest/HowToRun.html
 wget https://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/5.66-98.0/interproscan-5.66-98.0-64-bit.tar.gz
 
 ## set "$JAVA" -XX:ParallelGCThreads=128 -Xms2028M -Xmx980G
