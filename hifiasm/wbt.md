@@ -261,6 +261,14 @@ mamba create -n funannotate funannotate
 funannotate setup -d $PWD -w
 export FUNANNOTATE_DB=/scratch/pawsey0399/yjia/WBT/hifionly_run2/funannotate
 
+## funannotate.conf
+conda activate funannotate
+export FUNANNOTATE_DB=/scratch/pawsey0399/yjia/WBT/hifionly_run2/funannotate
+GENOME=/scratch/pawsey0399/yjia/WBT/hifionly_run2/out_JBAT2_seded_sorted.FINAL.fa
+GFF=/scratch/pawsey0399/yjia/WBT/hifionly_run2/output_gemoma3_out_JBAT2_seded_sorted/final_annotation.gff
+INTERPRO=/scratch/pawsey0399/yjia/WBT/hifionly_run2/interproscan/protein_updated.fasta.xml
+srun --export=all -n 1 -c 128 funannotate annotate --fasta $GENOME --gff $GFF --iprscan $INTERPRO \
+    --out output_folder --species "WBT" --cpus 128
 ```
 ## 8.genome align compare
 ```
@@ -315,7 +323,7 @@ mamba install -c bioconda plotsr
 srun --export=all -n 1 -c 128 singularity exec $IMAGE /usr/software/wfmash/build/bin/wfmash \
        --threads 128 -n 2 -a /scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta \
        /scratch/pawsey0399/yjia/WBT/hifionly_run2/out_JBAT2_seded_sorted.FINAL.fa  > morexV3_align_out_JBAT2_seded_sorted.sam
-####### Using minimap2 for generating alignment. Any other whole genome alignment tool can also be used.
+## Using minimap2 for generating alignment. Any other whole genome alignment tool can also be used.
 minimap2 -ax asm5 --eqx refgenome qrygenome > out.sam
 
 ## run and plot
