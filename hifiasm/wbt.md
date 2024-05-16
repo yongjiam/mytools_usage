@@ -222,7 +222,7 @@ cat ../wild_gff_genome_file_id|while read R1 R2;do echo "s=own i=$R1 a=$PWD/$R1 
 >>>>>>>>>>> gemoma2.conf
 https://www.jstacs.de/index.php/GeMoMa-Docs
 GEMOMAP="/scratch/pawsey0399/yjia/tools/gemoma18/GeMoMa-1.8.jar"
-srun --export=all -n 1 -c 128   java -jar $GEMOMAP CLI GeMoMaPipeline threads=128 tblastn=False \
+srun --export=all -n 1 -c 128 java -Xmx980G -jar $GEMOMAP CLI GeMoMaPipeline threads=128 tblastn=False \
 	AnnotationFinalizer.r=SIMPLE AnnotationFinalizer.p=WBT01G AnnotationFinalizer.n=false \
 	p=true \
 	o=true \
