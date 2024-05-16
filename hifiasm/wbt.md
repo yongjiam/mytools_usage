@@ -152,48 +152,6 @@ IMAGE=/scratch/pawsey0399/yjia/WBT/yjhicpipe.sif
 srun --export=all -n 1 -c 64 singularity exec $IMAGE bash juicer_post_review.sh
 ###output
 out_JBAT_review.FINAL.fa
-
-## ragtag to assign and orient scaffolds to chromosomes (did not work on setonix, use minimap2 directly)
-####ragtag.sh
-. /opt/conda/etc/profile.d/conda.sh
-conda activate ragtag
-QUERY1=/scratch/pawsey0399/yjia/WBT/hifionly_run2/out_hifionly/scaffolds/yahs.out_scaffolds_final.fa
-REF=/scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta.gz
-ragtag.py scaffold $REF $QUERY1 -t 128 -o ./ragtag_output &> ragtag_log.txt
-####ragtag.conf
-module load singularity/3.11.4-slurm
-srun --export=all -n 1 -c 128 singularity exec docker://yongjia111/yjhicpipe:latest bash ragtag.sh
-####output
-ragtag.scaffold.fasta, ragtag.scaffold.stats, ragtag.scaffold.asm.paf
-
-## minimap2 (use -c 64 to reduce memory) slow on setonix
-#!/bin/bash --login
-
-#SBATCH --job-name=minimap
-#SBATCH --partition=highmem
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=64
-#SBATCH --time=12:00:00
-#SBATCH --account=pawsey0399
-#SBATCH --mem=980G
-#SBATCH --export=NONE
-srun --export=all -n 1 -c 64 minimap2 -x asm5 -t 64 /scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta out_JBAT.FINAL.fa > morexV3_postview_minimap2.asm.paf
-
-### wfmash (very quick)
-module load singularity/3.11.4-slurm
-IMAGE=/scratch/pawsey0399/yjia/huyou/containers/ubuntu_wfmash.sif
-srun --export=all -n 1 -c 128 singularity exec $IMAGE /usr/software/wfmash/build/bin/wfmash \
-       --threads 128 -n 2 -s 10000 -p 95 -X -k 47 \
-       -m /scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta \
-       /scratch/pawsey0399/yjia/WBT/hifionly_run2/out_JBAT2_seded_sorted.FINAL.fa  > morexV3_align_out_JBAT2_seded_sorted.paf
-
-srun --export=all -n 1 -c 128 singularity exec $IMAGE /usr/software/wfmash/build/bin/wfmash \
-       --threads 128 -n 2 -a /scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta \
-       /scratch/pawsey0399/yjia/WBT/hifionly_run2/out_JBAT2_seded_sorted.FINAL.fa  > morexV3_align_out_JBAT2_seded_sorted.sam
-srun --export=all -n 1 -c 128 singularity exec $IMAGE /usr/software/wfmash/build/bin/wfmash \
-       --threads 128 -n 2 /scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta \
-       /scratch/pawsey0399/yjia/WBT/hifionly_run2/out_JBAT2_seded_sorted.FINAL.fa  > morexV3_align_out_JBAT2_seded_sorted.paf
 ```
 ## 7.genome statistics
 ### hifi contigs
@@ -260,7 +218,7 @@ cat wild_genome_gff_id_match |while read R1 R2;do echo $(grep $R2 all_gff_id) $(
 /scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1/wild_gff_genome_file_id
 cat ../wild_gff_genome_file_id|while read R1 R2;do echo "s=own i=$R1 a=$PWD/$R1 g=$PWD/$R2 \\";done > ../gemoma_lines
 
-## gemoma2.conf
+>>>>>>>>>>> gemoma2.conf
 #!/bin/bash --login
 
 #SBATCH --job-name=gemoma
@@ -283,18 +241,85 @@ srun --export=all -n 1 -c 128   java -jar $GEMOMAP CLI GeMoMaPipeline threads=12
 	s=own i=morex a=/scratch/pawsey0399/yjia/shunlin/morexV3/all.gff3.gz g=/scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta.gz \
 	s=own i=FT11 a=/scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1/wild_genome_gff/B1K-04-12.gff.gz g=/scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1/wild_genome_gff/220812_FT11_pseudomolecules_and_unplaced_contigs_CPclean.fasta.gz
 
-## gffread
+>>>>>>>>>>> gffread
 gffread -w transcripts.fa -x cds.fa -y protein.fa -g /path/to/genome.fa final_annotation.gff -F
 ## process protein.fa
 cut -d ';' -f1 protein.fasta | awk '{if ($1 ~ /^>/) $1=">"$2;print $1}' | sed 's/Name=//' > protein_updated.fasta
 
-## interproscan
+>>>>>>>>>>>>> interproscan
 https://interproscan-docs.readthedocs.io/en/latest/HowToRun.html
 wget https://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/5.66-98.0/interproscan-5.66-98.0-64-bit.tar.gz
 
 ## set "$JAVA" -XX:ParallelGCThreads=128 -Xms2028M -Xmx980G
 INTERPRO=/scratch/pawsey0399/yjia/tools/interproscan-5.66-98.0/interproscan.sh
 srun --export=all -n 1 -c 128 bash $INTERPRO -i protein_updated.fasta -goterms -iprlookup -pa -cpu 128
+
+>>>>>>>>>>> integrate interproscan output with gff chromosome position, using funannotate
+## install funannotate
+mamba create -n funannotate funannotate
+## download and setup database
+funannotate setup -d $PWD -w
+export FUNANNOTATE_DB=/scratch/pawsey0399/yjia/WBT/hifionly_run2/funannotate
+
+```
+## 8.genome align compare
+```
+>>>>>>>>>> ragtag to assign and orient scaffolds to chromosomes (did not work on setonix, use minimap2 directly)
+####ragtag.sh
+. /opt/conda/etc/profile.d/conda.sh
+conda activate ragtag
+QUERY1=/scratch/pawsey0399/yjia/WBT/hifionly_run2/out_hifionly/scaffolds/yahs.out_scaffolds_final.fa
+REF=/scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta.gz
+ragtag.py scaffold $REF $QUERY1 -t 128 -o ./ragtag_output &> ragtag_log.txt
+####ragtag.conf
+module load singularity/3.11.4-slurm
+srun --export=all -n 1 -c 128 singularity exec docker://yongjia111/yjhicpipe:latest bash ragtag.sh
+####output
+ragtag.scaffold.fasta, ragtag.scaffold.stats, ragtag.scaffold.asm.paf
+
+>>>>>>>>> minimap2 (use -c 64 to reduce memory) slow on setonix
+#!/bin/bash --login
+
+#SBATCH --job-name=minimap
+#SBATCH --partition=highmem
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=64
+#SBATCH --time=12:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --mem=980G
+#SBATCH --export=NONE
+srun --export=all -n 1 -c 64 minimap2 -x asm5 -t 64 /scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta out_JBAT.FINAL.fa > morexV3_postview_minimap2.asm.paf
+
+>>>>>>>>>> wfmash (very quick)
+module load singularity/3.11.4-slurm
+IMAGE=/scratch/pawsey0399/yjia/huyou/containers/ubuntu_wfmash.sif
+####### produce quick approximate alignment
+srun --export=all -n 1 -c 128 singularity exec $IMAGE /usr/software/wfmash/build/bin/wfmash \
+       --threads 128 -n 2 -s 10000 -p 95 -X -k 47 \
+       -m /scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta \
+       /scratch/pawsey0399/yjia/WBT/hifionly_run2/out_JBAT2_seded_sorted.FINAL.fa  > morexV3_align_out_JBAT2_seded_sorted.paf
+#### perform base pair accurate alignment
+srun --export=all -n 1 -c 128 singularity exec $IMAGE /usr/software/wfmash/build/bin/wfmash \
+       --threads 128 -n 2 /scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta \
+       /scratch/pawsey0399/yjia/WBT/hifionly_run2/out_JBAT2_seded_sorted.FINAL.fa  > morexV3_align_out_JBAT2_seded_sorted.paf
+
+>>>>>>>>>>>>>syri & plotsr
+https://github.com/schneebergerlab/syri
+## install syri, plotsr, comes with nucmer
+mamba create -n syri_env -c bioconda syri
+conda activate syri_env
+mamba install -c bioconda plotsr 
+
+## perform whole genome alignment using wfmash, produce sam output
+srun --export=all -n 1 -c 128 singularity exec $IMAGE /usr/software/wfmash/build/bin/wfmash \
+       --threads 128 -n 2 -a /scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta \
+       /scratch/pawsey0399/yjia/WBT/hifionly_run2/out_JBAT2_seded_sorted.FINAL.fa  > morexV3_align_out_JBAT2_seded_sorted.sam
+####### Using minimap2 for generating alignment. Any other whole genome alignment tool can also be used.
+minimap2 -ax asm5 --eqx refgenome qrygenome > out.sam
+
+## run and plot
+
 ```
 ## Notes
 ```
