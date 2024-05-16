@@ -586,15 +586,24 @@ http://citrus.hzau.edu.cn/data/Genome_info/HH.v1.0/HH.v1.0.gene.model.gff3
 http://citrus.hzau.edu.cn/data/Genome_info/XGF.v1.0/XGF.v1.0.gene.model.gff3
 http://citrus.hzau.edu.cn/data/Genome_info/HZYT.v1.0/HZYT.v1.0.gene.model.gff3
 ```
-#### TE annotation (from baojin)
+#### TE annotation
 ```
-####EDTA+REPEATMASKER annotate TE
 ###EDTA2.2.0 INSTALL
-singularity pull EDTA.sif docker://oushujun/edta:2.0.0
+conda create -n EDTA
+conda activate EDTA
+mamba install -c conda-forge -c bioconda edta
 
 ###download congeneric species' all cds 
-selected species: HKC, SWO, 
-gunzip *.gz
+selected species:
+SWO	10	Citrus_sinensis
+JZ	4141	Citrus_reticulata
+RL	4465	Citrus_medica
+HWB	10	Citrus_grandis_wanbaiyou
+AZM	331	Citrus_australasica
+GCF	94	Citrus_clementina
+ZGYCC	205	Citrus_ichangensis
+ZK	10	Poncirus_trifoliata
+MSYG	160	Citrus_mangshanensis
 cat *.fa >homo.cds
 srun --export=all -n 1 -c 128 cd-hit -i homo.cds -o homo.cdhit.cds -c 0.8 -n 4 -T 128 -M 0
 
