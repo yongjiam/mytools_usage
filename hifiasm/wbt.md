@@ -128,6 +128,7 @@ srun --export=all -n 1 -c 64 singularity exec $IMAGE bash nextflow.sh
 ```
 WBT Hic_heatmap
 <img src="./WBT.HiCImage.svg" alt="WBT hic heatmap" width="1000">
+
 ## 6.juicerbox manual curation
 ```
 ## input
@@ -219,22 +220,11 @@ cat wild_genome_gff_id_match |while read R1 R2;do echo $(grep $R2 all_gff_id) $(
 cat ../wild_gff_genome_file_id|while read R1 R2;do echo "s=own i=$R1 a=$PWD/$R1 g=$PWD/$R2 \\";done > ../gemoma_lines
 
 >>>>>>>>>>> gemoma2.conf
-#!/bin/bash --login
-
-#SBATCH --job-name=gemoma
-#SBATCH --partition=highmem
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=128
-#SBATCH --time=24:00:00
-#SBATCH --account=pawsey0399
-#SBATCH --export=NONE
-
-#GEMOMAP=/scratch/pawsey0399/yjia/tools/gemoma-1.9-0/GeMoMa-1.9.jar
+https://www.jstacs.de/index.php/GeMoMa-Docs
 GEMOMAP="/scratch/pawsey0399/yjia/tools/gemoma18/GeMoMa-1.8.jar"
 srun --export=all -n 1 -c 128   java -jar $GEMOMAP CLI GeMoMaPipeline threads=128 tblastn=False \
-	AnnotationFinalizer.r=SIMPLE AnnotationFinalizer.p=WBT01G \
-	p=false \
+	AnnotationFinalizer.r=SIMPLE AnnotationFinalizer.p=WBT01G AnnotationFinalizer.n=false \
+	p=true \
 	o=true \
 	t=out_JBAT.FINAL.fa \
 	outdir=output_gemoma2 \
@@ -270,7 +260,7 @@ INTERPRO=/scratch/pawsey0399/yjia/WBT/hifionly_run2/interproscan/protein_updated
 srun --export=all -n 1 -c 128 funannotate annotate --fasta $GENOME --gff $GFF --iprscan $INTERPRO \
     --out output_folder --species "WBT" --cpus 128
 ```
-## 8.genome align compare
+## 9.genome align compare
 ```
 >>>>>>>>>> ragtag to assign and orient scaffolds to chromosomes (did not work on setonix, use minimap2 directly)
 ####ragtag.sh
@@ -321,7 +311,7 @@ mamba install -c bioconda plotsr
 
 ## perform whole genome alignment using wfmash, produce sam output
 srun --export=all -n 1 -c 128 singularity exec $IMAGE /usr/software/wfmash/build/bin/wfmash \
-       --threads 128 -n 2 -a /scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta \
+       --threads 128 -n 2 -a -N /scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta \ ## use -N not split chromosome for syri need
        /scratch/pawsey0399/yjia/WBT/hifionly_run2/out_JBAT2_seded_sorted.FINAL.fa  > morexV3_align_out_JBAT2_seded_sorted.sam
 ## Using minimap2 for generating alignment. Any other whole genome alignment tool can also be used.
 minimap2 -ax asm5 --eqx refgenome qrygenome > out.sam
