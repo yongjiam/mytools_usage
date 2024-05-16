@@ -187,6 +187,13 @@ srun --export=all -n 1 -c 128 singularity exec $IMAGE /usr/software/wfmash/build
        --threads 128 -n 2 -s 10000 -p 95 -X -k 47 \
        -m /scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta \
        /scratch/pawsey0399/yjia/WBT/hifionly_run2/out_JBAT2_seded_sorted.FINAL.fa  > morexV3_align_out_JBAT2_seded_sorted.paf
+
+srun --export=all -n 1 -c 128 singularity exec $IMAGE /usr/software/wfmash/build/bin/wfmash \
+       --threads 128 -n 2 -a /scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta \
+       /scratch/pawsey0399/yjia/WBT/hifionly_run2/out_JBAT2_seded_sorted.FINAL.fa  > morexV3_align_out_JBAT2_seded_sorted.sam
+srun --export=all -n 1 -c 128 singularity exec $IMAGE /usr/software/wfmash/build/bin/wfmash \
+       --threads 128 -n 2 /scratch/pawsey0399/yjia/shunlin/morexV3/genome.fasta \
+       /scratch/pawsey0399/yjia/WBT/hifionly_run2/out_JBAT2_seded_sorted.FINAL.fa  > morexV3_align_out_JBAT2_seded_sorted.paf
 ```
 ## 7.genome statistics
 ### hifi contigs
