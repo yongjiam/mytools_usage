@@ -636,6 +636,15 @@ conda env export > environment.yml
 ## run
 BuildDatabase -name hap1 -engine ncbi hap1.fasta
 RepeatModeler -pa 20 -engine ncbi -database hap1 2>&1 | tee hap1_repeatmodeler.log
+
+>>>>>>>>tetools image
+##denovoRE.sh
+BuildDatabase -name HAP1 -engine ncbi /scratch/pawsey0399/yjia/huyou/pangenomes/company/huyou.hap1.genome.fa
+RepeatModeler -threads 64 -engine ncbi -database HAP1 2>&1 | tee repeatmodeler.log
+
+module load singularity/3.11.4-slurm
+srun --export=all -n 1 -c 128 singularity run docker://dfam/tetools:latest bash denovoRE.sh
+
 ```
 #### using gemoma (company annotation does not match genome.fa)
 reference genomes from phytozome (citrus database data throw errors in gemoma)
