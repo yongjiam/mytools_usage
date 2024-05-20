@@ -593,7 +593,7 @@ conda create -n EDTA
 conda activate EDTA
 mamba install -c conda-forge -c bioconda edta
 
-###download congeneric species' all cds 
+>>>>>>>>>>>>>>> download congeneric species' all cds 
 selected species:
 SWO	10	Citrus_sinensis
 JZ	4141	Citrus_reticulata
@@ -607,12 +607,22 @@ MSYG	160	Citrus_mangshanensis
 cat *.fa >homo.cds
 srun --export=all -n 1 -c 128 cd-hit -i homo.cds -o homo.cdhit.cds -c 0.8 -n 4 -T 128 -M 0
 
-###EDTA RUN
+>>>>>>>>> run de novo repeatmodeler
+module load singularity/3.11.4-slurm
+srun --export=all -n 1 -c 128 singularity run docker://dfam/tetools:latest bash denovoRE_hap1.sh
+#######denovoRE_hap1.sh
+#. /opt/miniconda3/etc/profile.d/conda.sh
+#conda activate maker
+BuildDatabase -name hap1 -engine ncbi /scratch/pawsey0399/yjia/huyou/genome_annotation/hic_scaffold/hap1.fasta
+RepeatModeler -threads 128 -engine ncbi -database hap1 2>&1 | tee repeatmodeler_hap1.log
+>>>>>>>>>>>>>>EDTA RUN
 conda activate EDTA
 srun --export=all -n 1 -c 128 EDTA.pl --genome  /scratch/pawsey0399/yjia/huyou/genome_annotation/hic_scaffold/hap1.fasta \
        	--species others \
 	--step all \
+	--overwrite 1 \
 	--cds /scratch/pawsey0399/yjia/huyou/genome_annotation/cd-hit/homo.cdhit.cds \
+	--rmlib hap1-families.fa \ ## repeatmodeler output
 	--sensitive 1 --anno 1 --evaluate 1 -t 128
 
 srun --export=all -n 1 -c 128 singularity exec /scratch/pawsey0399/bguo1/edta_2.2.0--hdfd78af_1.sif EDTA.pl --genome /scratch/pawsey0399/bguo1/0.assembly/01.hifi_assembly/S1_HIFI_RESULT/S1_hifi.asm.bp.p_ctg.fa --species others --step all --cds /scratch/pawsey0399/bguo1/0.assembly/04.TE_annotation/Ref_cds/homo.cdhit.cds --sensitive 1 --anno 1 --evaluate 1 -t 128
