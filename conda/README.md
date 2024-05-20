@@ -29,3 +29,8 @@ ln -s python3.5 python
 # you should now have python -> python3.5 
 ```
 <img src="setonix_conda_bin.png" alt="miniconda3 python" width="600">
+
+## conda create Error while loading conda entry point: conda-libmamba-solver (module 'libmambapy' has no attribute 'Context')
+conda create -n earlgrey -c conda-forge -c bioconda earlgrey=4.2.4
+conda create --solver=classic -n earlgrey -c conda-forge -c bioconda earlgrey=4.2.4 ## add --solver=classic
+https://stackoverflow.com/questions/77617946/solve-conda-libmamba-solver-libarchive-so-19-error-after-updating-conda-to-23
