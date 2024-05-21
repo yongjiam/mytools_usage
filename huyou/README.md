@@ -625,6 +625,13 @@ srun --export=all -n 1 -c 128 EDTA.pl --genome  /scratch/pawsey0399/yjia/huyou/g
 	--rmlib hap1-families.fa \ ## repeatmodeler output
 	--sensitive 1 --anno 1 --evaluate 1 -t 128
 
+>>>>>>>>>>>>>>> use earlgrey
+# Build the image from the Docker image
+singularity build earlgrey.sif docker://tobybaril/earlgrey
+
+# Run the sandbox
+singularity shell -C -H $(pwd):/work --writable-tmpfs -u earlgrey.sif
+
 srun --export=all -n 1 -c 128 singularity exec /scratch/pawsey0399/bguo1/edta_2.2.0--hdfd78af_1.sif EDTA.pl --genome /scratch/pawsey0399/bguo1/0.assembly/01.hifi_assembly/S1_HIFI_RESULT/S1_hifi.asm.bp.p_ctg.fa --species others --step all --cds /scratch/pawsey0399/bguo1/0.assembly/04.TE_annotation/Ref_cds/homo.cdhit.cds --sensitive 1 --anno 1 --evaluate 1 -t 128
 ##–genome 基因组文件
 ##–cds 提供这个种或近缘种的CDS序列（不能包括introns和UTR），用于最终过滤。
@@ -636,6 +643,7 @@ srun --export=all -n 1 -c 128 singularity exec /scratch/pawsey0399/bguo1/edta_2.
 ##-evalues: 默认是0，需要同时设置-anno 1才能使用。能够评估注释质量，但会显著增加分析时间。
 ##–overwrite默认是0，设定为1会删除已有结果重新运行，建议保持默认，运行中断可以继续运行。
 ```
+
 #### gene and repeat elements annotaiton using maker
 ```bash
 ## installation
