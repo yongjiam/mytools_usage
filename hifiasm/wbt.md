@@ -540,4 +540,34 @@ workflow {
     ASSEMBLY_STATS(YAHS_SCAFFOLD.out.fasta)
 }
 ```
+## TE annotation using earlGrey
+build, push docker image with conda installation, refer dockerfile
+```
+#!/bin/bash --login
 
+#SBATCH --job-name=earlgrey3
+#SBATCH --partition=work
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=64
+#SBATCH --time=24:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --mem=230G
+#SBATCH --export=NONE
+
+module load singularity/3.11.4-slurm
+export SINGULARITY_CACHEDIR=/scratch/pawsey0399/yjia/WBT/hifionly_run2/earlgrey/tmp
+srun --export=all -n 1 -c 64   singularity run -B ${PWD}:${PWD} docker://yongjia111/myearlgrey:latest earlgrey.sh
+
+#!/bin/bash
+
+. /opt/conda/etc/profile.d/conda.sh
+conda activate earlgrey
+earlGrey -g ./out_JBAT2_seded_sorted.FINAL.fa \
+        -s wbt3 \
+        -o ./ \
+        -r eukarya \
+	-d yes \
+	-m yes \
+        -t 64
+```
