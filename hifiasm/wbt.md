@@ -559,6 +559,7 @@ module load singularity/3.11.4-slurm
 export SINGULARITY_CACHEDIR=/scratch/pawsey0399/yjia/WBT/hifionly_run2/earlgrey/tmp
 srun --export=all -n 1 -c 64   singularity run -B ${PWD}:${PWD} docker://yongjia111/myearlgrey:latest earlgrey.sh
 
+#### earlgrey.sh
 #!/bin/bash
 
 . /opt/conda/etc/profile.d/conda.sh
