@@ -201,5 +201,28 @@ SHELL ["conda", "run", "-n", "ragtag", "/bin/bash", "-c"]
 #RUN conda install -c conda-forge -c bioconda ragtag
 
 # Set the default command to run when the container starts
-CMD ["bash"]
+CMD ["/bin/bash"]
+```
+### Dockerfile, earlGrey
+```
+# Use the Miniconda3 base image
+FROM continuumio/miniconda3:latest
+
+# Set the working directory inside the container
+WORKDIR /data
+
+# Update conda and install mamba in the base environment
+RUN conda install -n base -c conda-forge mamba
+
+# Install the earlgrey package using mamba
+RUN mamba create -n earlgrey -c conda-forge -c bioconda earlgrey=4.2.4
+
+# Activate the base environment by default
+SHELL ["conda", "run", "-n", "earlgrey", "/bin/bash", "-c"]
+
+# Optional: Set the entrypoint to bash
+ENTRYPOINT ["/bin/bash"]
+## Note: the above ENTRYPOINT is different from CMD, with ENTRYPOINT, you will run the job like below:
+## srun --export=all -n 1 -c 64   singularity run -B ${PWD}:${PWD} docker://yongjia111/myearlgrey:latest earlgrey.sh
+## but not: bash earlgrey.sh
 ```
