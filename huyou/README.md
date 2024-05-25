@@ -586,7 +586,7 @@ http://citrus.hzau.edu.cn/data/Genome_info/HH.v1.0/HH.v1.0.gene.model.gff3
 http://citrus.hzau.edu.cn/data/Genome_info/XGF.v1.0/XGF.v1.0.gene.model.gff3
 http://citrus.hzau.edu.cn/data/Genome_info/HZYT.v1.0/HZYT.v1.0.gene.model.gff3
 ```
-#### TE annotation
+#### TE annotation test1
 ```
 ###EDTA2.2.0 INSTALL
 conda create -n EDTA
@@ -642,6 +642,34 @@ srun --export=all -n 1 -c 128 singularity exec /scratch/pawsey0399/bguo1/edta_2.
 ##-anno: 是否在构建TE文库后进行全基因组预测，默认是0.
 ##-evalues: 默认是0，需要同时设置-anno 1才能使用。能够评估注释质量，但会显著增加分析时间。
 ##–overwrite默认是0，设定为1会删除已有结果重新运行，建议保持默认，运行中断可以继续运行。
+```
+#### TE annotation with earlGrey
+```
+## nimbus with conda
+# install with mamba
+mamba create -n earlgrey -c conda-forge -c bioconda earlgrey=4.2.4
+
+## earlgrey.sh
+earlGrey -g out_JBAT2_seded_sorted.FINAL.fa -s WBT -o /data/WBT/earlGrey/outputs -t 30 -r eukarya -d yes -m yes
+
+## setonix with singularity
+singularity build earlgreydfam38.sif docker://tobybaril/earlgrey_dfam3.8:latest
+
+##setonix
+module load singularity/3.11.4-slurm
+export SINGULARITY_CACHEDIR=/scratch/pawsey0399/yjia/WBT/hifionly_run2/earlgrey/tmp
+export IAMGE=/scratch/pawsey0399/yjia/huyou/containers/earlgreydfam38.sif
+srun --export=all -n 1 -c 40   singularity exec -B ${PWD}:/data $IMAGE earlgrey.sh
+
+## earlgrey.sh
+#!/bin/bash
+earlGrey -g /data/hap1.fasta \
+        -s hap1 \
+        -o /data/ \
+        -r eukarya \
+	-d yes \
+	-m yes \
+        -t 40
 ```
 
 #### gene and repeat elements annotaiton using maker
