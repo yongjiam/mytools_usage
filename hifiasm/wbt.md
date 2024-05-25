@@ -211,7 +211,7 @@ Assembly Statistics:
 	12 MB	Scaffold N50
 	12 MB	Contigs N50
 ```
-## 8.gene model projection using gemoma with 10 random wild barley from 76
+## 8.1 gene model projection using gemoma with 10 random wild barley from 76
 ```
 ##create gemome references lines
 /scratch/pawsey0399/yjia/barley/phase2_annotation/barley_pangenome_annotation_v2.1
@@ -259,6 +259,35 @@ GFF=/scratch/pawsey0399/yjia/WBT/hifionly_run2/output_gemoma3_out_JBAT2_seded_so
 INTERPRO=/scratch/pawsey0399/yjia/WBT/hifionly_run2/interproscan/protein_updated.fasta.xml
 srun --export=all -n 1 -c 128 funannotate annotate --fasta $GENOME --gff $GFF --iprscan $INTERPRO \
     --out output_folder --species "WBT" --cpus 128
+```
+## 8.2 TE annotation using earlGrey
+```
+## earlgrey.conf
+#!/bin/bash --login
+
+#SBATCH --job-name=earlgrey2
+#SBATCH --partition=long
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=40
+#SBATCH --time=96:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --mem=130G
+#SBATCH --export=NONE
+module load singularity/3.11.4-slurm
+export SINGULARITY_CACHEDIR=/scratch/pawsey0399/yjia/WBT/hifionly_run2/earlgrey/tmp
+export IAMGE=/scratch/pawsey0399/yjia/huyou/containers/earlgreydfam38.sif
+srun --export=all -n 1 -c 40   singularity exec -B ${PWD}:/data $IMAGE earlgrey.sh
+
+## earlgrey.sh
+#!/bin/bash
+earlGrey -g /data/out_JBAT2_seded_sorted.FINAL.fa \
+        -s wbt2 \
+        -o /data/ \
+        -r eukarya \
+	-d yes \
+	-m yes \
+        -t 40
 ```
 ## 9.genome align compare
 ```
