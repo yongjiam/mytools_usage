@@ -226,3 +226,23 @@ ENTRYPOINT ["/bin/bash"]
 ## srun --export=all -n 1 -c 64   singularity run -B ${PWD}:${PWD} docker://yongjia111/myearlgrey:latest earlgrey.sh
 ## but not: bash earlgrey.sh
 ```
+### singularity, earlGrey
+```
+singularity build earlgreydfam38.sif docker://tobybaril/earlgrey_dfam3.8:latest
+
+##setonix
+module load singularity/3.11.4-slurm
+export SINGULARITY_CACHEDIR=/scratch/pawsey0399/yjia/WBT/hifionly_run2/earlgrey/tmp
+export IAMGE=/scratch/pawsey0399/yjia/huyou/containers/earlgreydfam38.sif
+srun --export=all -n 1 -c 40   singularity exec -B ${PWD}:/data $IMAGE earlgrey.sh
+
+## earlgrey.sh
+#!/bin/bash
+earlGrey -g /data/hap1.fasta \
+        -s hap1 \
+        -o /data/ \
+        -r eukarya \
+	      -d yes \
+	      -m yes \
+        -t 40
+```
