@@ -569,6 +569,32 @@ workflow {
     ASSEMBLY_STATS(YAHS_SCAFFOLD.out.fasta)
 }
 ```
+## run the JUICER_PRE separately
+```
+find work -name "out_JBAT.hic"
+ln -s work/d3/93f68f27a8b4f0e3813cc2c1f472c6/out_JBAT.txt
+ln -s /scratch/pawsey0399/yjia/WBT/hifionly_run3/work/e1/2cf8c15664f0e3b932fa151442385f/wbt_hifionly.asm.p_ctg.fasta.fai contigs.fa.fai
+
+## juicer.sh
+asm_size=$(awk '{s+=$2} END{print s}' contigs.fa.fai)
+JAR=/scratch/pawsey0399/yjia/WBT/juicer_tools_1.22.01.jar
+java -Xmx130G -jar $JAR \
+        pre out_JBAT.txt out_JBAT.hic assembly ${asm_size}
+## juicer.conf
+#!/bin/bash --login
+
+#SBATCH --job-name=juicer
+#SBATCH --partition=work
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=64
+#SBATCH --time=12:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --mem=130G
+#SBATCH --export=NONE
+
+srun --export=all -n 1 -c 64 bash juicer.sh
+```
 ## TE annotation using earlGrey
 build, push docker image with conda installation, refer dockerfile
 ```
