@@ -578,22 +578,22 @@ ln -s /scratch/pawsey0399/yjia/WBT/hifionly_run3/work/e1/2cf8c15664f0e3b932fa151
 ## juicer.sh
 asm_size=$(awk '{s+=$2} END{print s}' contigs.fa.fai)
 JAR=/scratch/pawsey0399/yjia/WBT/juicer_tools_1.22.01.jar
-java -Xmx130G -jar $JAR \
+java -Xmx980G -jar $JAR \
         pre out_JBAT.txt out_JBAT.hic assembly ${asm_size}
 ## juicer.conf
 #!/bin/bash --login
 
 #SBATCH --job-name=juicer
-#SBATCH --partition=work
+#SBATCH --partition=highmem
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=64
+#SBATCH --cpus-per-task=128
 #SBATCH --time=12:00:00
 #SBATCH --account=pawsey0399
-#SBATCH --mem=130G
+#SBATCH --mem=980G
 #SBATCH --export=NONE
 
-srun --export=all -n 1 -c 64 bash juicer.sh
+srun --export=all -n 1 -c 128 bash juicer.sh
 ```
 ## TE annotation using earlGrey
 build, push docker image with conda installation, refer dockerfile
