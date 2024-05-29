@@ -627,3 +627,9 @@ earlGrey -g ./out_JBAT2_seded_sorted.FINAL.fa \
 	-m yes \
         -t 64
 ```
+## TE annotation using earlGrey with dfam3.8
+```
+singularity build earlgreydfam38.sif docker://tobybaril/earlgrey_dfam3.8:latest
+singularity exec -B $PWD:/data /data/tools/containers/earlgreydfam38.sif earlGrey -g /data/hap1.fasta \
+	-s hap1dfam38 -o /data/earlgrey_outputs_hap1 -t 30 -r eukarya -d yes -m yes
+```
