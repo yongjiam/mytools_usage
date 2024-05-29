@@ -671,7 +671,48 @@ earlGrey -g /data/hap1.fasta \
 	-m yes \
         -t 40
 ```
+## gene model prediction using braker after earlgrey
+```
+## cd-hit to get non-redundant protein fasta from related species
+## cdhit_pep.conf
+#!/bin/bash --login
+#SBATCH --job-name=cd-hit
+#SBATCH --partition=work
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=64
+#SBATCH --time=10:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --export=NONE
+srun --export=all -n 1 -c 64   cd-hit -i homo.pep -o homo.cdhit.pep -c 0.8 -n 4 -T 64 -M 0
 
+## braker_hap1.sh
+braker.pl --genome /scratch/pawsey0399/yjia/huyou/genome_annotation/braker3/hap1.softmasked.fasta \
+	--rnaseq_sets_ids=huyou \
+	--rnaseq_sets_dirs=/scratch/pawsey0399/yjia/huyou/RNAseq \
+       --species=hap1 \
+       --prot_seq=/scratch/pawsey0399/yjia/huyou/genome_annotation/huazhongDownload/homo.cdhit.pep \
+       --useexisting \
+       --threads 128 \
+       --workingdir=hap1_workdiction
+
+## braker_hap1.conf
+#!/bin/bash --login
+
+#SBATCH --job-name=braker_hap1
+#SBATCH --partition=work
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=128
+#SBATCH --time=24:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --export=NONE
+
+module load singularity/3.11.4-slurm
+export BRAKER_SIF=/scratch/pawsey0399/yjia/huyou/containers/braker3.sif
+srun --export=all -n 1 -c 128  singularity exec $BRAKER_SIF bash braker_hap1.sh
+
+```
 #### gene and repeat elements annotaiton using maker
 ```bash
 ## installation
