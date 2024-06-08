@@ -14,6 +14,21 @@ java -jar $PJAR CreateSequenceDictionary R=wheatCS_AABB.fasta O=wheatCS_AABB.fas
 ```
 ## STAR mapping
 ```bash
+## index genome
+STAR --runThreadN 30 --runMode genomeGenerate \
+       --genomeDir /data/igenome/wheatCS/wheatCS_AABB_index  \
+       --genomeFastaFiles wheatCS_AABB.fasta \
+       --sjdbGTFfile wheatCS_AABB.gff3 \
+       --limitGenomeGenerateRAM 60000000000 \
+       --sjdbOverhang 150
+#STAR --runThreadN 30 --runMode genomeGenerate \
+#	--genomeDir /data/igenome/wheatCS/genome_index  \
+#	--genomeFastaFiles Triticum_aestivum.IWGSC.dna_rm.toplevel.fa \
+#	--sjdbGTFfile Triticum_aestivum.IWGSC.58.gff3 \
+#	--limitGenomeGenerateRAM 60000000000 \
+#	--sjdbOverhang 150
+
+## mapping
 STAR --runThreadN 30 --genomeDir /data/igenome/wheatCS/genome_index \
         --readFilesIn trimmed.TR.R1.fq.gz trimmed.TR.R2.fq.gz \
         --readFilesCommand zcat \
