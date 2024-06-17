@@ -1,3 +1,14 @@
+## index genome
+
+## index genome
+export REF=/scratch/pawsey0399/yjia/wheat/WGS/201216_Fielder_pseudomolecules_V1+unanchored_contigs.fasta
+PJAR=/scratch/pawsey0399/yjia/tools/miniconda3/envs/nf-env/share/picard-2.18.29-0/picard.jar
+
+srun --export=all -n 1 -c 64 samtools faidx $REF
+srun --export=all -n 1 -c 64 java -jar $PJAR CreateSequenceDictionary \
+   R=201216_Fielder_pseudomolecules_V1+unanchored_contigs.fasta.gz \
+   O=201216_Fielder_pseudomolecules_V1+unanchored_contigs.dict
+  
 ## wheat WGS variant calling
 
 ```bash
