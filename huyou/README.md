@@ -733,23 +733,61 @@ module load singularity/3.11.4-slurm
 srun --export=all -n 1 -c 128 singularity run docker://dfam/tetools:latest bash denovoRE.sh
 
 ```
-#### using gemoma (company annotation does not match genome.fa)
-reference genomes from phytozome (citrus database data throw errors in gemoma)
+#### using gemoma with RNAseq
 ```bash
-##install gemoma 1.9
-conda install -c bioconda gemoma
+#!/bin/bash --login
 
-## run gemoma.sh in setonix
-## genome level prediction
-GeMoMa GeMoMaPipeline threads=64 tblastn=False \
+#SBATCH --job-name=star1
+#SBATCH --partition=work
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=128
+#SBATCH --time=24:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --export=NONE
+
+module load star/2.7.10a--h9ee0642_0
+
+srun --export=all -n 1 -c 128  STAR --runThreadN 128 --runMode genomeGenerate \
+       --genomeDir ./hap1_star_index  \
+       --genomeSAindexNbases 13 \  ##change based on genome size
+       --genomeFastaFiles hap1.softmasked.fasta
+
+srun --export=all -n 1 -c 128 STAR --runThreadN 128 --genomeDir ./hap1_star_index \
+        --readFilesIn huyou_1.fastq huyou_2.fastq \
+        --outFileNamePrefix hap1RNAmap \
+        --outSAMtype BAM SortedByCoordinate \
+        --outSAMunmapped Within \
+        --outSAMattributes Standard
+
+#!/bin/bash --login
+
+#SBATCH --job-name=gemoma1
+#SBATCH --partition=highmem
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=128
+#SBATCH --time=24:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --export=NONE
+#SBATCH --mem=980G
+
+#/scratch/pawsey0399/yjia/tools/gemoma-1.9-0/GeMoMa-1.9.jar
+GEMOMAP=/scratch/pawsey0399/yjia/tools/gemoma18/GeMoMa-1.8.jar
+srun --export=all -n 1 -c 128 java -Xmx980G -jar $GEMOMAP CLI GeMoMaPipeline threads=128 tblastn=False \
 	AnnotationFinalizer.r=SIMPLE AnnotationFinalizer.p=HY \
-	p=false \
+	p=true \
 	o=true \
-	t=./huyou.hap1.genome.fa \
-	outdir=hap1/ \
-	s=own i=Ccl a=./phytozome/Cclementina_182_v1.0.gene.gff3.gz g=./phytozome/Cclementina_182_v1.fa.gz \
-	s=own i=Csi a=./phytozome/Csinensis_154_v1.1.gene.gff3.gz g=./phytozome/Csinensis_154_v1.fa.gz \
-	s=own i=Ptr a=./phytozome/Ptrifoliata_565_v1.3.1.gene.gff3.gz g=./phytozome/Ptrifoliata_565_v1.3.fa.gz
+	t=hap1.softmasked.fasta \
+	outdir=hap1less/ \
+	s=own i=SWO a=SWO.v3.0.gene.model.gff3 g=SWO.v3.0.genome.fa \
+	s=own i=ZGYCC a=ZGYCC.v2.0.gene.model.gff3 g=ZGYCC.v2.0.genome.fa \
+	#s=own i=HKC a=HKC.v2.0.gene.model.gff3 g=HKC.v2.0.genome.fa \
+	s=own i=JZ a=JZ.v1.0.gene.model.gff3 g=JZ.v1.0.genome.fa \
+	#s=own i=HZYT a=HZYT.v1.0.gene.model.gff3 g=HZYT.v1.0.genome.fa \
+	#s=own i=RL a=RL.v1.0.gene.model.gff3 g=RL.v1.0.genome.fa \
+	r=MAPPED \
+	ERE.m=hap1RNAmapAligned.sortedByCoord.out.bam
 ```
 #### using liftoff (using company annotation)
 https://github.com/agshumate/Liftoff
