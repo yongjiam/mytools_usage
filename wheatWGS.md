@@ -1,6 +1,4 @@
 ## index genome
-
-## index genome
 export REF=/scratch/pawsey0399/yjia/wheat/WGS/201216_Fielder_pseudomolecules_V1+unanchored_contigs.fasta
 PJAR=/scratch/pawsey0399/yjia/tools/miniconda3/envs/nf-env/share/picard-2.18.29-0/picard.jar
 
@@ -8,7 +6,10 @@ srun --export=all -n 1 -c 64 samtools faidx $REF
 srun --export=all -n 1 -c 64 java -jar $PJAR CreateSequenceDictionary \
    R=201216_Fielder_pseudomolecules_V1+unanchored_contigs.fasta.gz \
    O=201216_Fielder_pseudomolecules_V1+unanchored_contigs.dict
-  
+## add sample information to bam if not added during alignment
+srun --export=all -n 1 -c 128 samtools addreplacerg -O BAM -@ 128 -o updated_CRR289962_sort.bam  -r '@RG\tID:CRR289962\tSM:CRR289962\tPL:ILLUMINA' CRR289962_sort.bam
+srun --export=all -n 1 -c 128 samtools index -@ 128 updated_CRR289962_sort.bam
+
 ## wheat WGS variant calling
 
 ```bash
