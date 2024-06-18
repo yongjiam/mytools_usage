@@ -26,3 +26,6 @@ srun --export=all -n 1 -c 2 bgzip -@ 2 SAMPLE_sort.bam.g.vcf ## compress gvcf fi
 ```
 cat qituo_gwas/sample_ids.txt |while read R;do (sed "s/SAMPLE/$R/g" bwa.conf > qituo_gwas/$R".conf");done
 ```
+```
+while IFS= read -r filename; do [[ ! -e $filename"_sort.bam" ]] && echo "$filename does not exist."; done < sample_ids.txt
+```
