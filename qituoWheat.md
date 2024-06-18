@@ -29,3 +29,27 @@ cat qituo_gwas/sample_ids.txt |while read R;do (sed "s/SAMPLE/$R/g" bwa.conf > q
 ```
 while IFS= read -r filename; do [[ ! -e $filename"_sort.bam" ]] && echo "$filename does not exist."; done < sample_ids.txt
 ```
+```
+## merge gvcf file
+glnexus_cli --config gatk -m 230 --threads 42 gvcfs/*.g.vcf.gz > wheat_gwas.bcf
+bcftools view --threads 42 wheat_gwas.bcf | bgzip -@ 15 -c > wheat_gwas.vcf.gz
+bcftools index wheat_gwas.vcf.gz --threads 42
+```
+## filtration and imputation
+```
+## get header and first n lines
+bcftools view -h wheat_gwas.vcf.gz
+bcftools view -H wheat_gwas.vcf.gz|hean -n 10
+
+## separate snp and indel
+bcftools view -v snps wheat_gwas.vcf.gz -Oz -o wheat_gwas_snps.vcf.gz --threads 42
+bcftools index wheat_gwas_snps.vcf.gz --threads 42
+bcftools view -v indels wheat_gwas.vcf.gz -Oz -o wheat_gwas_indels.vcf.gz --threads 42
+bcftools index wheat_gwas_indels.vcf.gz --threads 42
+
+## count total, multi allelic sites, and remove multiallelic sites
+bcftools view -H wheat_gwas.vcf.gz | wc -l
+bcftools view -m2 -M2 -H input.vcf | wc -l
+vcftools --gzvcf wheat_gwas_snps.vcf.gz --max-alleles 2 --recode --out wheat_gwas_snps_biallelic.vcf.gz
+
+
