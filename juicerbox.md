@@ -6,4 +6,4 @@
 4. shift+left click to select and edit
 5. After selection, move the cursor to where you want to move or to invert.
 6. Select multiple contigs, right click to add or remove chromosome boundary
-7. 
+7. based on minimap2 align with ref, change chromosome orentiation/ or use ragtag to change orentiation
