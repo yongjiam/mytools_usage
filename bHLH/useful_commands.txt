@@ -1,0 +1,71 @@
+hmmscan --domtblout 21vars_HLH_merged.hmmscan.output HLH_db.hmm 21vars_HLH_merged.fasta
+
+##download merge gene family fasta file
+scp yjia@magnus.pawsey.org.au:/scratch/pawsey0399/yjia/barley/pangenome/23vars_AMY_merged.fasta ./
+
+## filter genes with domain length >30aa
+awk '!/^#/{if ($21-$20 >30) print $4}' 21vars_HLH_merged.hmmscan.output | sort | uniq > 21vars_HLH_merged_30aa_uniqid_list.txt
+
+## count gene number for each variety
+awk '{print $1"\t"$2}' variety_name_gene_id_match.txt| while read R1 R2; do echo $R1 $(grep $R1"HLH" 21vars_HLH_merged_30aa_uniqid_list.txt|wc -l);done > count_new_annoated.txt
+
+awk '{print $1"\t"$2}' variety_name_gene_id_match.txt| while read R1 R2; do echo $R1 $(grep $R1"HLH" 21vars_HLH_merged_30aa_uniqid_list.txt);done > id_new_annoated.txt
+
+awk '{print $1"\t"$2}' variety_name_gene_id_match.txt| while read R1 R2; do echo $R1 $(grep $R2 21vars_HLH_merged_30aa_uniqid_list.txt|grep -v $R2"HLH"|wc -l);done > count_already_annoated.txt
+
+awk '{print $1"\t"$2}' variety_name_gene_id_match.txt| while read R1 R2; do echo $R1 $(grep $R2 21vars_HLH_merged_30aa_uniqid_list.txt|grep -v $R2"HLH");done > id_already_annoated.txt
+
+paste count_already_annoated.txt count_new_annoated.txt > count_merged.txt
+
+awk '{print $1"\t"$2"+"$4"="$2+$4}' count_merged.txt > count_sum.txt
+
+## retrieve fasta
+cat 21vars_HLH_merged_30aa_uniqid_list.txt | while read R1; do grep -A1 $R1 21vars_HLH_merged.fasta;done > 21vars_HLH_merged_30aa_uniqid_list.fasta
+or
+cat 20vars_HLH_merged_30aa_uniqid_list.txt | while read R1; do grep -A1 $R1 21vars_HLH_merged_30aa_uniqid_list.fasta;done > 20vars_HLH_merged_30aa_uniqid_list.fasta
+or
+cat variety_name_gene_id_match.txt | while read R1 R2;do grep -A1 "$R1\|$R2" 21vars_HLH_merged_30aa_uniqid_list.fasta;done > 20vars_HLH_merged_30aa_uniqid_list.backup.fasta
+grep -v "^-" 20vars_HLH_merged_30aa_uniqid_list.backup.fasta > 20vars_HLH_merged_30aa_uniqid_list.fasta
+
+# modify newly annotated gene name for cd-hit parser
+##for morex new genes
+grep Morex_v2 variety_name_gene_id_match.txt | while read R1 R2;do R3=$R1"HLH"; R4=$R2".HLH"; sed -i '' "s/$R3/$R4/" 20vars_HLH_merged_30aa_uniqid_list.fasta;done
+##for morex annotated genes
+sed -i '' 's/HORVU.MOREX.r2./HORVU_MOREXr2_/' 20vars_HLH_merged_30aa_uniqid_list.fasta
+
+##for other vars new gene IDs
+grep -v Morex variety_name_gene_id_match.txt|while read R1 R2;do R3=$R1"HLH"; R4=$R2"_HLH"; sed -i '' "s/$R3/$R4/" 20vars_HLH_merged_30aa_uniqid_list.fasta;done
+
+
+## cd-hit to cluster orthologous groups
+cd-hit -i 20vars_HLH_merged_30aa_uniqid_list.fasta -o 20vars_HLH_merged_30aa_uniqid_list.cd-hit.c95 -d 0 -c 0.95
+
+##match old and new gene names
+grep ">" 20vars_HLH_merged_30aa_uniqid_list_newName.fasta > new_gene_name.txt
+grep ">" 20vars_HLH_merged_30aa_uniqid_list.backup.fasta > old_gene_name.txt
+paste old_gene_name.txt new_gene_name.txt > old_new_gene_name.txt
+
+awk -F "," '{print $4}' bhlh_cluster_reference_gene.csv | while read R1;do grep -m1 $R1 old_new_gene_name_match.txt;done > bhlh_cluster_reference_gene.txt
+
+##filter gff3 gene position for reference gene
+awk '{print $1}' bhlh_cluster_reference_gene.txt | while read R1;do grep -m1 $R1 21vars_HLH_merged.gff3;done > bhlh_cluster_reference_gene.gff3
+
+### resolve large cluster, such as Cluster 121
+#get gene id list
+grep -A37 ">Cluster 121" 20vars_HLH_merged_30aa_uniqid_list.cd-hit.c95.clstr | grep -v "^>" | awk '{print substr($3,2,length($3)-4)}' > Cluster121_gene_id.txt
+
+#get gene sequences
+cat Cluster121_gene_id.txt | while read R1;do grep -A1 $R1 20vars_HLH_merged_30aa_uniqid_list_newName.fasta;done > Cluster121_gene_id.fasta
+
+#higher cd-hit
+cd-hit -i Cluster121_gene_id.fasta -o Cluster121_gene_id.cd-hit.c98 -d 0 -c 0.98
+
+
+### retrieve gff position for cd-hit clusters
+#get cluster and gene ID
+awk '{if ($1 ~ /^>/) print $0;else print substr($3,2,length($3)-4)}' 20vars_HLH_merged_30aa_uniqid_list.cd-hit.c95.clstr > 20vars_HLH_merged_30aa_uniqid_list.cd-hit.c95.clstr.list
+#get gene position for each gene while keeping cluster ID
+cat old_new_gene_name_match.txt | while read R1 R2;do sed -i '' "s/$R2/$R1/" 20vars_HLH_merged_30aa_uniqid_list.cd-hit.c95.clstr.list;done
+awk '{if ($3 == "gene") print $0}' 21vars_HLH_merged.gff3 > 21vars_HLH_merged.gene_only.gff3
+sed -i '' 's/ /-/' 20vars_HLH_merged_30aa_uniqid_list.cd-hit.c95.clstr.list
+cat 20vars_HLH_merged_30aa_uniqid_list.cd-hit.c95.clstr.list | while read R1;do if [[ "$R1" == ">Cluster"* ]] ; then echo $R1; else echo $R1 $(grep -m1 ${R1%.*} 21vars_HLH_merged.gene_only.gff3);fi;done > 20vars_HLH_merged_30aa_uniqid_list.cd-hit.c95.clstr.list.gff3
