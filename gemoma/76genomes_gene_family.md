@@ -47,7 +47,7 @@ do
 done > "merged_"$OUTPUT".count"
 ```
 ```
-##
+## merge_output_fasta.sh
 echo "gemoma_output_folder_name:"
 read OUTPUT
 echo "query_gene_list_file:"
@@ -63,4 +63,8 @@ do
 	# sort by type and var name
 	sort -k4,4 -k2,2 -o $R1".count" $R1".count"
 done
+```
+### plot the output of gene family search
+```
+## CNV_distribution_AMY6H.ipynb
 ```
