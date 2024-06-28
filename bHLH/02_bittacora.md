@@ -1,7 +1,9 @@
 ## genome search based on gemoma and hmmscan using bittacora
 ```
 ## installation
-https://github.com/molevol-ub/bitacora
+git clone https://github.com/molevol-ub/bitacora
+
+## install perl, HMMER, and BLAST executables
 ```
 ```
 ### runBITACORA.conf
