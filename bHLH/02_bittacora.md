@@ -1,5 +1,9 @@
 ## genome search based on gemoma and hmmscan using bittacora
 ```
+## installation
+https://github.com/molevol-ub/bitacora
+```
+```
 ### runBITACORA.conf
 #!/bin/bash --login
 
