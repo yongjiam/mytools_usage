@@ -1,0 +1,47 @@
+## 1. earlGrey singularity_join.sh on nimbus
+```
+singularity exec -B $PWD:/data /media/hhd1/yjia/tools/containers/earlgreydfam38.sif earlGrey -g /data/join.fasta -o /data/ -t 24 -s join -d yes -m yes
+```
+## 2. gene gemoma_annotation_joinless.conf on setonix
+```
+#!/bin/bash --login
+
+#SBATCH --job-name=star
+#SBATCH --partition=work
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=128
+#SBATCH --time=24:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --export=NONE
+
+module load star/2.7.10a--h9ee0642_0
+
+srun --export=all -n 1 -c 128  STAR --runThreadN 128 --runMode genomeGenerate \
+       --genomeDir ./join_star_index  \
+       --genomeSAindexNbases 13 \
+       --genomeFastaFiles join.softmasked.fasta
+
+srun --export=all -n 1 -c 128 STAR --runThreadN 128 --genomeDir ./join_star_index \
+        --readFilesIn huyou_1.fastq huyou_2.fastq \
+        --outFileNamePrefix joinRNAmap \
+        --outSAMtype BAM SortedByCoordinate \
+        --outSAMunmapped Within \
+        --outSAMattributes Standard
+
+GEMOMAP=/scratch/pawsey0399/yjia/tools/gemoma18/GeMoMa-1.8.jar
+srun --export=all -n 1 -c 128 java -Xmx230G -jar $GEMOMAP CLI GeMoMaPipeline threads=128 tblastn=False \
+	AnnotationFinalizer.r=SIMPLE AnnotationFinalizer.p=HY \
+	p=true \
+	o=true \
+	t=join.softmasked.fasta \
+	outdir=joinless/ \
+	s=own i=SWO a=SWO.v3.0.gene.model.gff3 g=SWO.v3.0.genome.fa \
+	s=own i=ZGYCC a=ZGYCC.v2.0.gene.model.gff3 g=ZGYCC.v2.0.genome.fa \
+	#s=own i=HKC a=HKC.v2.0.gene.model.gff3 g=HKC.v2.0.genome.fa \
+	s=own i=JZ a=JZ.v1.0.gene.model.gff3 g=JZ.v1.0.genome.fa \
+	#s=own i=HZYT a=HZYT.v1.0.gene.model.gff3 g=HZYT.v1.0.genome.fa \
+	#s=own i=RL a=RL.v1.0.gene.model.gff3 g=RL.v1.0.genome.fa \
+	r=MAPPED \
+	ERE.m=joinRNAmapAligned.sortedByCoord.out.bam
+```
