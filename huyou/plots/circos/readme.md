@@ -44,3 +44,20 @@ MCScanX ./hap1
 ### create collinear blocks
 bash extract_collinear_region.sh > hap1.collinearity.blocks
 bash create_block_bed.sh
+```
+## input for circlize.ipynb
+```
+library(circlize)
+library(rtracklayer)
+library(dplyr)
+library(GenomicRanges)
+library(ComplexHeatmap) ## legend
+
+hap1_gemoma_final_annotation.gff
+hap1.filteredRepeats.gff
+
+hap1.ideogram
+
+block_bed1
+block_bed2
+```
