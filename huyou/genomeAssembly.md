@@ -8,6 +8,10 @@ nextflow run WarrenLab/hic-scaffolding-nf \
     --juicer-tools-jar /data/huyou/juicer2/juicer_tools_1.22.01.jar \
     --extra-yahs-args "-e GATC"
 ```
+## juicebox on mac
+```
+## from 
+```
 ## juicer_post.sh on nimbus
 ```
 juicer post -o out_JBAT_review juicebox_input/out_JBAT.review.assembly juicebox_input/out_JBAT.liftover.agp /data/huyou/hifiasm_purged_hap1hap2merge/purged_join.fa
