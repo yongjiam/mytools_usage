@@ -27,6 +27,10 @@ juicer post -o out_JBAT_review juicebox_input/out_JBAT.review.assembly juicebox_
 ```
 ## merge unanchored scaffolds
 ```
+## merge all unanchored scaffolds
+sed -i 's/chrUn_RagTag/scaffold_RagTag/' join_ragtag.fasta
+```
+```
 #!/bin/bash
 
 # Variables
