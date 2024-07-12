@@ -7,7 +7,7 @@ install.packages("circlize")
 ## prepare input file
 ```
 ## hap1.ideogram
-bioawk -c fastx '{print $name"\t"1"\t"length($seq)}' hap1.fasta|sed "s/_RagTag//"
+bioawk -c fastx '{print $name"\t"1"\t"length($seq)}' hap1.fasta|sed "s/_RagTag//"|grep -v "chrUn" > hap1.ideogram
 
 ## gene density, only gene rows,
 grep -v "^#" hap1_gemoma_final_annotation.gff > tmp && mv tmp hap1_gemoma_final_annotation.gff
