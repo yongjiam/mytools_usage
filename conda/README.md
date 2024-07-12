@@ -1,3 +1,18 @@
+## conda in setonix
+https://pawsey.atlassian.net/wiki/spaces/US/pages/101122068/How+to+Configure+Conda+to+Avoid+Quota+Issues
+```
+## installation
+mkdir -p $MYSOFTWARE/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O $MYSOFTWARE/miniconda3/miniconda.sh
+bash $MYSOFTWARE/miniconda3/miniconda.sh -b -u -p $MYSOFTWARE/miniconda3
+rm -rf $MYSOFTWARE/miniconda3/miniconda.sh
+
+## add conda initialization to bashrc
+export PATH=/software/projects/pawsey0399/yjia/miniconda3/bin/$PATH
+source ~/.bashrc
+conda init bash
+source ~/.bashrc
+```
 ## conda init and conda.sh
 ```
 conda init
