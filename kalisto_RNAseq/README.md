@@ -53,6 +53,10 @@ do
 	$R2
 done
 ```
+## mapping with hisat2
+```
+hisat2 -x /ref/TenRice.back.fa -1 C99-P-2_L4_311X11.R1.fastq.gz -2 C99-P-2_L4_311X11.R2.fastq.gz -p 8 | samtools view -@ 6 -Sb - | samtools sort -@ 6 -o C99-P-2_L4_311X11.sort.bam
+```
 ## merge multiple sample into gene expression matrix
 ```
 ## merge whole abundance.tsv for different SRR samples
