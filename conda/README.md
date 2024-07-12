@@ -12,6 +12,10 @@ export PATH=/software/projects/pawsey0399/yjia/miniconda3/bin/$PATH
 source ~/.bashrc
 conda init bash
 source ~/.bashrc
+
+## cache and cleaning
+conda config --add pkgs_dirs /scratch/pawsey0000/user_name/conda_cache
+conda clean -af
 ```
 ## conda init and conda.sh
 ```
