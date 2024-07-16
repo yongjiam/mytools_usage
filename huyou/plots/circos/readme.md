@@ -24,6 +24,7 @@ srun --export=all -n 1 -c 64   tRNAscan-SE -j hap2tRNA.gff3 --thread 64 hap2.sof
 hap2.filteredRepeats.gff
 ```
 ## prepare other noncoding RNA bed file, from inferal output
+https://docs.rfam.org/en/latest/genome-annotation.html
 ```
 ## run inferal 
 conda activate bio
@@ -74,6 +75,8 @@ bash extract_collinear_region.sh > hap1.collinearity.blocks
 bash create_block_bed.sh
 ```
 ## input for circlize.ipynb
+https://jokergoo.github.io/circlize_book/book/graphics.html#labels ## circlize
+https://bookdown.org/hneth/ds4psy/D-3-apx-colors-basics.html ## basic R colors
 ```
 library(circlize)
 library(rtracklayer)
