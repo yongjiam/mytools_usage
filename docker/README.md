@@ -228,6 +228,9 @@ ENTRYPOINT ["/bin/bash"]
 ```
 ### singularity, earlGrey
 ```
+mkdir /data/singularity_tmp
+export SINGULARITY_TMPDIR=/data/singularity_tmp
+
 singularity build earlgreydfam38.sif docker://tobybaril/earlgrey_dfam3.8:latest
 
 ##setonix
