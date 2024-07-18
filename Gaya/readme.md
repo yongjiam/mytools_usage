@@ -33,6 +33,8 @@ git clone https://bitbucket.org/tasseladmin/tassel-5-standalone.git
 
 gzip -d *.gz
 sed -i '/^rs#/ s/ /-/g' Cultivated_*.hmp.txt ## accession ID containing spaces
-ls *.hmp.txt|while read R;do /data/tools/tassel-5-standalone/run_pipeline.pl -Xmx5g -importGuess $R -export $(echo $R|cut -d '.' -f1)".vcf" -exportType VCF;done
+ls *.hmp.txt|while read R;do /data/tools/tassel-5-standalone/run_pipeline.pl -Xmx100g -importGuess $R -export $(echo $R|cut -d '.' -f1)".vcf" -exportType VCF;done
+
+
 
 ```
