@@ -13,6 +13,15 @@ cat protein_gene_id_match|sort|uniq > tmp && mv tmp protein_gene_id_match_uniq
 
 cat protein_gene_id_match_uniq|while read R1 R2;do grep $R2 all_genes.gff;done > gaya_gene.gff
 paste protein_gene_id_match_uniq gaya_gene.gff > homolog_gene.txt
+```
+## create chickpea ideogram
+```
+bioawk -c fastx '{print $name"\t"1"\t"length($seq)}' GCF_000331145.1_ASM33114v1_genomic.fna|head -n8 > chickpea.ideogram
+
+## change chromosome name
+cat chickpea.ideogram|cut -f1|awk '{print "s/"$1"/chr"NR"/"}' > sed_chr
+sed -i '' -f sed_chr chickpea.ideogram
+sed -i '' -f sed_chr homolog_gene.txt
 
 
 ```
