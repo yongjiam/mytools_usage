@@ -61,5 +61,6 @@ java -jar snpEff.jar build -gff3 -v chickpea
 ##
 awk -F "/" '{print $1"/"$3"/"$2"/"}' sed_chr > sed_chr_reverse
 sed -i -f sed_chr_reverse gaya_gene_snp.vcf
-java -Xmx8g -jar /data/tools/snpEff/snpEff.jar chickpea gaya_gene_snp.vcf > gaya_gene_snp.annotatedvcf
+java -Xmx8g -jar /data/tools/snpEff/snpEff.jar chickpea gaya_gene_snp.vcf > gaya_gene_snp.annotated.vcf
+sed -i '/^##contig=/d' gaya_gene_snp.annotated.vcf
 ```
