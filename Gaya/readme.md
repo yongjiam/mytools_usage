@@ -64,3 +64,14 @@ sed -i -f sed_chr_reverse gaya_gene_snp.vcf
 java -Xmx8g -jar /data/tools/snpEff/snpEff.jar chickpea gaya_gene_snp.vcf > gaya_gene_snp.annotated.vcf
 sed -i '/^##contig=/d' gaya_gene_snp.annotated.vcf
 ```
+### chromosome rename
+```
+s/NC_021160.1/ca1/
+s/NC_021161.1/ca2/
+s/NC_021162.1/ca3/
+s/NC_021163.1/ca4/
+s/NC_021164.1/ca5/
+s/NC_021165.1/ca6/
+s/NC_021166.1/ca7/
+s/NC_021167.1/ca8/
+```
