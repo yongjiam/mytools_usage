@@ -22,6 +22,17 @@ bioawk -c fastx '{print $name"\t"1"\t"length($seq)}' GCF_000331145.1_ASM33114v1_
 cat chickpea.ideogram|cut -f1|awk '{print "s/"$1"/chr"NR"/"}' > sed_chr
 sed -i '' -f sed_chr chickpea.ideogram
 sed -i '' -f sed_chr homolog_gene.txt
+```
 
+## extract snp for target genes
+https://cegresources.icrisat.org/cicerseq/?page_id=3444
+```
+## download snp in hmp format from link above
+## install tassel5.0 to convert hmp to vcf
+git clone https://bitbucket.org/tasseladmin/tassel-5-standalone.git
+
+gzip -d *.gz
+sed -i '/^rs#/ s/ /-/g' Cultivated_*.hmp.txt ## accession ID containing spaces
+ls *.hmp.txt|while read R;do /data/tools/tassel-5-standalone/run_pipeline.pl -Xmx5g -importGuess $R -export $(echo $R|cut -d '.' -f1)".vcf" -exportType VCF;done
 
 ```
