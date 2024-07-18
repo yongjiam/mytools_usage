@@ -35,6 +35,9 @@ gzip -d *.gz
 sed -i '/^rs#/ s/ /-/g' Cultivated_*.hmp.txt ## accession ID containing spaces
 ls *.hmp.txt|while read R;do /data/tools/tassel-5-standalone/run_pipeline.pl -Xmx100g -importGuess $R -export $(echo $R|cut -d '.' -f1)".vcf" -exportType VCF;done
 
+bgzip *.vcf
+ls *.vcf.gz|while read R;do bcftools index --threads 30 $R;done
+bcftools concat --threads 30 -Oz -o Cultivated_merged.vcf.gz Cultivated_Ca*.vcf.gz
 
 
 ```
