@@ -39,5 +39,27 @@ bgzip *.vcf
 ls *.vcf.gz|while read R;do bcftools index --threads 30 $R;done
 bcftools concat --threads 30 -Oz -o Cultivated_merged.vcf.gz Cultivated_Ca*.vcf.gz
 
+awk '{print $3"\t"$6"\t"$7}' homolog_gene_less.txt |sort > tmp && mv tmp gaya_genes.bed
+sed -i '' 's/ca/CA/' gaya_genes.bed
+bcftools view -R gaya_gene.bed Cultivated_merged.vcf.gz -o gaya_gene_snp.vcf
+```
+## annotate snp 
+```
+## produce protein.fa and cds.fa from genome and gff
+## /Volumes/Elements5T/other_species/chickpea_NCBI_genome
+gffread  -x cds.fa -y protein.fa -g GCF_000331145.1_ASM33114v1_genomic.fna GCF_000331145.1_ASM33114v1_genomic.gff
+scp -i ~/.ssh/mynimbuskey.pem cds.fa protein.fa GCF_000331145.1_ASM33114v1_genomic.fna GCF_000331145.1_ASM33114v1_genomic.gff ubuntu@146.118.64.65:/data/tools/snpEff/data/chickpea/
+mv GCF_000331145.1_ASM33114v1_genomic.fna sequences.fa
+mv GCF_000331145.1_ASM33114v1_genomic.gff genes.gff
 
+## build snpeff database
+## /data/tools/snpEff/
+echo "chickpea.genome : chickpea" >> snpEff.config
+java -jar snpEff.jar build -gff3 -v chickpea
+ == Protein check:	chickpea	OK: 35574	Not found: 36316	Errors: 105	Error percentage: 0.2942907592701589%
+
+##
+awk -F "/" '{print $1"/"$3"/"$2"/"}' sed_chr > sed_chr_reverse
+sed -i -f sed_chr_reverse gaya_gene_snp.vcf
+java -Xmx8g -jar /data/tools/snpEff/snpEff.jar chickpea gaya_gene_snp.vcf > gaya_gene_snp.annotatedvcf
 ```
