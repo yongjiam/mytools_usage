@@ -66,6 +66,7 @@ sed -i '/^##contig=/d' gaya_gene_snp.annotated.vcf
 ```
 ### chromosome rename
 ```
+## sed_chr
 s/NC_021160.1/ca1/
 s/NC_021161.1/ca2/
 s/NC_021162.1/ca3/
