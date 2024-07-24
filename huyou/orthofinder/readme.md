@@ -16,6 +16,19 @@ ls chr*_OG_id|while read R;do (grep -f $R Orthogroups_SingleCopyOrthologues.tsv 
 
 ## extract gene id for each chromosome and variety
 ls header_chr*.tsv|while read R; do awk -v CHR="query_"$R 'NR==1 {for (i=1; i<=NF; i++) {col[i]=$i;}} NR>1 {for (i=1; i<=NF; i++) {print $i >> CHR"_"col[i]".txt";}}' $R;done
+
+## Hap1.fasta and Hap2.fasta gene ID names are overlapping and need to be modified
+sed -i '/^>/ s/HY/H1Y/' Hap1.fasta
+sed -i '/^>/ s/HY/H2Y/' Hap2.fasta
+
+## extract the fasta for each chromosome and species
+cat *.fasta > merged.pep
+makeblastdb -in merged.pep -dbtype prot -parse_seqids -out merged
+ls query_header_chr*|while read R;do EN=$(echo $R|sed 's/query_header_//;s/OG_id.tsv_//'); mv $R $EN; blastdbcmd -db ../merged_pep/merged -entry_batch $EN -out $EN".fa";done
+
+## separate the sequences files by chromosome and run orthofinder separately
+seq 1 9|while read R;do mkdir "chr"$R; mv "chr"$R*.txt.fa "chr"$R;done
+ls --color=never -d */|while read R;do orthofinder -t 30 $R;done
 ```
 ## use SWO as reference, extract the OG matrix for each chromosome 1-9
 
