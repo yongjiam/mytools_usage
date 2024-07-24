@@ -32,6 +32,10 @@ ls --color=never -d */|while read R;do orthofinder -t 30 $R;done
 
 ## download species tree for each chromosome
 seq 1 9|while read R;do scp -i ~/.ssh/mynimbuskey.pem "ubuntu@146.118.64.65:/data/huyou/orthofinder/merged_chromosomes/chr$R/OrthoFinder/Results_Jul24/Species_Tree/SpeciesTree_rooted.txt" "chr$R-SpeciesTree_rooted.txt";done
+
+## modify taxa name to show species names
+sed -i '' 's/.txt//g' chr*SpeciesTree_rooted.txt
+sed -i '' -f sed_species_name chr* 
 ```
 ## use SWO as reference, extract the OG matrix for each chromosome 1-9
 
