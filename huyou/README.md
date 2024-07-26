@@ -556,11 +556,11 @@ JLX	253	Murraya_paniculata
 LW	270	luvunga_scandens
 AZM	331	Citrus_australasica
 HP	388	Clausena_lansium
-XGF	493	Citrus_maxima_majia
+XGF	493	Citrus_maxima_majia ## pummelo
 HH	501	Citrus_hongheensis
 SYT	1001	Luvunga_scandens
-JZ	4141	Citrus_reticulata
-RL	4465	Citrus_medica
+JZ	4141	Citrus_reticulata ## Mandarin
+RL	4465	Citrus_medica ## Citron
 ```
 #### count chromosome length from gff3 file
 ```bash
