@@ -39,5 +39,22 @@ sed -i '' -f sed_species_name chr*
 ```
 ## based on orthofinder results, swap chr8 between Hap1 and Hap2, redo earlGrey and gemoma
 ```
+## /media/hhd1/yjia/data/huyou/assembled_genomes/swap_chr8
+sed '/^>/ s/_RagTag//' hap1.fasta > hap1_updated.fasta
+sed '/^>/ s/_RagTag//' hap2.fasta > hap2_updated.fasta
 
+sed -i 's/^>chr/>H1chr/' hap1_updated.fasta
+sed -i 's/^>chr/>H2chr/' hap2_updated.fasta
+
+sed -i 's/^>H1chr8/>H2chr8/' hap1_updated.fasta
+sed -i 's/^>H2chr8/>H1chr8/' hap2_updated.fasta
+
+cat hap1_updated.fasta hap2_updated.fasta > merged.fasta
+bioawk -c fastx '{if ($name ~ /H1/) print ">"$name"\n"$seq}' merged.fasta  > hap1_updated.fasta
+bioawk -c fastx '{if ($name ~ /H2/) print ">"$name"\n"$seq}' merged.fasta  > hap2_updated.fasta
+
+## sort sequence name
+mamba install bioconda::seqkit
+seqkit sort -n hap1_updated.fasta -o tmp && mv tmp hap1_updated.fasta
+seqkit sort -n hap2_updated.fasta -o tmp && mv tmp hap2_updated.fasta
 ```
