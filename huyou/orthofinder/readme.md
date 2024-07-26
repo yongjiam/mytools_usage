@@ -37,8 +37,7 @@ seq 1 9|while read R;do scp -i ~/.ssh/mynimbuskey.pem "ubuntu@146.118.64.65:/dat
 sed -i '' 's/.txt//g' chr*SpeciesTree_rooted.txt
 sed -i '' -f sed_species_name chr* 
 ```
-## use SWO as reference, extract the OG matrix for each chromosome 1-9
+## based on orthofinder results, swap chr8 between Hap1 and Hap2, redo earlGrey and gemoma
+```
 
-## for each chromosome, extract the sequence ids for each species
-
-## run orthofinder again for each chromosome, get the phylogeny tree
+```
