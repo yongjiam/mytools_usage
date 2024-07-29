@@ -31,6 +31,10 @@ wget https://cncb-gsa.obs.cn-north-4.myhuaweicloud.com:443/data/gsapub/CRA005878
 srun --export=all -n 1 -c 10  xargs -P 10 -I {} sh -c "{}" < wget_commands
 ## or in batch in linux
 cat curls | xargs -n 1 -P 4 ./download.sh
+
+####download.sh
+#!/bin/bash
+wget "$1"
 ```
 
 ### Option3: use ENA website to get fastq links
