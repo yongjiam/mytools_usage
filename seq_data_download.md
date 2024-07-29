@@ -27,8 +27,10 @@ cat SRR_ids|while read R;do echo "fastq-dump --gzip --skip-technical --readids -
 wget https://cncb-gsa.obs.cn-north-4.myhuaweicloud.com:443/data/gsapub/CRA005878/CRR290051/CRR290051_f1.fastq.gz
 wget https://cncb-gsa.obs.cn-north-4.myhuaweicloud.com:443/data/gsapub/CRA005878/CRR290054/CRR290054_f1.fastq.gz
 ...
-## or in batch
+## or in batch in setonix
 srun --export=all -n 1 -c 10  xargs -P 10 -I {} sh -c "{}" < wget_commands
+## or in batch in linux
+cat curls | xargs -n 1 -P 4 ./download.sh
 ```
 
 ### Option3: use ENA website to get fastq links
