@@ -79,3 +79,6 @@ srun --export=all -n 1 -c 128 purge_dups -2 -T cutoffs -c PB.base.cov $hap_asm.s
 ##step3
 srun --export=all -n 1 -c 128 get_seqs -e dups.bed $hap_asm
 ```
+## hic pipeline
+```
+```
