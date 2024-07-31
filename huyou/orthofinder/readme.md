@@ -1,8 +1,9 @@
 ## gemoma output replace seqids with Names
+```
 awk '/^>/ {for (i=1; i<=NF; i++) if ($i ~ /Name=/) print ">"$i; next} {print}' predicted_proteins.fasta > simple_predicted_proteins.fasta
 sed -i 's/Name=//' simple_predicted_proteins.fasta
 bioawk -c fastx '{if ($name ~ /\.1/) print ">"$name"\n"$seq}' simple_predicted_proteins.fasta > hap1_primary_pep.fasta ## only use primary trans
-
+```
 ## run orthofinder with all downloaded species, and hap1, hap2
 /data/huyou/orthofinder/selected/OrthoFinder/Results_Jul18/Orthogroups/Orthogroups_SingleCopyOrthologues.txt, Orthogroups.tsv
 
