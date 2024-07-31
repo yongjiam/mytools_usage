@@ -4,6 +4,20 @@ conda config --show-sources
 conda config --show ## more comprehensive
 conda info --envs ## show current environment
 
+## add another envs location in /home/yjia/.condarc file, conda will create new environment to the first envs location
+
+show_channel_urls: true
+auto_activate_base: true
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+pkgs_dirs:
+  - /scratch/pawsey0399/yjia/conda_cache
+envs_dirs:
+  - /scratch/pawsey0399/yjia/miniconda3/envs
+  - /software/projects/pawsey0399/yjia/miniconda3/envs
+
 ```
 ## conda in setonix
 https://pawsey.atlassian.net/wiki/spaces/US/pages/101122068/How+to+Configure+Conda+to+Avoid+Quota+Issues
