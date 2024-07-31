@@ -249,3 +249,23 @@ earlGrey -g /data/hap1.fasta \
 	      -m yes \
         -t 40
 ```
+## singularity, orthofinder
+https://github.com/davidemms/OrthoFinder?tab=readme-ov-file#installing-orthofinder-on-linux
+```
+singularity build orthofinder.sif docker://davidemms/orthofinder:latest
+
+#!/bin/bash --login
+
+#SBATCH --job-name=ortho
+#SBATCH --partition=work
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=64
+#SBATCH --time=10:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --export=NONE
+
+#conda activate orthofinder
+module load singularity/4.1.0-slurm
+srun --export=all -n 1 -c 64  singularity exec -B ${PWD}:${PWD} orthofinder.sif orthofinder -t 64 -f ./
+```
