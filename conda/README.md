@@ -1,3 +1,10 @@
+## conda config
+```
+conda config --show-sources
+conda config --show ## more comprehensive
+conda info --envs ## show current environment
+
+```
 ## conda in setonix
 https://pawsey.atlassian.net/wiki/spaces/US/pages/101122068/How+to+Configure+Conda+to+Avoid+Quota+Issues
 ```
