@@ -81,4 +81,57 @@ srun --export=all -n 1 -c 128 get_seqs -e dups.bed $hap_asm
 ```
 ## hic pipeline
 ```
+## nextflow_hap2.sh
+export NXF_HOME=$PWD
+nextflow run WarrenLab/hic-scaffolding-nf \
+    --contigs ./hap2_purged.fa \
+    --r1Reads ./rawdata/SRR28430797_1.fastq.gz \
+    --r2Reads ./rawdata/SRR28430797_2.fastq.gz \
+    --juicer-tools-jar /data/huyou/juicer2/juicer_tools_1.22.01.jar \
+    --extra-yahs-args "-e GATC"
+
+## nextflow.config
+process {
+    memory = '100 GB'
+    time = '1d'
+
+    withName: 'CHROMAP_ALIGN' {
+        cpus = 32
+        publishDir = [ path: 'out_hap2/chromap', mode: 'copy' ]
+    }
+    withName: 'YAHS_SCAFFOLD' { publishDir = [ path: 'out_hap2/scaffolds', mode: 'copy' ] }
+    withName: 'JUICER_PRE' { publishDir = [ path: 'out_hap2/juicebox_input', mode: 'copy' ] }
+    withName: 'PRINT_VERSIONS' { publishDir = [ path: 'out_hap2/', mode: 'copy' ] }
+    withName: 'ASSEMBLY_STATS' { publishDir = [ path: 'out_hap2/scaffolds', mode: 'copy' ] }
+}
+
+profiles {
+    lewis {
+        process {
+            executor = 'slurm'
+            queue = 'BioCompute'
+            clusterOptions = '--account=warrenlab'
+            conda = '/storage/hpc/group/warrenlab/users/esrbhb/mambaforge/envs/chromap-yahs'
+        }
+
+        conda.enabled = true
+
+        params {
+            juicerToolsJar = '/storage/htc/warrenlab/users/esrbhb/software/juicer_tools_1.11.09_jcuda.0.8.jar'
+        }
+    }
+
+    conda {
+        process.conda = "$baseDir/conda.yml"
+        conda.enabled = true
+    }
+}
+
+manifest {
+    defaultBranch = 'main'
+    homePage = 'https://github.com/WarrenLab/hic-scaffolding-nf'
+    author = 'Edward S. Rice'
+    version = '0.0.1'
+}
 ```
+## 
