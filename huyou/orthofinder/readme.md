@@ -20,6 +20,9 @@ cut -d ' ' -f1,2 SWO_singlecopy_gene_and_OG.txt|while read R1 R2;do (echo $R2 >>
 ## extract gene id for each chromosome
 ls chr*_OG_id|while read R;do (grep -f $R Orthogroups_SingleCopyOrthologues.tsv > $R".tsv");done
 
+## add header row
+ls chr*OG_id.tsv|while read R;do (cat header $R > "header_"$R);done
+
 ## extract gene id for each chromosome and variety
 ls header_chr*.tsv|while read R; do awk -v CHR="query_"$R 'NR==1 {for (i=1; i<=NF; i++) {col[i]=$i;}} NR>1 {for (i=1; i<=NF; i++) {print $i >> CHR"_"col[i]".txt";}}' $R;done
 
