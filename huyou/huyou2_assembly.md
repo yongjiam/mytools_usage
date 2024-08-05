@@ -134,4 +134,97 @@ manifest {
     version = '0.0.1'
 }
 ```
-## 
+## assign to chromosomes using ragtag against SWO
+```
+#!/bin/bash --login
+
+#SBATCH --job-name=rag2
+#SBATCH --partition=work
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=64
+#SBATCH --time=6:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --export=NONE
+
+conda activate base
+REF=/scratch/pawsey0399/yjia/huyou/pangenomes/huazhong_downloads/SWO.v3.0.genome.fa
+
+srun --export=all -n 1 -c 64   ragtag.py scaffold $REF hap2_out_scaffolds_final.fa -t 64 -o ./ragtag_hap2 &> log2.txt
+```
+## gene model prediction using gemoma
+```
+#!/bin/bash --login
+
+#SBATCH --job-name=hap1
+#SBATCH --partition=work
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=64
+#SBATCH --time=24:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --export=NONE
+
+module load star/2.7.10a--h9ee0642_0
+module load samtools/1.15--h3843a85_0
+
+srun --export=all -n 1 -c 64  STAR --runThreadN 64 --runMode genomeGenerate \
+       --genomeDir ./hap1_updated_star_index  \
+       --genomeSAindexNbases 13 \
+       --genomeFastaFiles hap1_ragtag.fasta
+
+## maping
+srun --export=all -n 1 -c 64 STAR --runThreadN 64 --genomeDir ./hap1_updated_star_index \
+        --readFilesIn hifiasm_purge/trimmed.SRR28430798_1.fastq hifiasm_purge/trimmed.SRR28430798_2.fastq \
+        --outFileNamePrefix hap1updated_RNAmap_SRR28430798 \
+        --outSAMtype BAM SortedByCoordinate \
+        --outSAMunmapped Within \
+        --outSAMattributes Standard
+srun --export=all -n 1 -c 64 STAR --runThreadN 64 --genomeDir ./hap1_updated_star_index \
+        --readFilesIn hifiasm_purge/trimmed.SRR28430799_1.fastq hifiasm_purge/trimmed.SRR28430799_2.fastq \
+        --outFileNamePrefix hap1updated_RNAmap_SRR28430799 \
+        --outSAMtype BAM SortedByCoordinate \
+        --outSAMunmapped Within \
+        --outSAMattributes Standard
+srun --export=all -n 1 -c 64 STAR --runThreadN 64 --genomeDir ./hap1_updated_star_index \
+        --readFilesIn hifiasm_purge/trimmed.SRR28430800_1.fastq hifiasm_purge/trimmed.SRR28430800_2.fastq \
+        --outFileNamePrefix hap1updated_RNAmap_SRR28430800 \
+        --outSAMtype BAM SortedByCoordinate \
+        --outSAMunmapped Within \
+        --outSAMattributes Standard
+srun --export=all -n 1 -c 64 STAR --runThreadN 64 --genomeDir ./hap1_updated_star_index \
+        --readFilesIn hifiasm_purge/trimmed.SRR28430801_1.fastq hifiasm_purge/trimmed.SRR28430801_2.fastq \
+        --outFileNamePrefix hap1updated_RNAmap_SRR28430801 \
+        --outSAMtype BAM SortedByCoordinate \
+        --outSAMunmapped Within \
+        --outSAMattributes Standard
+srun --export=all -n 1 -c 64 STAR --runThreadN 64 --genomeDir ./hap1_updated_star_index \
+        --readFilesIn hifiasm_purge/trimmed.SRR28430802_1.fastq hifiasm_purge/trimmed.SRR28430802_2.fastq \
+        --outFileNamePrefix hap1updated_RNAmap_SRR28430802 \
+        --outSAMtype BAM SortedByCoordinate \
+        --outSAMunmapped Within \
+        --outSAMattributes Standard
+srun --export=all -n 1 -c 64 STAR --runThreadN 64 --genomeDir ./hap1_updated_star_index \
+        --readFilesIn hifiasm_purge/trimmed.SRR28430803_1.fastq hifiasm_purge/trimmed.SRR28430803_2.fastq \
+        --outFileNamePrefix hap1updated_RNAmap_SRR28430803 \
+        --outSAMtype BAM SortedByCoordinate \
+        --outSAMunmapped Within \
+        --outSAMattributes Standard
+
+## merge bams
+srun --export=all -n 1 -c 64 samtools merge -@ 64 hap1merged.bam hap1updated_RNAmap*Aligned.sortedByCoord.out.bam
+
+
+GEMOMAP=/scratch/pawsey0399/yjia/tools/gemoma18/GeMoMa-1.8.jar
+srun --export=all -n 1 -c 64 java -Xmx110G -jar $GEMOMAP CLI GeMoMaPipeline threads=64 tblastn=False \
+	AnnotationFinalizer.r=SIMPLE AnnotationFinalizer.p=H1Y \
+	p=true \
+	pc=true \
+	o=true \
+	t=hap1_ragtag.fasta \
+	outdir=gemoma_hap1/ \
+	s=own i=SWO a=SWO.v3.0.gene.model.gff3 g=SWO.v3.0.genome.fa \
+	s=own i=ZGYCC a=ZGYCC.v2.0.gene.model.gff3 g=ZGYCC.v2.0.genome.fa \
+	s=own i=JZ a=JZ.v1.0.gene.model.gff3 g=JZ.v1.0.genome.fa \
+	r=MAPPED ERE.m=hap1merged.bam
+```
