@@ -47,7 +47,7 @@ ls query_header_chr*|while read R;do EN=$(echo $R|sed 's/query_header_//;s/OG_id
 
 ## separate the sequences files by chromosome and run orthofinder separately
 seq 1 9|while read R;do mkdir "chr"$R; mv "chr"$R*.txt.fa "chr"$R;done
-ls --color=never -d */|while read R;do orthofinder -t 30 $R;done
+ls --color=never -d */|while read R;do orthofinder -t 30 -f $R;done
 
 ## download species tree for each chromosome
 seq 1 9|while read R;do scp -i ~/.ssh/mynimbuskey.pem "ubuntu@146.118.64.65:/data/huyou/orthofinder/merged_chromosomes/chr$R/OrthoFinder/Results_Jul24/Species_Tree/SpeciesTree_rooted.txt" "chr$R-SpeciesTree_rooted.txt";done
