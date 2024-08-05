@@ -61,7 +61,7 @@ makeblastdb -in hap1.fasta -dbtype prot -parse_seqids -out hap1
 ## prepare mcscan input
 blastp -db hap -evalue 1e-10 -query hap1.fasta -outfmt 6 -num_threads 30 -max_target_seqs 5 -out hap1.blast
 awk '!/^#/{if ($3 == "gene") print $1"\t"$4"\t"$5"\t"$9}' hap1_final_annotation.gff|cut -d ';' -f1|sed 's/Name=//'> hap1_primary.gff
-awk '{print $1, $4".1", $2, $3}' hap1_primary.gff > hap1.gff
+awk '{print $1, $4".1", $2, $3}' hap1_primary.gff > hap1.gff  ## has to be tab-delimited file
 
 ### install and run mcscanx
 git clone https://github.com/wyp1125/MCScanX
