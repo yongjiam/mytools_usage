@@ -25,10 +25,20 @@ ls chr*OG_id.tsv|while read R;do (cat header $R > "header_"$R);done
 
 ## extract gene id for each chromosome and variety
 ls header_chr*.tsv|while read R; do awk -v CHR="query_"$R 'NR==1 {for (i=1; i<=NF; i++) {col[i]=$i;}} NR>1 {for (i=1; i<=NF; i++) {print $i >> CHR"_"col[i]".txt";}}' $R;done
+## last column variety has naming problem
+ls *_primary_ZK*|while read R;do mv $R $(echo $R|cut -d '.' -f1)".tsv_primary_ZK.txt";done
 
-## Hap1.fasta and Hap2.fasta gene ID names are overlapping and need to be modified
+## merge all species fasta, before which, Hap1.fasta and Hap2.fasta gene ID names are overlapping and need to be modified
+rm query_header_chr1_OG_id.tsv_Orthogroup.txt
+sed -i 's/HY/H1Y/' query_header_chr*_OG_id.tsv_Hap1.txt
+sed -i 's/HY/H2Y/' query_header_chr*_OG_id.tsv_Hap2.txt
+sed -i 's/H1Y/S1D/' query_header_chr*_OG_id.tsv_SD1.txt
+sed -i 's/H2Y/S2D/' query_header_chr*_OG_id.tsv_SD2.txt
+
 sed -i '/^>/ s/HY/H1Y/' Hap1.fasta
 sed -i '/^>/ s/HY/H2Y/' Hap2.fasta
+sed -i '/^>/ s/H1Y/S1D/' SD1.fasta
+sed -i '/^>/ s/H2Y/S2D/' SD2.fasta
 
 ## extract the fasta for each chromosome and species
 cat *.fasta > merged.pep
