@@ -33,7 +33,7 @@ rm query_header_chr1_OG_id.tsv_Orthogroup.txt
 sed -i 's/HY/H1Y/' query_header_chr*_OG_id.tsv_Hap1.txt
 sed -i 's/HY/H2Y/' query_header_chr*_OG_id.tsv_Hap2.txt
 sed -i 's/H1Y/S1D/' query_header_chr*_OG_id.tsv_SD1.txt
-sed -i 's/H2Y/S2D/' query_header_chr*_OG_id.tsv_SD2.txt
+sed -i 's/H1Y/S2D/' query_header_chr*_OG_id.tsv_SD2.txt ##named as H1Y in gemoma run
 
 sed -i '/^>/ s/HY/H1Y/' Hap1.fasta
 sed -i '/^>/ s/HY/H2Y/' Hap2.fasta
