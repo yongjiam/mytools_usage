@@ -51,5 +51,14 @@ bcftools index wheat_gwas_indels.vcf.gz --threads 42
 bcftools view -H wheat_gwas.vcf.gz | wc -l
 bcftools view -m2 -M2 -H input.vcf | wc -l
 vcftools --gzvcf wheat_gwas_snps.vcf.gz --max-alleles 2 --recode --out wheat_gwas_snps_biallelic.vcf.gz
+bgzip -@ 42 -c wheat_gwas_snps_biallelic.vcf.recode.vcf > wheat_gwas_snps_biallelic.vcf.gz
+bcftools index --threads 42 wheat_gwas_snps_biallelic.vcf.gz
+
+## filtration
+bcftools filter -i 'QUAL > 20 && FMT/DP >= 10 && FMT/GQ >= 20' -S . wheat_gwas_snps_biallelic.vcf.gz -Oz --threads 42 -o bcftools_filtered_wheat_gwas_snps_biallelic.vcf.gz
+bcftools index --threads 42 bcftools_filtered_wheat_gwas_snps_biallelic.vcf.gz
+vcftools --gzvcf bcftools_filtered_wheat_gwas_snps_biallelic.vcf.gz --maf 0.01 --max-missing 0.01 --recode --out bcftools_vcftools_filtered_wheat_gwas_snps_biallelic
+
+vcftools --gzvcf wheat_gwas_snps_biallelic.vcf.gz --minQ 30 --minDP 10 --minGQ 20 --maf 0.01 --max-missing 0.05 --recode --out filtered_wheat_gwas_snps_biallelic
 
 
