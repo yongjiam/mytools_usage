@@ -228,3 +228,16 @@ srun --export=all -n 1 -c 64 java -Xmx110G -jar $GEMOMAP CLI GeMoMaPipeline thre
 	s=own i=JZ a=JZ.v1.0.gene.model.gff3 g=JZ.v1.0.genome.fa \
 	r=MAPPED ERE.m=hap1merged.bam
 ```
+## swap chromosomes between SD1 and SD2, based on kpart results
+```
+## change chromosome ID
+#/scratch/pawsey0399/yjia/huyou2/swap_chroms/
+sed 's/>chr/>SD1chr/;s/>scaff/>SD1scaff/' SD1_ragtag.fasta > SD1_changeID.fasta
+sed 's/>chr/>SD2chr/;s/>scaff/>SD2scaff/' SD2_ragtag.fasta > SD2_changeID.fasta
+
+## chr2, chr3, chr8
+sed -i 's/SD1chr2/SD2chr2/; s/SD1chr3/SD2chr3/; s/SD1chr8/SD2chr8/' SD1_changeID.fasta
+sed -i 's/SD2chr2/SD1chr2/; s/SD2chr3/SD1chr3/; s/SD2chr8/SD1chr8/' SD2_changeID.fasta
+
+
+```
