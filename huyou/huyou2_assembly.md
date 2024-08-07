@@ -239,5 +239,7 @@ sed 's/>chr/>SD2chr/;s/>scaff/>SD2scaff/' SD2_ragtag.fasta > SD2_changeID.fasta
 sed -i 's/SD1chr2/SD2chr2/; s/SD1chr3/SD2chr3/; s/SD1chr8/SD2chr8/' SD1_changeID.fasta
 sed -i 's/SD2chr2/SD1chr2/; s/SD2chr3/SD1chr3/; s/SD2chr8/SD1chr8/' SD2_changeID.fasta
 
+seqkit sort -n SD1_updated.fasta > tmp && mv tmp SD1_updated.fasta
+seqkit sort -n SD2_updated.fasta > tmp && mv tmp SD2_updated.fasta
 
 ```
