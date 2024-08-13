@@ -332,3 +332,9 @@ awk -v wrap_len=$wrap_length '{
 # Extract the lines after the alignment section (starting from line 28)
 sed -n "$((end_line+1)),\$p" $input_file >> $output_file
 ```
+## check mrbayes stats half way
+```
+./mb
+sump filename=wrapped_updated_combined.nexus
+sumt filename=wrapped_updated_combined.nexus
+```
