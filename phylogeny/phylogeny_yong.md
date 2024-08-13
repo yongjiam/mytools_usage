@@ -336,5 +336,6 @@ sed -n "$((end_line+1)),\$p" $input_file >> $output_file
 ```
 ./mb
 sump filename=wrapped_updated_combined.nexus
-sumt filename=wrapped_updated_combined.nexus
+execute wrapped_updated_combined.nexus
+sumt filename=wrapped_updated_combined.nexus ## add "End;" to the tree files *.t
 ```
