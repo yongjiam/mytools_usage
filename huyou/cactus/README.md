@@ -32,3 +32,6 @@ cactus-pangenome ./js-pg ./4-t2t-orangs-mc-2023v2.seqfile --outDir 4-t2t-orangs-
 singularity shell -B ${PWD}:/data /media/yongjia/Elements/yongjia/containers/cactus29.sif
 bash cactus.sh &> log.txt
 ```
+## Notes
+```
+```
