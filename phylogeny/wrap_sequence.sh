@@ -1,5 +1,3 @@
-## wrap up nexus sequence length to meet mybayes requirement
-```
 # Set variables for the file names and wrapping length
 input_file="updated_combined.nexus"
 output_file="wrapped_updated_combined.nexus"
@@ -25,4 +23,3 @@ awk -v wrap_len=$wrap_length '{
 
 # Extract the lines after the alignment section (starting from line 28)
 sed -n "$((end_line+1)),\$p" $input_file >> $output_file
-```
