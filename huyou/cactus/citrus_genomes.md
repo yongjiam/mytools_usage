@@ -49,4 +49,11 @@ ls *fa|while read R;do bioawk -c fastx '{if ($name ~ /chr[1-9]/) print ">"$name"
 ## create seqfile for cactus
 ls *.fa|while read R;do echo -e $(echo $R|cut -d '.' -f1)"\t./"$R;done > citrus_genomes.seqfile
 
+## cactus.sh
+cactus-pangenome ./js-pg ./citrus_genomes.seqfile --outDir citrus_pan --outName citrus_pan --reference Citrus_siniensis --noSplit --gbz clip full --gfa clip full --xg clip full --odgi --vcf --giraffe clip --haplo clip --vcfReference Citrus_siniensis --logFile citrus_pan.log  --coordinationDir /data/tmp --batchLogsDir ./batch-logs --consMemory 230Gi --indexMemory 230Gi --mgMemory 230Gi --mgCores 60 --mapCores 8 --consCores 60 --indexCores 60 --giraffe clip
+
+##
+mkdir tmp
+singularity shell -B ${PWD}:/data /media/yongjia/Elements/yongjia/containers/cactus281.sif
+Singularity> cd /data && bash cactus.sh
 ```
