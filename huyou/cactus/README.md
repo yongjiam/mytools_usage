@@ -29,16 +29,16 @@ cactus-pangenome ./js-pg ./4-t2t-orangs-mc-2023v2.seqfile --outDir 4-t2t-orangs-
 ```
 ```
 cactus-pangenome
-./js-pg
-./4-t2t-orangs-mc-2023v2.seqfile
+./js-pg ## job storage path, will be removed after run
+./4-t2t-orangs-mc-2023v2.seqfile ## input genome list file
 --outDir
 4-t2t-orangs-mc-2023v2
 --outName
 4-t2t-orangs-mc-2023v2
---reference
+--reference ## reference genome will not be clipped
 mPonAbe1_pri
 mPonAbe1_alt
---noSplit
+--noSplit ## run all chromosomes together, allow contigs mapping to multiple chromosomes
 --gbz
 clip
 full
@@ -77,8 +77,6 @@ mPonAbe1_alt
 60
 --indexCores
 60
---giraffe
-clip
 ```
 ### run using singularity in tmux
 ```
