@@ -8,7 +8,7 @@ grep -B2 N50 assembly-stats ## look for N50 and n values
 ```
 ## compared to previous orthofinder species,
 ## replaced Citrus_reticulata with newly published chromosomes
-## https://academic.oup.com/hr/article/11/8/uhae177/7700677
+## https://academic.oup.com/hr/article/11/8/uhae177/7700677, data downloaded in figshare, uploaded to nimbus
 ## added Citrus_hindsii
 ## replaced Citrus_australasica with GCA_029618585.genome.fa
 
