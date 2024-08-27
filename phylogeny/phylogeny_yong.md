@@ -332,6 +332,31 @@ awk -v wrap_len=$wrap_length '{
 # Extract the lines after the alignment section (starting from line 28)
 sed -n "$((end_line+1)),\$p" $input_file >> $output_file
 ```
+## create mb file
+```
+## charset lines
+grep "^charset" combined.nexus|set 's/aligned_renamed_//;s/.fa.nex//' > charsets
+wc -l charsets
+cat charsets |cut -d ' ' -f2|tr '\n' ',' > partitions
+
+## manually add
+        partition Genes = 2736:
+        set partition=Genes;
+        mcmc ngen=50000 samplefreq=100 printfreq=100 nchains=2 nruns=2 temp=0.2;
+        sump nruns=2;
+        sumt nruns=2;
+end;
+
+## header
+begin mrbayes;
+  set autoclose=yes nowarn=yes;
+  execute wrapped_combined.nexus;
+  lset applyto=(all) nst=6 rates=invgamma;
+
+## concatenate header, charsets, and partitions
+cat header charsets partitions > single_copy_gene.mb
+sed -i 's/^charset/  charset/' single_copy_gene.mb
+```
 ## check mrbayes stats half way
 ```
 ./mb
