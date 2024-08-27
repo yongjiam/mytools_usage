@@ -356,6 +356,12 @@ begin mrbayes;
 ## concatenate header, charsets, and partitions
 cat header charsets partitions > single_copy_gene.mb
 sed -i 's/^charset/  charset/' single_copy_gene.mb
+
+## replace "*" with "-"
+sed -i 's/\*/-/g' wrapped_combined.nexus
+
+##
+mpirun -np 30 mb single_copy_gene.mb > log.txt
 ```
 ## check mrbayes stats half way
 ```
