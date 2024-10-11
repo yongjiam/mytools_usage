@@ -60,5 +60,9 @@ bcftools index --threads 42 bcftools_filtered_wheat_gwas_snps_biallelic.vcf.gz
 vcftools --gzvcf bcftools_filtered_wheat_gwas_snps_biallelic.vcf.gz --maf 0.01 --max-missing 0.01 --recode --out bcftools_vcftools_filtered_wheat_gwas_snps_biallelic
 
 vcftools --gzvcf wheat_gwas_snps_biallelic.vcf.gz --minQ 30 --minDP 10 --minGQ 20 --maf 0.01 --max-missing 0.05 --recode --out filtered_wheat_gwas_snps_biallelic
+## extract sample names and count
+bcftools query -l wheat_gwas.vcf.gz
+## remove one sample
+bcftools view -s ^002FSD01 --threads 40 -o updated_filtered_wheat_gwas_snps_biallelic.recode.vcf.gz -Oz filtered_wheat_gwas_snps_biallelic.recode.vcf.gz
 
 
