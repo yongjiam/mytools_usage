@@ -64,5 +64,10 @@ vcftools --gzvcf wheat_gwas_snps_biallelic.vcf.gz --minQ 30 --minDP 10 --minGQ 2
 bcftools query -l wheat_gwas.vcf.gz
 ## remove one sample
 bcftools view -s ^002FSD01 --threads 40 -o updated_filtered_wheat_gwas_snps_biallelic.recode.vcf.gz -Oz filtered_wheat_gwas_snps_biallelic.recode.vcf.gz
+vcftools --gzvcf updated_filtered_wheat_gwas_snps_biallelic.recode.vcf.gz --minQ 30 --minDP 10 --minGQ 20 --maf 0.01 --max-missing 0.05 --recode --out final_snp
+bgzip final_snp.recode.vcf
+bcftools index --threads 42 final_snp.recode.vcf.gz
 
-
+## remove crossing lines
+dffinal['VCFsampleID'].dropna().to_csv('nonCrossing.txt', index=False, header=False)
+bcftools view --threads 30 -S nonCrossing.txt -Oz -o nonCrossing_snp final_snp.recode.vcf.gz
