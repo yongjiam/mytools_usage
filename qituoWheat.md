@@ -71,3 +71,14 @@ bcftools index --threads 42 final_snp.recode.vcf.gz
 ## remove crossing lines
 dffinal['VCFsampleID'].dropna().to_csv('nonCrossing.txt', index=False, header=False)
 bcftools view --threads 30 -S nonCrossing.txt -Oz -o nonCrossing_snp final_snp.recode.vcf.gz
+
+```
+## GWAS with gapit
+```
+## vcf to hapmap
+run_pipeline.pl -Xmx2G -importGuess nonCrossing_final.recode.vcf -export nonCrossing_final -exportType HapmapDiploid
+
+## kinship
+plink --vcf nonCrossing_final.recode.vcf --make-bed --allow-extra-chr --double-id --vcf-half-call missing --out plink
+
+```
