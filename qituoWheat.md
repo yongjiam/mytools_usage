@@ -75,10 +75,14 @@ bcftools view --threads 30 -S nonCrossing.txt -Oz -o nonCrossing_snp final_snp.r
 ```
 ## GWAS with gapit
 ```
+/Users/yongjia/Desktop/workstation/Students/qituo_wheat/GWAS
 ## vcf to hapmap
 run_pipeline.pl -Xmx2G -importGuess nonCrossing_final.recode.vcf -export nonCrossing_final -exportType HapmapDiploid
 
 ## kinship
 plink --vcf nonCrossing_final.recode.vcf --make-bed --allow-extra-chr --double-id --vcf-half-call missing --out plink
 
+## run gapit
+conda activate gapit
+sudo jupyter notebook --allow-root &
 ```
