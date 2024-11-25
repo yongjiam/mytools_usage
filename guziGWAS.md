@@ -17,3 +17,18 @@ YL0414_YL0414 1
 YL0417_YL0417 1
 
 ## genotype data
+
+## pangenome synteny
+```
+## data download
+https://www.zenodo.org/record/7367881
+https://www.nature.com/articles/s41588-023-01423-w#data-availability
+
+## decompress tar.gz gffs and fasta files
+ls --color=never *.tar.gz|while read R;do tar -xzvf $R;done
+
+## extract protein files, sample_id file contain windows symbols and not recoganized by bash
+gffread -w C10.trans.fa -x C10.cds.fa -y C10.pep.fa -g ./C10.fa C10.gff -F
+gffread -w C12.trans.fa -x C12.cds.fa -y C12.pep.fa -g ./C12.fa C12.gff -F
+gffread -w C13.trans.fa -x C13.cds.fa -y C13.pep.fa -g ./C13.fa C13.gff -F
+```
