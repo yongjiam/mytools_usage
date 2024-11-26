@@ -26,8 +26,12 @@ srun --export=all -n 1 -c 2 bgzip -@ 2 SAMPLE_sort.bam.g.vcf ## compress gvcf fi
 ## mark duplicates
 ```
 ## template.conf
+module load gatk4/4.2.5.0--hdfd78af_0
+module load samtools/1.15--h3843a85_0
 srun --export=all -n 1 -c 10 gatk MarkDuplicates -I sample.bam -M sample.metrics.txt -O mark_sample.bam
 srun --export=all -n 1 -c 10 samtools index -c -@ 10 sample.bam
+srun --export=all -n 1 -c 2 gatk HaplotypeCaller -R $REF -I sample.bam -ERC GVCF -O sample.bam.g.vcf
+srun --export=all -n 1 -c 2 bgzip -@ 2 sample.bam.g.vcf
 
 ls --color=never *.bam|paste -|cut -d '.' -f1|while read R;do (sed "s/sample/$R/g" template.conf > $R".conf");done
 ls --color=never mark*.conf|while read R;do sbatch $R;done
