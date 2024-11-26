@@ -27,10 +27,10 @@ srun --export=all -n 1 -c 2 bgzip -@ 2 SAMPLE_sort.bam.g.vcf ## compress gvcf fi
 ```
 ## template.conf
 srun --export=all -n 1 -c 10 gatk MarkDuplicates -I sample.bam -M sample.metrics.txt -O mark_sample.bam
-srun --export=all -n 1 -c 10 samtools index -@ 10 sample.bam
+srun --export=all -n 1 -c 10 samtools index -c -@ 10 sample.bam
 
 ls --color=never *.bam|paste -|cut -d '.' -f1|while read R;do (sed "s/sample/$R/g" template.conf > $R".conf");done
-
+ls --color=never mark*.conf|while read R;do sbatch $R;done
 ```
 ```
 cat qituo_gwas/sample_ids.txt |while read R;do (sed "s/SAMPLE/$R/g" bwa.conf > qituo_gwas/$R".conf");done
