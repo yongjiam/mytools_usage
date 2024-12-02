@@ -76,3 +76,55 @@ s/NC_021165.1/ca6/
 s/NC_021166.1/ca7/
 s/NC_021167.1/ca8/
 ```
+
+## indel variant calling
+```
+## data source
+https://www.nature.com/articles/s41586-021-04066-1#data-availability
+PRJNA657888
+41586_2021_4066_MOESM3_ESM.xlsx ## passport, /Users/yongjia/Desktop/workstation/Students/Gayathri/pangenomes
+
+/scratch/pawsey0399/yjia/chickpea
+## passport, get the 4-7 columns uniq
+S.No	Genotype	Alternate name	Cicer species	Market class	Biological status	Geographic region	Latitude	Longitude	Elevation	DoI
+1	Annigiri 1	-	Cicer arietinum	Desi	Cultivar	South Asia	n.a.	n.a.	n.a.	10.18730/MFSRZ
+2	Avorodhi	-	Cicer arietinum	Desi	Cultivar	South Asia	n.a.	n.a.	n.a.	n.a.
+3	BG 1003	-	Cicer arietinum	Kabuli	Cultivar	South Asia	n.a.	n.a.	n.a.	n.a.
+4	BG 1053	-	Cicer arietinum	Kabuli	Cultivar	South Asia	n.a.	n.a.	n.a.	n.a.
+5	ICC 19665	Blanco Lechoso	Cicer arietinum	Kabuli	Breeding line	Mediterranean	37.42	-6.11028	152	10.18730/MXETZ
+6	ICC 4935	C 235	Cicer arietinum	Desi	Cultivar	South Asia	n.a.	n.a.	201	10.18730/MF2GV
+7	CDC 512-51	-	Cicer arietinum	Desi	Breeding line	Americas	n.a.	n.a.	n.a.	n.a.
+8	Chaffa	Chaffa	Cicer arietinum	Desi	Cultivar	South Asia	n.a.	n.a.	n.a.	10.18730/MF2FT![image](https://github.com/user-attachments/assets/65019bf9-913b-48ee-985f-6aba1cbe84ba)
+
+## get uniq combinations
+cut -f4-7 passport.tsv |sort|uniq > sort_uniq ## 77 in total, get 3 each for variant calling
+sed -i "s/\t/=/g;s/ /_/g" sort_uniq
+
+cat sort_uniq |while read R;do grep -m3 $R passport.tsv ;done > selected_passport_grep3
+sed "s/\t/=/g;s/ /_/g" filereport_read_run_PRJNA657888_tsv.txt > tmp
+cut -d '=' -f2 selected_passport_grep3|while read R;do grep "="$R"=" tmp;done > selected_passport_grep3_tsv.txt
+sed -i "s/=/\t/g" selected_passport_grep3_tsv.txt
+awk -F "\t" '{print $7}' selected_passport_grep3_tsv.txt|sed "s/\;/\\n/" > selected189_ftp_links
+
+## download fastq
+sed 's/^/wget /' selected189_ftp_links > selected189_ftp_links.sh
+cat selected189_ftp_links.sh|while read R;do echo $R > $(echo $R|cut -d '/' -f7|cut -d '.' -f1)".sh";done
+
+#### template.conf
+#!/bin/bash --login
+
+#SBATCH --job-name=SAMPLE
+#SBATCH --partition=work
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --time=10:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --export=NONE
+
+conda activate base
+srun --export=all -n 1 -c 1 bash SAMPLE
+
+ls --color=never SRR*.sh|while read R;do (sed "s/SAMPLE/$R/" template.conf > $R".conf");done
+ls --color=never SRR*.conf|while read R;do sbatch $R;done
+```
