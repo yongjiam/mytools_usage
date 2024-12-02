@@ -31,4 +31,26 @@ ls --color=never *.tar.gz|while read R;do tar -xzvf $R;done
 gffread -w C10.trans.fa -x C10.cds.fa -y C10.pep.fa -g ./C10.fa C10.gff -F
 gffread -w C12.trans.fa -x C12.cds.fa -y C12.pep.fa -g ./C12.fa C12.gff -F
 gffread -w C13.trans.fa -x C13.cds.fa -y C13.pep.fa -g ./C13.fa C13.gff -F
+
+## remove alternative transcript from pep.fa
+cat sample_list |while read R;do (bioawk -c fastx '{if ($name ~ /T01/) print ">"$name"\n"$seq}' $R".pep.fa" > $R".pep.T01.fa");done
+cat fasta_file_list |while read R;do (bioawk -c fastx '{gsub(/\./, "", $seq); print ">"$name"\n"$seq}' $R > tmp);mv tmp $R;done
+
+## some sequence containing "." and remove them
+bioawk -c fastx '{gsub(/\./, "", $seq); print ">"$name"\n"$seq}' pan110.pep_T01.fa > clean_pan110.pep_T01.fa
+cat fasta_file_list |while read R;do (bioawk -c fastx '{gsub(/\./, "", $seq); print ">"$name"\n"$seq}' $R > tmp);mv tmp $R;done
+
+## diamond blastp
+srun --export=all -n 1 -c 64  diamond makedb --in pan110.pep_T01.fa --threads 64 -d pan110
+srun --export=all -n 1 -c 64  diamond blastp -d pan110 -q clean_pan110.pep_T01.fa --threads 64 --evalue 1e-10 --outfmt 6 -o pan110.blast
+
+## pangenes
+miniprot -t64 -d C10.mpi C10.fa ## index
+miniprot --outs=0.95 --no-cs -Iut64 L10.fa cd-hit/db95.fasta >L10.paf ## miniprot blast
+
+conda activate base
+srun --export=all -n 1 -c 64 bash miniprot_run.sh &> log_run.txt
+srun --export=all -n 1 -c 64   pangene -p0 *.paf > graph95.gfa
+srun --export=all -n 1 -c 64   k8 /software/projects/pawsey0399/yjia/tools/pangene/pangene.js gfa2matrix graph95.gfa > graph95_gene_presence_absence.Rtab
+srun --export=all -n 1 -c 64   k8 /software/projects/pawsey0399/yjia/tools/pangene/pangene.js call graph95.gfa > graph95_bubble.txt
 ```
