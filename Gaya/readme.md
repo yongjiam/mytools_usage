@@ -127,4 +127,25 @@ srun --export=all -n 1 -c 1 bash SAMPLE
 
 ls --color=never SRR*.sh|while read R;do (sed "s/SAMPLE/$R/" template.conf > $R".conf");done
 ls --color=never SRR*.conf|while read R;do sbatch $R;done
+
+
+## index reference genome
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/331/145/GCF_000331145.1_ASM33114v1/GCF_000331145.1_ASM33114v1_genomic.fna.gz
+
+## bwa_index.conf
+#!/bin/bash --login
+
+#SBATCH --job-name=index
+#SBATCH --partition=work
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=32
+#SBATCH --time=12:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --export=NONE
+
+module load bwa/0.7.17--h7132678_9
+module load samtools/1.15--h3843a85_0
+srun --export=all -n 1 -c 32  bwa index GCF_000331145.1_ASM33114v1_genomic.fna.gz
+srun --export=all -n 1 -c 32  samtools faidx GCF_000331145.1_ASM33114v1_genomic.fna.gz
 ```
